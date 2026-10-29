@@ -226,16 +226,11 @@ export function LandingPage() {
           className="relative z-20 mx-auto max-w-6xl px-5 pt-6 pb-20 sm:px-8 sm:pt-12 sm:pb-28 lg:px-12 lg:pt-14 lg:pb-32"
         >
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
-            {/* Left Column: Heading + Brief Intro + Badges & CTA */}
+            {/* Left Column: Heading + Brief Intro + CTA */}
             <div className="lg:col-span-6">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F5F7EA] border border-[#D5DCB6] px-3.5 py-1 text-xs font-bold text-[#56632A] shadow-2xs">
-                <Sparkles className="h-3.5 w-3.5 text-[#A8B371]" />
-                <span>WebApp Edukasi Kehamilan Pertama</span>
-              </span>
-
               <h1
                 id="hero-clean-heading"
-                className="mt-4 font-sans text-[2.65rem] font-extrabold leading-[1.08] tracking-tight text-[#2A2D22] sm:text-[3.4rem] lg:text-[3.65rem]"
+                className="font-sans text-[2.65rem] font-extrabold leading-[1.08] tracking-tight text-[#2A2D22] sm:text-[3.4rem] lg:text-[3.65rem]"
               >
                 <span className="text-[#C84B71]">Pendamping</span> kehamilan
                 <br />
@@ -272,56 +267,19 @@ export function LandingPage() {
                   <ArrowRight className="h-4 w-4 text-[#C84B71]" />
                 </a>
               </div>
-
-              {/* 2 White Floating Pill Cards */}
-              <div className="mt-8 flex flex-wrap items-stretch gap-4">
-                <div className="flex items-center gap-3.5 rounded-[16px] bg-white px-5 py-3 text-left shadow-[0_10px_24px_rgba(200,75,113,0.06)] border border-pink-50">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FCE8EE] text-[#C84B71]">
-                    <Layers className="h-4 w-4" strokeWidth={2} />
-                  </span>
-                  <div>
-                    <span className="block text-[13px] font-extrabold leading-tight text-[#2A2D22]">
-                      5 Tingkatan Belajar
-                    </span>
-                    <span className="block text-[11.5px] font-medium leading-tight text-[#767A6E]">
-                      Materi, Kuis, Refleksi, Evaluasi
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3.5 rounded-[16px] bg-white px-5 py-3 text-left shadow-[0_10px_24px_rgba(86,99,42,0.06)] border border-[#E4EAC9]">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F5F7EA] text-[#56632A]">
-                    <HeartHandshake className="h-4 w-4" strokeWidth={2} />
-                  </span>
-                  <div>
-                    <span className="block text-[13px] font-extrabold leading-tight text-[#2A2D22]">
-                      Didampingi Bidan
-                    </span>
-                    <span className="block text-[11.5px] font-medium leading-tight text-[#56632A]">
-                      Konsultasi langsung via WhatsApp
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* Right Column: Floral Mother Portrait dengan Lingkaran Putih */}
+            {/* Right Column: Floral Mother Portrait (Diperbesar & Tanpa Lingkaran Putih) */}
             <div className="relative flex justify-center lg:col-span-6 lg:justify-end">
-              <div className="relative flex items-center justify-center lg:translate-y-4">
-                {/* Lingkaran Putih Saja untuk Background & Border Gambar Ibu Hamil (Sesuai Permintaan Klien) */}
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[48%] h-[300px] w-[300px] sm:h-[380px] sm:w-[380px] lg:h-[430px] lg:w-[430px] rounded-full bg-white shadow-[0_20px_50px_rgba(200,75,113,0.08)] border-4 sm:border-8 border-white ring-1 ring-pink-100/50"
-                />
-
-                <div className="relative z-10 w-[300px] sm:w-[370px] lg:w-[420px]">
+              <div className="relative flex items-center justify-center">
+                <div className="relative z-10 w-[350px] sm:w-[450px] lg:w-[500px] xl:w-[540px]">
                   <Image
                     src="/ibu-hamil-bunga.webp"
                     alt="Ibu hamil tersenyum tenang memegang perut dengan hiasan buket bunga"
-                    width={468}
-                    height={442}
+                    width={936}
+                    height={884}
                     priority
-                    className="mx-auto h-auto w-full object-contain drop-shadow-[0_16px_28px_rgba(200,75,113,0.14)]"
+                    className="mx-auto h-auto w-full object-contain drop-shadow-[0_20px_35px_rgba(200,75,113,0.12)]"
                   />
                 </div>
               </div>
