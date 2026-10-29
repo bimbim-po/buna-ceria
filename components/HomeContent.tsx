@@ -747,11 +747,12 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           </button>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                          {tips.slice(0, 3).map((tip) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {tips.slice(0, 3).map((tip, idx) => (
                             <TipCard
                               key={tip.id}
                               tip={tip}
+                              orderNumber={idx + 1}
                               isSaved={savedTipIds.includes(tip.id)}
                               onToggleSave={toggleSaveTip}
                             />
@@ -866,11 +867,12 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                        {filteredTips.map((tip) => (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {filteredTips.map((tip, idx) => (
                           <TipCard
                             key={tip.id}
                             tip={tip}
+                            orderNumber={idx + 1}
                             isSaved={savedTipIds.includes(tip.id)}
                             onToggleSave={toggleSaveTip}
                           />
