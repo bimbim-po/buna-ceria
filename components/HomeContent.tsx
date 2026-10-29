@@ -42,6 +42,7 @@ import { StagePanel } from '@/components/StagePanel';
 import { ModuleReader } from '@/components/ModuleReader';
 import { FeelingSelector } from '@/components/FeelingSelector';
 import { TipCard } from '@/components/TipCard';
+import { EditorialHeroBanner } from '@/components/EditorialHeroBanner';
 
 const LoginDialog = dynamic(
   () => import('@/components/LoginDialog').then((mod) => mod.LoginDialog),
@@ -387,40 +388,30 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-8"
                     >
-                      {/* Top Header Card: Ringkas & Hangat */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[22px] bg-[#FAF8FC] border border-[#F0ECF5] p-5 sm:p-6">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#FCE8EE] px-2.5 py-0.5 text-[11px] font-bold text-[#C84B71]">
-                              <Sparkles className="h-3 w-3" />
-                              <span>Ruang Belajar Tenang</span>
-                            </span>
-                            <span className="text-xs text-[#767A6E]">
-                              {session?.trimesterLabel ?? 'Trimester Pertama'}
-                            </span>
-                          </div>
-                          <h1 className="mt-1.5 font-heading text-xl sm:text-2xl font-bold text-[#2A2D22]">
-                            Selamat datang, {session ? session.name : 'Ibu Kasih'}
-                          </h1>
-                          <p className="mt-0.5 text-xs text-[#6E6A6C]">
-                            Lanjutkan pembelajaran kehamilan hari ini secara perlahan dan menenangkan.
-                          </p>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (!session) openLoginDialog();
-                              else openAnxietyDialog();
-                            }}
-                            className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-pink-200 bg-white px-4 py-1.5 text-xs font-bold text-[#C84B71] hover:bg-[#FDF2F5] transition-colors cursor-pointer"
-                          >
-                            <Heart className="h-3.5 w-3.5" />
-                            <span>Kuesioner Perasaan</span>
-                          </button>
-                        </div>
-                      </div>
+                      {/* Editorial Hero Banner: Beranda Teman Kasih */}
+                      <EditorialHeroBanner
+                        bgText="TEMAN KASIH"
+                        characterSrc="/hero-beranda-ibu.webp"
+                        characterAlt="Ibu Hamil Bahagia Teman Kasih"
+                        bgGradientClass="bg-gradient-to-r from-[#4E1E2F] via-[#66283F] to-[#4E1E2F]"
+                        shadowClass="shadow-[0_16px_40px_rgba(78,30,47,0.25)]"
+                        leftBadge={{
+                          icon: <Sparkles className="h-3 w-3 text-pink-200" />,
+                          label: "Ruang Belajar Tenang",
+                        }}
+                        rightBadge={{
+                          icon: <Heart className="h-3 w-3 text-pink-200" />,
+                          label: session?.trimesterLabel ?? "Trimester Pertama",
+                        }}
+                        subtitle={`Selamat datang, ${session ? session.name : 'Ibu Kasih'}. Lanjutkan perjalanan kehamilan yang tenang, nyaman, dan terarah.`}
+                        actionButton={{
+                          label: "Kuesioner Perasaan",
+                          onClick: () => {
+                            if (!session) openLoginDialog();
+                            else openAnxietyDialog();
+                          },
+                        }}
+                      />
 
                       {/* A. PERTANYAAN PERASAAN USER */}
                       <section aria-labelledby="perasaan-heading">
@@ -570,28 +561,30 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-8"
                     >
-                      {/* Header Halaman Materi */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[24px] bg-[#FAF8FC] border border-[#ECE7F2] p-6 sm:p-7">
-                        <div>
-                          <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-bold text-[#C84B71]">
-                            Kurikulum Terpadu Teman Kasih
-                          </span>
-                          <h1 className="mt-2.5 font-heading text-2xl font-bold text-[#2A2D22] sm:text-3xl">
-                            Modul &amp; Materi Kehamilan
-                          </h1>
-                          <p className="mt-1 text-xs sm:text-sm text-[#767A6E]">
-                            Pelajari 4 modul kehamilan interaktif, ulas pemahaman dengan kuis ramah, dan catat refleksi diri dalam satu kurikulum terpadu.
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2 self-start sm:self-auto">
-                          <span className="rounded-full bg-white border border-[#ECE7F2] px-3.5 py-1.5 text-xs font-bold text-[#C84B71]">
-                            {totalCompletedActivities}/6 Aktivitas Selesai
-                          </span>
-                          <span className="rounded-full bg-white border border-[#ECE7F2] px-3.5 py-1.5 text-xs font-bold text-[#56632A]">
-                            {completedModules}/4 Modul
-                          </span>
-                        </div>
-                      </div>
+                      {/* Editorial Hero Banner: Kurikulum Materi Kehamilan */}
+                      <EditorialHeroBanner
+                        bgText="MODUL MATERI"
+                        characterSrc="/hero-materi-mentor.webp"
+                        characterAlt="Mentor Edukasi Materi Kehamilan"
+                        bgGradientClass="bg-gradient-to-r from-[#243315] via-[#33461E] to-[#243315]"
+                        shadowClass="shadow-[0_16px_40px_rgba(36,51,21,0.25)]"
+                        leftBadge={{
+                          icon: <BookOpen className="h-3 w-3 text-lime-200" />,
+                          label: "Kurikulum Terpadu",
+                        }}
+                        rightBadge={{
+                          icon: <CheckCircle className="h-3 w-3 text-lime-200" />,
+                          label: `${completedModules}/4 Modul Selesai`,
+                        }}
+                        subtitle="Pelajari 4 modul interaktif, uji pemahaman mandiri melalui kuis ramah, dan rekam refleksi harian."
+                        actionButton={{
+                          label: "Mulai Belajar",
+                          onClick: () => {
+                            const heading = document.getElementById('kurikulum-materi-heading');
+                            heading?.scrollIntoView({ behavior: 'smooth' });
+                          },
+                        }}
+                      />
 
                       {/* =====================================================================
                           KURIKULUM 6 KARTU MODUL & MATERI (1 JADI 1 SAJA)
@@ -850,24 +843,32 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-6"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[24px] bg-[#FAF8FC] border border-[#ECE7F2] p-6 sm:p-7">
-                        <div>
-                          <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">
-                            Panduan Praktis
-                          </span>
-                          <h1 className="mt-2.5 font-heading text-2xl font-bold text-[#2A2D22] sm:text-3xl">
-                            Tips Kehamilan Hari Ini
-                          </h1>
-                          <p className="mt-1 text-xs sm:text-sm text-[#767A6E]">
-                            Langkah kecil untuk merawat kenyamanan tubuh dan ketenangan pikiran sehari-hari.
-                          </p>
-                        </div>
-                        <span className="text-xs font-bold text-[#C84B71] rounded-full bg-white border border-[#ECE7F2] px-4 py-1.5 self-start sm:self-auto">
-                          {savedTipIds.length} Tips Tersimpan
-                        </span>
-                      </div>
+                      {/* Editorial Hero Banner: Tips Kehamilan Hari Ini (Gaya Healthcare Card) */}
+                      <EditorialHeroBanner
+                        bgText="TIPS KEHAMILAN HARI INI"
+                        characterSrc="/hero-tips-kaka.webp"
+                        characterAlt="Kaka Tenaga Kesehatan Pendamping Tips Kehamilan"
+                        bgGradientClass="bg-gradient-to-r from-[#1E204E] via-[#282B61] to-[#1E204E]"
+                        shadowClass="shadow-[0_16px_40px_rgba(30,32,78,0.28)]"
+                        leftBadge={{
+                          icon: <Sparkles className="h-3 w-3 text-pink-200" />,
+                          label: "Terkurasi Medis",
+                        }}
+                        rightBadge={{
+                          icon: <Bookmark className="h-3 w-3 text-green-200" />,
+                          label: `${savedTipIds.length} Tips Tersimpan`,
+                        }}
+                        subtitle="Langkah kecil teruji dari bidan & pakar untuk menjaga kenyamanan tubuh serta ketenangan pikiran Ibu."
+                        actionButton={{
+                          label: "Eksplorasi Tips",
+                          onClick: () => {
+                            const grid = document.getElementById('tips-grid');
+                            grid?.scrollIntoView({ behavior: 'smooth' });
+                          },
+                        }}
+                      />
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div id="tips-grid" className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {filteredTips.map((tip, idx) => (
                           <TipCard
                             key={tip.id}
@@ -890,17 +891,36 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-6"
                     >
-                      <div className="rounded-[24px] bg-[#FAF8FC] border border-[#ECE7F2] p-6 sm:p-7">
-                        <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
-                          Pendamping Terverifikasi
-                        </span>
-                        <h1 className="mt-2.5 font-heading text-2xl font-bold text-[#2A2D22] sm:text-3xl">
-                          Kontak Ahli Pendamping
-                        </h1>
-                        <p className="mt-1 text-xs sm:text-sm text-[#767A6E]">
-                          Bidan dan konselor berlisensi yang siap mendampingi dan menjawab pertanyaan Ibu secara personal via WhatsApp.
-                        </p>
-                      </div>
+                      {/* Editorial Hero Banner: Kontak Ahli Pendamping */}
+                      <EditorialHeroBanner
+                        bgText="KONTAK AHLI"
+                        characterSrc="/hero-kontak-bidan.webp"
+                        characterAlt="Bidan & Konselor Kehamilan Berlisensi"
+                        bgGradientClass="bg-gradient-to-r from-[#143242] via-[#1E4357] to-[#143242]"
+                        shadowClass="shadow-[0_16px_40px_rgba(20,50,66,0.25)]"
+                        leftBadge={{
+                          icon: <HeartHandshake className="h-3 w-3 text-cyan-200" />,
+                          label: "Pendamping Berlisensi",
+                        }}
+                        rightBadge={{
+                          icon: <MessageCircle className="h-3 w-3 text-cyan-200" />,
+                          label: "Siap Konsultasi WhatsApp",
+                        }}
+                        subtitle="Bidan dan konselor profesional terverifikasi siap mendampingi serta menjawab setiap keluhan Ibu secara personal."
+                        actionButton={{
+                          label: "Tanya Bidan Sekarang",
+                          onClick: () => {
+                            const firstExp = experts[0];
+                            const num = firstExp?.whatsappNumber || '6281234567890';
+                            window.open(
+                              `https://wa.me/${num}?text=${encodeURIComponent(
+                                `Halo Bidan, saya ${session?.name ?? 'Ibu hamil pengguna Teman Kasih'}. Saya ingin berkonsultasi mengenai kehamilan saya.`
+                              )}`,
+                              '_blank'
+                            );
+                          },
+                        }}
+                      />
 
                       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                         {experts.map((exp, idx) => {
