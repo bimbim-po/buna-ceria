@@ -135,7 +135,7 @@ export function LandingPage() {
 
   const navLinks = [
     { label: 'Beranda', href: '#top' },
-    { label: 'Fitur WebApp', href: '#fitur-webapp' },
+    { label: 'Fitur WebApp', href: '#pengenalan-bunda' },
     { label: 'Daftar Pustaka', href: '#daftar-pustaka' },
     { label: 'Narahubung', href: '#narahubung' },
   ];
@@ -415,6 +415,99 @@ export function LandingPage() {
           MAIN CONTENT AREA (CLEAN & ELEGANT)
          ===================================================================== */}
       <main className="mx-auto max-w-6xl space-y-24 px-5 py-16 sm:space-y-32 sm:px-8 sm:py-24 lg:px-12">
+        {/* =====================================================================
+            1.5 PENGENALAN INTI WEBAPP (ALA DIARY BUNDA)
+            "Semua yang Bunda perlukan di kehamilan pertama"
+           ===================================================================== */}
+        <motion.section
+          id="pengenalan-bunda"
+          aria-labelledby="pengenalan-bunda-heading"
+          {...sectionRevealProps}
+          className="scroll-mt-24 pt-2 pb-6"
+        >
+          {/* Judul Utama Serif Khas Diary Bunda */}
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <h2
+              id="pengenalan-bunda-heading"
+              className="font-heading text-3xl sm:text-4xl lg:text-[2.65rem] font-bold text-[#2A2D22] tracking-tight leading-snug"
+            >
+              Semua yang Bunda perlukan di kehamilan pertama
+            </h2>
+          </div>
+
+          {/* 3 Kolom Ilustrasi Khas Diary Bunda */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 text-center items-start">
+            {/* Kolom 1: Tips Harian */}
+            <div className="flex flex-col items-center">
+              <div className="relative aspect-square w-48 sm:w-56 overflow-hidden flex items-center justify-center">
+                <Image
+                  src="/feature-tips.webp"
+                  alt="Dapatkan tips harian tentang kesehatan Bunda"
+                  width={400}
+                  height={400}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <h3 className="mt-6 font-sans text-lg sm:text-xl font-bold text-[#2A2D22] leading-snug">
+                Dapatkan tips harian tentang kesehatan Bunda
+              </h3>
+              <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C] max-w-xs mx-auto">
+                Nikmati ribuan artikel dan tips terkait kehamilan serta tumbuh kembang janin yang telah ditinjau langsung oleh bidan dan dokter spesialis.
+              </p>
+            </div>
+
+            {/* Kolom 2: Memandu Setiap Tahapan */}
+            <div className="flex flex-col items-center">
+              <div className="relative aspect-square w-48 sm:w-56 overflow-hidden flex items-center justify-center">
+                <Image
+                  src="/feature-stages.webp"
+                  alt="Memandu dalam setiap tahapan"
+                  width={400}
+                  height={400}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <h3 className="mt-6 font-sans text-lg sm:text-xl font-bold text-[#2A2D22] leading-snug">
+                Memandu dalam setiap tahapan
+              </h3>
+              <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C] max-w-xs mx-auto">
+                Pantau terus perkembangan dan pemahaman materi Bunda melalui alur 5 tahapan bertahap mulai dari kehamilan hingga persiapan kelahiran.
+              </p>
+            </div>
+
+            {/* Kolom 3: Nggak Usah Lagi Tebak-tebakan */}
+            <div className="flex flex-col items-center">
+              <div className="relative aspect-square w-48 sm:w-56 overflow-hidden flex items-center justify-center">
+                <Image
+                  src="/feature-consult.webp"
+                  alt="Nggak usah lagi tebak-tebakan"
+                  width={400}
+                  height={400}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <h3 className="mt-6 font-sans text-lg sm:text-xl font-bold text-[#2A2D22] leading-snug">
+                Nggak usah lagi tebak-tebakan
+              </h3>
+              <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C] max-w-xs mx-auto">
+                Nggak perlu bingung lagi mana mitos mana fakta, sekarang Bunda bisa langsung tanya-jawab dengan bidan dan dokter spesialis kami via WhatsApp.
+              </p>
+            </div>
+          </div>
+
+          {/* Tombol CTA Tengah Khas Diary Bunda */}
+          <div className="mt-12 sm:mt-14 flex justify-center">
+            <button
+              type="button"
+              onClick={() => enterWebApp('beranda')}
+              className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-full bg-[#E5536C] px-8 py-3 text-sm font-bold text-white shadow-[0_8px_24px_rgba(229,83,108,0.28)] hover:bg-[#d44059] hover:shadow-[0_12px_28px_rgba(229,83,108,0.36)] transition-all cursor-pointer"
+            >
+              <span>Buka WebApp Sekarang</span>
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </motion.section>
+
         {/* Acuan Kredibilitas Singkat */}
         <motion.section
           aria-label="Acuan Kredibilitas Literatur"
