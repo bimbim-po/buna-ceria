@@ -154,18 +154,6 @@ export function LandingPage() {
           Header & Hero Section (Sesuai diagram arsitektur)
          ===================================================================== */}
       <div className="relative overflow-hidden bg-[#FDF2F5]">
-        {/* Concentric Pink Circles Backdrop */}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 800 800"
-          className="pointer-events-none absolute -top-24 -right-24 h-[520px] w-[520px] sm:h-[680px] sm:w-[680px] lg:-top-32 lg:right-[2%] lg:h-[760px] lg:w-[760px]"
-        >
-          <circle cx="400" cy="400" r="370" fill="#FBE5EC" />
-          <circle cx="400" cy="400" r="285" fill="#FDF2F5" />
-          <circle cx="400" cy="400" r="205" fill="#F9DCE6" />
-          <circle cx="400" cy="400" r="125" fill="#FDF2F5" />
-        </svg>
-
         {/* Top Navbar */}
         <header className="relative z-30 mx-auto max-w-6xl px-5 pt-6 pb-4 sm:px-8 lg:px-12">
           <div className="flex items-center justify-between">
@@ -385,17 +373,25 @@ export function LandingPage() {
               </div>
             </div>
 
-            {/* Right Column: Cutout Mother Portrait */}
+            {/* Right Column: Cutout Mother Portrait dengan Lingkaran Putih Saja */}
             <div className="relative flex justify-center lg:col-span-6 lg:justify-end">
-              <div className="relative w-[280px] sm:w-[340px] lg:w-[380px] lg:translate-y-6">
-                <Image
-                  src="/ibu-hamil-cutout.png"
-                  alt="Ibu hamil tersenyum tenang memegang perut"
-                  width={585}
-                  height={982}
-                  priority
-                  className="mx-auto h-auto w-full object-contain drop-shadow-[0_16px_28px_rgba(200,75,113,0.12)]"
+              <div className="relative flex items-center justify-center lg:translate-y-6">
+                {/* Lingkaran Putih Saja untuk Background & Border Gambar Ibu Hamil (Sesuai Permintaan Klien) */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] h-[320px] w-[320px] sm:h-[400px] sm:w-[400px] lg:h-[470px] lg:w-[470px] rounded-full bg-white shadow-[0_20px_50px_rgba(200,75,113,0.08)] border-4 sm:border-8 border-white ring-1 ring-pink-100/50"
                 />
+
+                <div className="relative z-10 w-[280px] sm:w-[340px] lg:w-[380px]">
+                  <Image
+                    src="/ibu-hamil-cutout.png"
+                    alt="Ibu hamil tersenyum tenang memegang perut"
+                    width={585}
+                    height={982}
+                    priority
+                    className="mx-auto h-auto w-full object-contain drop-shadow-[0_16px_28px_rgba(200,75,113,0.12)]"
+                  />
+                </div>
               </div>
             </div>
           </div>
