@@ -780,8 +780,8 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Banner Ajakan Masuk WebApp (Harmonisasi Cherry Blossom & Matcha Green) */}
-          <div className="mt-12 rounded-[28px] bg-gradient-to-r from-[#C84B71] via-[#857B4D] to-[#56632A] p-8 sm:p-10 text-white shadow-[0_16px_40px_rgba(86,99,42,0.24)]">
+          {/* Banner Ajakan Masuk WebApp (Harmonisasi Cherry Blossom & Tema Hijau Sage/Matcha) */}
+          <div className="mt-12 rounded-[28px] bg-gradient-to-r from-[#C84B71] to-[#A8B371] p-8 sm:p-10 text-white shadow-[0_16px_40px_rgba(168,179,113,0.25)]">
             <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
               <div className="lg:col-span-8">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-bold backdrop-blur-xs">
