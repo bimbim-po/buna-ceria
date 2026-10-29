@@ -228,8 +228,8 @@ export function LandingPage() {
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
             {/* Left Column: Heading + Brief Intro + Badges & CTA */}
             <div className="lg:col-span-6">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 border border-pink-100 px-3.5 py-1 text-xs font-bold text-[#C84B71] shadow-2xs">
-                <Sparkles className="h-3.5 w-3.5" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F5F7EA] border border-[#D5DCB6] px-3.5 py-1 text-xs font-bold text-[#56632A] shadow-2xs">
+                <Sparkles className="h-3.5 w-3.5 text-[#A8B371]" />
                 <span>WebApp Edukasi Kehamilan Pertama</span>
               </span>
 
@@ -289,15 +289,15 @@ export function LandingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3.5 rounded-[16px] bg-white px-5 py-3 text-left shadow-[0_10px_24px_rgba(200,75,113,0.06)] border border-pink-50">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#EBF7EE] text-green-700">
+                <div className="flex items-center gap-3.5 rounded-[16px] bg-white px-5 py-3 text-left shadow-[0_10px_24px_rgba(86,99,42,0.06)] border border-[#E4EAC9]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F5F7EA] text-[#56632A]">
                     <HeartHandshake className="h-4 w-4" strokeWidth={2} />
                   </span>
                   <div>
                     <span className="block text-[13px] font-extrabold leading-tight text-[#2A2D22]">
                       Didampingi Bidan
                     </span>
-                    <span className="block text-[11.5px] font-medium leading-tight text-[#767A6E]">
+                    <span className="block text-[11.5px] font-medium leading-tight text-[#56632A]">
                       Konsultasi langsung via WhatsApp
                     </span>
                   </div>
@@ -447,11 +447,11 @@ export function LandingPage() {
         >
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
             <div className="lg:col-span-4">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#C84B71]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#56632A]">
                 Standar Kesehatan Maternal
               </span>
               <h2 className="mt-1 font-sans text-[1.85rem] font-extrabold leading-[1.15] tracking-tight text-[#2A2D22]">
-                Terdaftar &amp; <span className="text-[#C84B71]">terkurasi</span>
+                Terdaftar &amp; <span className="text-[#A8B371]">terkurasi</span>
               </h2>
               <p className="mt-3 text-[13.5px] leading-relaxed text-[#6E6A6C]">
                 Seluruh materi di dalam WebApp disusun berdasarkan pedoman resmi
@@ -461,14 +461,21 @@ export function LandingPage() {
 
             <div className="lg:col-span-8">
               <div className="grid grid-cols-2 divide-x divide-y divide-gray-100 overflow-hidden rounded-[16px] border border-gray-100 bg-white sm:grid-cols-3">
-                {REGULATED_INSTITUTIONS.map((inst) => {
+                {REGULATED_INSTITUTIONS.map((inst, index) => {
                   const IconComponent = inst.icon;
+                  const isMatcha = index % 2 === 1;
                   return (
                     <div
                       key={inst.code}
                       className="flex items-center gap-3 px-4 py-5 sm:px-5 sm:py-6"
                     >
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71]">
+                      <span
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+                          isMatcha
+                            ? 'bg-[#F5F7EA] text-[#56632A]'
+                            : 'bg-[#FDF2F5] text-[#C84B71]'
+                        }`}
+                      >
                         <IconComponent className="h-4 w-4" strokeWidth={1.8} />
                       </span>
                       <div className="min-w-0">
@@ -517,10 +524,10 @@ export function LandingPage() {
 
           {/* 4 Showcase Feature Cards with Peeking App Mockups (Khas Desain Referensi) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* CARD 1: Emerald/Teal Theme — 5 Tingkatan Belajar */}
+            {/* CARD 1: Matcha Sage Green Theme — 5 Tingkatan Belajar */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#14532D] via-[#166534] to-[#0F3822] p-6 text-white shadow-[0_16px_36px_rgba(20,83,45,0.22)] hover:-translate-y-2 hover:shadow-[0_24px_48px_rgba(20,83,45,0.32)] transition-all duration-300 cursor-pointer min-h-[460px]"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#56632A] via-[#637330] to-[#3B4619] p-6 text-white shadow-[0_16px_36px_rgba(86,99,42,0.24)] hover:-translate-y-2 hover:shadow-[0_24px_48px_rgba(86,99,42,0.36)] transition-all duration-300 cursor-pointer min-h-[460px]"
             >
               <div>
                 <h3 className="font-heading text-xl font-bold text-white tracking-tight">
@@ -544,19 +551,19 @@ export function LandingPage() {
                 <div className="pt-3 space-y-2.5">
                   <div className="flex items-center justify-between text-[10px] font-bold text-gray-700">
                     <span>Progres Kurikulum</span>
-                    <span className="text-green-600">40% Selesai</span>
+                    <span className="text-[#56632A] font-bold">40% Selesai</span>
                   </div>
-                  <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
-                    <div className="h-full w-2/5 rounded-full bg-green-500" />
+                  <div className="h-2 w-full rounded-full bg-[#F5F7EA] overflow-hidden">
+                    <div className="h-full w-2/5 rounded-full bg-[#A8B371]" />
                   </div>
                   <div className="grid grid-cols-5 gap-1 pt-1 text-center">
-                    <span className="rounded-lg bg-green-100 py-1 text-[8px] font-bold text-green-700">01 ✓</span>
-                    <span className="rounded-lg bg-green-500 text-white py-1 text-[8px] font-bold">02 ●</span>
+                    <span className="rounded-lg bg-[#E4EAC9] py-1 text-[8px] font-bold text-[#56632A]">01 ✓</span>
+                    <span className="rounded-lg bg-[#A8B371] text-white py-1 text-[8px] font-bold">02 ●</span>
                     <span className="rounded-lg bg-gray-100 py-1 text-[8px] font-bold text-gray-400">03 🔒</span>
                     <span className="rounded-lg bg-gray-100 py-1 text-[8px] font-bold text-gray-400">04 🔒</span>
                     <span className="rounded-lg bg-gray-100 py-1 text-[8px] font-bold text-gray-400">05 🔒</span>
                   </div>
-                  <div className="rounded-xl bg-[#FAF8FC] p-2 text-center text-[10px] font-bold text-[#14532D]">
+                  <div className="rounded-xl bg-[#F5F7EA] p-2 text-center text-[10px] font-bold text-[#56632A]">
                     Tahap 2: Kuis Pemahaman
                   </div>
                 </div>
@@ -758,10 +765,10 @@ export function LandingPage() {
                 </span>
               </div>
 
-              {/* Metric 4: Emerald Square */}
+              {/* Metric 4: Matcha Sage Green Square */}
               <div className="flex flex-col items-center">
                 <div className="flex items-center gap-2">
-                  <span className="h-3.5 w-3.5 rounded-sm bg-emerald-500 shrink-0" />
+                  <span className="h-3.5 w-3.5 rounded-sm bg-[#A8B371] shrink-0" />
                   <span className="font-sans text-2xl sm:text-3xl font-extrabold text-[#2A2D22] tracking-tight">
                     24/7
                   </span>
@@ -773,12 +780,12 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Banner Ajakan Masuk WebApp */}
-          <div className="mt-12 rounded-[28px] bg-gradient-to-r from-[#C84B71] via-[#B23E63] to-[#883654] p-8 sm:p-10 text-white shadow-[0_16px_40px_rgba(200,75,113,0.22)]">
+          {/* Banner Ajakan Masuk WebApp (Harmonisasi Cherry Blossom & Matcha Green) */}
+          <div className="mt-12 rounded-[28px] bg-gradient-to-r from-[#C84B71] via-[#857B4D] to-[#56632A] p-8 sm:p-10 text-white shadow-[0_16px_40px_rgba(86,99,42,0.24)]">
             <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
               <div className="lg:col-span-8">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-bold backdrop-blur-xs">
-                  <Sparkles className="h-3.5 w-3.5" />
+                  <Sparkles className="h-3.5 w-3.5 text-[#E4EAC9]" />
                   <span>Ruang Belajar Interaktif</span>
                 </span>
                 <h3 className="mt-4 font-sans text-2xl font-bold sm:text-3xl">
@@ -816,14 +823,14 @@ export function LandingPage() {
         >
           <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end mb-8">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#C84B71]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#56632A]">
                 Transparansi &amp; Kredibilitas
               </span>
               <h2
                 id="pustaka-heading"
                 className="mt-1 font-sans text-[2.2rem] font-extrabold tracking-tight text-[#2A2D22] sm:text-[2.6rem]"
               >
-                Daftar <span className="text-[#C84B71]">pustaka</span>
+                Daftar <span className="text-[#A8B371]">pustaka</span>
               </h2>
             </div>
             <p className="max-w-md text-[14px] leading-relaxed text-[#6E6A6C]">
