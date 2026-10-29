@@ -254,6 +254,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [savedTipIds, setSavedTipIds] = useState<string[]>([]);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [selectedInfoCard, setSelectedInfoCard] = useState<UnifiedCard | null>(null);
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
   const [isReflectionModalOpen, setIsReflectionModalOpen] = useState(false);
@@ -351,14 +352,18 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
            - Pengaturan: Profil pengguna & kuesioner perasaan
            ===================================================================== */
         <div className="flex h-screen w-full overflow-hidden bg-white text-[#2A2D22]">
-          {/* 1. NAVBAR DI KIRI */}
+          {/* 1. NAVBAR DI KIRI (COLLAPSIBLE FLOATING PILL) */}
           <aside
             aria-label="Sidebar WebApp"
-            className="hidden lg:block lg:w-64 lg:shrink-0 h-full border-r border-[#F0ECF5] bg-white select-none"
+            className={`hidden lg:flex flex-col h-screen py-4 pl-4 shrink-0 transition-all duration-300 ease-in-out select-none ${
+              isSidebarCollapsed ? 'w-[90px]' : 'w-[255px]'
+            }`}
           >
             <SidebarNav
               activeSection={activeSection}
               onSelectSection={handleSelectSection}
+              isCollapsed={isSidebarCollapsed}
+              onToggleCollapse={() => setIsSidebarCollapsed((prev) => !prev)}
             />
           </aside>
 
@@ -609,7 +614,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 overflow-visible pt-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 overflow-visible pt-1">
                           {UNIFIED_LEARNING_CARDS.map((card) => {
                             let isDone = false;
                             if (card.type === 'module' && card.moduleId) {
@@ -868,7 +873,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         }}
                       />
 
-                      <div id="tips-grid" className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div id="tips-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                         {filteredTips.map((tip, idx) => (
                           <TipCard
                             key={tip.id}
