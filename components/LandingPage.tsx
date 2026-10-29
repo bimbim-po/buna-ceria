@@ -305,23 +305,23 @@ export function LandingPage() {
               </div>
             </div>
 
-            {/* Right Column: Cutout Mother Portrait dengan Lingkaran Putih Saja */}
+            {/* Right Column: Floral Mother Portrait dengan Lingkaran Putih */}
             <div className="relative flex justify-center lg:col-span-6 lg:justify-end">
-              <div className="relative flex items-center justify-center lg:translate-y-6">
+              <div className="relative flex items-center justify-center lg:translate-y-4">
                 {/* Lingkaran Putih Saja untuk Background & Border Gambar Ibu Hamil (Sesuai Permintaan Klien) */}
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] h-[320px] w-[320px] sm:h-[400px] sm:w-[400px] lg:h-[470px] lg:w-[470px] rounded-full bg-white shadow-[0_20px_50px_rgba(200,75,113,0.08)] border-4 sm:border-8 border-white ring-1 ring-pink-100/50"
+                  className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[48%] h-[300px] w-[300px] sm:h-[380px] sm:w-[380px] lg:h-[430px] lg:w-[430px] rounded-full bg-white shadow-[0_20px_50px_rgba(200,75,113,0.08)] border-4 sm:border-8 border-white ring-1 ring-pink-100/50"
                 />
 
-                <div className="relative z-10 w-[280px] sm:w-[340px] lg:w-[380px]">
+                <div className="relative z-10 w-[300px] sm:w-[370px] lg:w-[420px]">
                   <Image
-                    src="/ibu-hamil-cutout.png"
-                    alt="Ibu hamil tersenyum tenang memegang perut"
-                    width={585}
-                    height={982}
+                    src="/ibu-hamil-bunga.webp"
+                    alt="Ibu hamil tersenyum tenang memegang perut dengan hiasan buket bunga"
+                    width={468}
+                    height={442}
                     priority
-                    className="mx-auto h-auto w-full object-contain drop-shadow-[0_16px_28px_rgba(200,75,113,0.12)]"
+                    className="mx-auto h-auto w-full object-contain drop-shadow-[0_16px_28px_rgba(200,75,113,0.14)]"
                   />
                 </div>
               </div>
