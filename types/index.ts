@@ -112,6 +112,8 @@ export interface PregnancyTip {
   title: string;
   description: string;
   iconName: 'Heart' | 'Sun' | 'Moon' | 'Droplets' | 'Smile' | 'ShieldCheck';
+  tags?: [string, string, string];
+  category?: string;
 }
 
 export interface FeelingTopic {
