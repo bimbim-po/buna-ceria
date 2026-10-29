@@ -12,49 +12,50 @@ export const anxietyScaleOptions: AnxietyOption[] = [
 export const anxietyIntroDisclaimer =
   'Ini bukan diagnosis, hanya membantu kami memahami perasaanmu.';
 
-// 7 Pernyataan perasaan/kecemasan (placeholder bertanda [Contoh])
+// TODO: Validasi instrumen skrining emosi bersama psikolog maternal HIMPSI
+// 7 Pernyataan perasaan/kecemasan mandiri:
 export const mockAnxietyQuestions: AnxietyQuestion[] = [
   {
     id: 'anx-1',
     order: 1,
     statement:
-      '[Contoh] Dalam beberapa hari terakhir, saya merasa pikiran saya sulit berhenti memikirkan banyak hal sekaligus.',
+      'Dalam beberapa hari terakhir, saya merasa pikiran saya sulit berhenti memikirkan banyak hal sekaligus.',
   },
   {
     id: 'anx-2',
     order: 2,
     statement:
-      '[Contoh] Saya merasa kurang tenang saat membayangkan perubahan yang akan datang.',
+      'Saya merasa kurang tenang saat membayangkan perubahan yang akan datang.',
   },
   {
     id: 'anx-3',
     order: 3,
     statement:
-      '[Contoh] Saya merasa membutuhkan waktu lebih lama untuk bisa benar-benar rileks saat beristirahat.',
+      'Saya merasa membutuhkan waktu lebih lama untuk bisa benar-benar rileks saat beristirahat.',
   },
   {
     id: 'anx-4',
     order: 4,
     statement:
-      '[Contoh] Saya mudah merasa khawatir terhadap hal-hal kecil dalam keseharian.',
+      'Saya mudah merasa khawatir terhadap hal-hal kecil dalam keseharian.',
   },
   {
     id: 'anx-5',
     order: 5,
     statement:
-      '[Contoh] Saya merasa sungkan atau ragu ketika ingin menceritakan perasaan saya kepada orang lain.',
+      'Saya merasa sungkan atau ragu ketika ingin menceritakan perasaan saya kepada orang lain.',
   },
   {
     id: 'anx-6',
     order: 6,
     statement:
-      '[Contoh] Saya merasa tubuh mudah lelah karena pikiran yang terasa penuh.',
+      'Saya merasa tubuh mudah lelah karena pikiran yang terasa penuh.',
   },
   {
     id: 'anx-7',
     order: 7,
     statement:
-      '[Contoh] Saya berharap memiliki ruang aman untuk berbagi cerita dan mendapatkan ketenangan.',
+      'Saya berharap memiliki ruang aman untuk berbagi cerita dan mendapatkan ketenangan.',
   },
 ];
 

@@ -111,7 +111,29 @@ export interface PregnancyTip {
   id: string;
   title: string;
   description: string;
-  iconName: 'Heart' | 'Sun' | 'Moon' | 'Droplets' | 'Smile' | 'Sparkles';
+  iconName: 'Heart' | 'Sun' | 'Moon' | 'Droplets' | 'Smile' | 'ShieldCheck';
+}
+
+export interface FeelingTopic {
+  id:
+    | 'keluarga'
+    | 'kecemasan'
+    | 'stres'
+    | 'mood'
+    | 'persalinan'
+    | 'tidur';
+  label: string;
+  title: string;
+  advice: string;
+  recommendedModuleId: string;
+  recommendedModuleLabel: string;
+}
+
+export interface PregnancyPillar {
+  id: 'tips-harian' | 'tahapan' | 'konsultasi';
+  title: string;
+  description: string;
+  targetHref: string;
 }
 
 export interface ExpertContact {
@@ -122,6 +144,9 @@ export interface ExpertContact {
   displayPhone: string;
   initials: string;
   scheduleNote: string;
+  experienceLabel?: string;
+  rating?: string;
+  reviewsCount?: number;
   avatarUrl?: string;
 }
 

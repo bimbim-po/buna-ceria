@@ -1,0 +1,8 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "teman-kasih",
+  "compatibility_date": "2026-09-17",
+  "assets": {
+    "directory": "./out"
+  }
+}

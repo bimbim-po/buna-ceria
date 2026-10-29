@@ -1,26 +1,249 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   DESIGN TOKENS — TEMAN KASIH (Cherry Blossom & Matcha Green)
+   Seluruh warna, tipografi, sudut membulat, jarak, dan bayangan didefinisikan
+   di satu tempat sesuai spesifikasi.
+   ========================================================================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palet Utama Referensi */
+  --pink-500: #f5afb9; /* Cherry Blossom — banner, kartu ringkasan, tombol utama */
+  --green-500: #a8b371; /* Matcha Green — status selesai, kartu, aksen */
+
+  /* Turunan Latar Bagian & Kartu */
+  --pink-100: #fbdde3;
+  --pink-50: #fef3f5;
+  --green-100: #e4eac9;
+  --green-50: #f5f7ea;
+
+  /* Teks & Ikon Berwarna di Atas Latar Terang (Kontras WCAG AA) */
+  --pink-700: #a8435a;
+  --green-700: #56632a;
+
+  /* Teks Utama & Pendukung */
+  --ink: #2a2d22;
+  --ink-muted: #666b58;
+
+  /* Latar Halaman & Kartu */
+  --page: #fff9f7;
+  --surface: #ffffff;
+
+  /* Status Terkunci (Abu Hangat Turunan Ink) */
+  --locked-bg: #f3edea;
+  --locked-border: #e5dad5;
+  --locked-text: #666b58;
+
+  /* Bayangan Lembut Berwarna (Pink / Hijau Opasitas 8–12%, Bukan Abu Pekat) */
+  --shadow-pink: 0 10px 26px -4px rgba(168, 67, 90, 0.09),
+    0 4px 10px -2px rgba(245, 175, 185, 0.12);
+  --shadow-pink-lg: 0 16px 34px -6px rgba(168, 67, 90, 0.12),
+    0 6px 14px -2px rgba(245, 175, 185, 0.16);
+  --shadow-green: 0 10px 26px -4px rgba(86, 99, 42, 0.09),
+    0 4px 10px -2px rgba(168, 179, 113, 0.12);
+
+  /* Sudut Membulat (Kartu 20–28px, Banner 32px, Tombol Pil) */
+  --radius-card: 24px;
+  --radius-section: 28px;
+  --radius-banner: 32px;
+  --radius-pill: 9999px;
+
+  /* Easing Utama */
+  --ease-out-custom: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-pink-500: var(--pink-500);
+  --color-pink-100: var(--pink-100);
+  --color-pink-50: var(--pink-50);
+  --color-pink-700: var(--pink-700);
+
+  --color-green-500: var(--green-500);
+  --color-green-100: var(--green-100);
+  --color-green-50: var(--green-50);
+  --color-green-700: var(--green-700);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+
+  --color-locked-bg: var(--locked-bg);
+  --color-locked-border: var(--locked-border);
+  --color-locked-text: var(--locked-text);
+
+  --font-heading: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-jakarta), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--page);
+  color: var(--ink);
+  font-family: var(--font-jakarta), sans-serif;
+  font-size: 1rem; /* Minimal 16px */
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-fraunces), Georgia, serif;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+/* Fokus keyboard yang jelas */
+:focus-visible {
+  outline: 2px solid var(--pink-700);
+  outline-offset: 3px;
+}
+
+/* Utilitas Bayangan Berwarna & Interaksi Kartu / Tombol */
+.shadow-pink-soft {
+  box-shadow: var(--shadow-pink);
+}
+
+.shadow-green-soft {
+  box-shadow: var(--shadow-green);
+}
+
+.card-lift {
+  transition: transform 280ms var(--ease-out-custom),
+    box-shadow 280ms var(--ease-out-custom),
+    border-color 280ms var(--ease-out-custom);
+}
+
+.card-lift:hover,
+.card-lift:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-pink-lg);
+}
+
+.btn-pill {
+  border-radius: 9999px;
+  transition: transform 220ms var(--ease-out-custom),
+    background-color 220ms var(--ease-out-custom),
+    box-shadow 220ms var(--ease-out-custom);
+}
+
+.btn-pill:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-pink);
+}
+
+.btn-pill:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Animasi SVG Garis Bunga & Daun di SplashScreen (1.2 detik) */
+@keyframes draw-stroke {
+  0% {
+    stroke-dashoffset: 320;
+    opacity: 0.2;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.animate-draw-svg {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: draw-stroke 1.2s var(--ease-out-custom) forwards;
+}
+
+/* Animasi Ilustrasi Banner Melayang Pelan (naik turun 6px, siklus 6 detik) */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float-banner {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Animasi Kelopak & Daun Bergoyang Lembut */
+@keyframes sway-petal {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+.animate-sway-petal {
+  transform-origin: center bottom;
+  animation: sway-petal 4.8s ease-in-out infinite;
+}
+
+/* Denyut Halus untuk Bulatan Tahap Aktif (hanya transform & opacity) */
+@keyframes pulse-ring-pink {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+}
+
+.stage-active-ring::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 2px solid var(--pink-700);
+  animation: pulse-ring-pink 2.2s var(--ease-out-custom) infinite;
+  pointer-events: none;
+}
+
+
+/* Hormati pengaturan prefers-reduced-motion: matikan gerakan dan sisakan fade */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+  .card-lift:hover,
+  .card-lift:focus-within,
+  .btn-pill:hover:not(:disabled),
+  .btn-pill:active:not(:disabled),
+  .animate-float-banner,
+  .animate-sway-petal {
+    transform: none !important;
+    animation: none !important;
+  }
+  .stage-active-ring::after {
+    animation: none !important;
+  }
+  .animate-draw-svg {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
 }
