@@ -34,7 +34,7 @@ const TIP_THEMES: Record<
     pillBg: 'bg-[#E3EFFF]',
     pillText: 'text-[#1D4ED8]',
     imageSrc: '/tip-3d-1.webp',
-    imageAlt: 'Ilustrasi 3D Jeda Napas Pagi Hari dan Ketenangan',
+    imageAlt: 'Ilustrasi 3D Matahari Ceria dan Cangkir Teh Hangat Pagi Hari',
   },
   2: {
     bannerBg: 'bg-gradient-to-r from-[#E0F8F6] via-[#D5F4F1] to-[#C8F0EC]',
@@ -42,7 +42,7 @@ const TIP_THEMES: Record<
     pillBg: 'bg-[#DCFCE7]',
     pillText: 'text-[#0F766E]',
     imageSrc: '/tip-3d-2.webp',
-    imageAlt: 'Ilustrasi 3D Minum Air Berkala dan Hidrasi Janin',
+    imageAlt: 'Ilustrasi Teko Kaca Air Lemon Mint Segar dan Gelas Dingin',
   },
   3: {
     bannerBg: 'bg-gradient-to-r from-[#F4EDFC] via-[#ECE1FA] to-[#E3D4F7]',
@@ -50,7 +50,7 @@ const TIP_THEMES: Record<
     pillBg: 'bg-[#F3E8FF]',
     pillText: 'text-[#7E22CE]',
     imageSrc: '/tip-3d-3.webp',
-    imageAlt: 'Ilustrasi 3D Istirahat Nyaman dan Bantal Kehamilan',
+    imageAlt: 'Ilustrasi Ibu Hamil Tidur Tenang Nyaman di Bantal Lounger Lembut',
   },
   4: {
     bannerBg: 'bg-gradient-to-r from-[#FFEBEF] via-[#FEDFE5] to-[#FDD3DD]',

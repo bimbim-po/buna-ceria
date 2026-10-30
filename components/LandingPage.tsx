@@ -269,17 +269,17 @@ export function LandingPage() {
               </div>
             </div>
 
-            {/* Right Column: Floral Mother Portrait (Diperbesar & Tanpa Lingkaran Putih) */}
+            {/* Right Column: Visual Utama Ibu Hamil & Janin Sehat (Sesuai Desain Klien) */}
             <div className="relative flex justify-center lg:col-span-6 lg:justify-end">
               <div className="relative flex items-center justify-center">
-                <div className="relative z-10 w-[350px] sm:w-[450px] lg:w-[500px] xl:w-[540px]">
+                <div className="relative z-10 w-[350px] sm:w-[440px] lg:w-[480px] xl:w-[510px]">
                   <Image
                     src="/ibu-hamil-bunga.webp"
-                    alt="Ibu hamil tersenyum tenang memegang perut dengan hiasan buket bunga"
-                    width={936}
-                    height={884}
+                    alt="Ibu hamil tersenyum tenang memegang perut dengan visualisasi janin sehat penuh kasih"
+                    width={767}
+                    height={759}
                     priority
-                    className="mx-auto h-auto w-full object-contain drop-shadow-[0_20px_35px_rgba(200,75,113,0.12)]"
+                    className="mx-auto h-auto w-full object-contain drop-shadow-[0_20px_35px_rgba(200,75,113,0.14)]"
                   />
                 </div>
               </div>
@@ -333,8 +333,8 @@ export function LandingPage() {
                 <Image
                   src="/feature-tips.webp"
                   alt="Dapatkan tips harian tentang kesehatan Bunda"
-                  width={400}
-                  height={400}
+                  width={566}
+                  height={566}
                   className="h-full w-full object-contain"
                 />
               </div>
@@ -352,8 +352,8 @@ export function LandingPage() {
                 <Image
                   src="/feature-stages.webp"
                   alt="Memandu dalam setiap tahapan"
-                  width={400}
-                  height={400}
+                  width={524}
+                  height={524}
                   className="h-full w-full object-contain"
                 />
               </div>
@@ -371,8 +371,8 @@ export function LandingPage() {
                 <Image
                   src="/feature-consult.webp"
                   alt="Nggak usah lagi tebak-tebakan"
-                  width={400}
-                  height={400}
+                  width={636}
+                  height={636}
                   className="h-full w-full object-contain"
                 />
               </div>
