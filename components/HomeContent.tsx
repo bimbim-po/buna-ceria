@@ -395,6 +395,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                     >
                       {/* Editorial Hero Banner: Beranda Teman Kasih */}
                       <EditorialHeroBanner
+                        bannerImageSrc="/hero-banner-beranda.webp"
                         bgText="TEMAN KASIH"
                         characterSrc="/hero-beranda-ibu.webp"
                         characterAlt="Ibu Hamil Bahagia Teman Kasih"
@@ -445,13 +446,15 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-200 hover:shadow-[0_10px_24px_rgba(200,75,113,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
-                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71] transition-transform group-hover:scale-105">
-                                <BookOpen className="h-5 w-5" />
-                              </span>
-                              <h3 className="mt-3.5 font-heading text-sm font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
-                                Materi Kehamilan
-                              </h3>
-                              <p className="mt-1 text-xs text-[#767A6E]">
+                              <div className="flex items-center gap-3">
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71] transition-transform group-hover:scale-105">
+                                  <BookOpen className="h-5 w-5" />
+                                </span>
+                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
+                                  Materi Kehamilan
+                                </h3>
+                              </div>
+                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
                                 Tingkatan alur belajar 5 tahap &amp; 4 modul kehamilan fokus layar penuh.
                               </p>
                             </div>
@@ -468,13 +471,15 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-green-200 hover:shadow-[0_10px_24px_rgba(80,110,50,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
-                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EBF7EE] text-green-700 transition-transform group-hover:scale-105">
-                                <Sun className="h-5 w-5" />
-                              </span>
-                              <h3 className="mt-3.5 font-heading text-sm font-bold text-[#2A2D22] group-hover:text-green-700 transition-colors">
-                                Tips Kehamilan
-                              </h3>
-                              <p className="mt-1 text-xs text-[#767A6E]">
+                              <div className="flex items-center gap-3">
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EBF7EE] text-green-700 transition-transform group-hover:scale-105">
+                                  <Sun className="h-5 w-5" />
+                                </span>
+                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-green-700 transition-colors">
+                                  Tips Kehamilan
+                                </h3>
+                              </div>
+                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
                                 Langkah kecil harian merawat tubuh dan ketenangan pikiran.
                               </p>
                             </div>
@@ -491,13 +496,15 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-blue-200 hover:shadow-[0_10px_24px_rgba(50,80,160,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
-                              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-transform group-hover:scale-105">
-                                <HeartHandshake className="h-5 w-5" />
-                              </span>
-                              <h3 className="mt-3.5 font-heading text-sm font-bold text-[#2A2D22] group-hover:text-blue-600 transition-colors">
-                                Kontak Ahli
-                              </h3>
-                              <p className="mt-1 text-xs text-[#767A6E]">
+                              <div className="flex items-center gap-3">
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-transform group-hover:scale-105">
+                                  <HeartHandshake className="h-5 w-5" />
+                                </span>
+                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-blue-600 transition-colors">
+                                  Kontak Ahli
+                                </h3>
+                              </div>
+                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
                                 Konsultasi langsung via WhatsApp dengan bidan &amp; konselor.
                               </p>
                             </div>
@@ -568,6 +575,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                     >
                       {/* Editorial Hero Banner: Kurikulum Materi Kehamilan */}
                       <EditorialHeroBanner
+                        bannerImageSrc="/hero-banner-materi.webp"
                         bgText="MODUL MATERI"
                         characterSrc="/hero-materi-mentor.webp"
                         characterAlt="Mentor Edukasi Materi Kehamilan"
@@ -850,6 +858,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                     >
                       {/* Editorial Hero Banner: Tips Kehamilan Hari Ini (Gaya Healthcare Card) */}
                       <EditorialHeroBanner
+                        bannerImageSrc="/hero-banner-tips.webp"
                         bgText="TIPS KEHAMILAN HARI INI"
                         characterSrc="/hero-tips-kaka.webp"
                         characterAlt="Kaka Tenaga Kesehatan Pendamping Tips Kehamilan"
@@ -898,6 +907,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                     >
                       {/* Editorial Hero Banner: Kontak Ahli Pendamping */}
                       <EditorialHeroBanner
+                        bannerImageSrc="/hero-banner-kontak.webp"
                         bgText="KONTAK AHLI"
                         characterSrc="/hero-kontak-bidan.webp"
                         characterAlt="Bidan & Konselor Kehamilan Berlisensi"
