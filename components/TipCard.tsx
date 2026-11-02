@@ -29,49 +29,49 @@ const TIP_THEMES: Record<
   }
 > = {
   1: {
-    bannerBg: 'bg-gradient-to-r from-[#EBF5FF] via-[#E1F0FF] to-[#D5E9FA]',
-    bannerBorder: 'border-blue-100/80',
-    pillBg: 'bg-[#E3EFFF]',
+    bannerBg: 'bg-gradient-to-r from-[#F0F7FF] via-[#E8F2FF] to-[#DDEEFF]',
+    bannerBorder: 'border-blue-100',
+    pillBg: 'bg-[#EBF3FF]',
     pillText: 'text-[#1D4ED8]',
     imageSrc: '/tip-3d-1.webp',
     imageAlt: 'Ilustrasi 3D Matahari Ceria dan Cangkir Teh Hangat Pagi Hari',
   },
   2: {
-    bannerBg: 'bg-gradient-to-r from-[#E0F8F6] via-[#D5F4F1] to-[#C8F0EC]',
-    bannerBorder: 'border-teal-100/80',
-    pillBg: 'bg-[#DCFCE7]',
+    bannerBg: 'bg-gradient-to-r from-[#EAF9F6] via-[#E0F6F2] to-[#D6F2EC]',
+    bannerBorder: 'border-teal-100',
+    pillBg: 'bg-[#E6F8F2]',
     pillText: 'text-[#0F766E]',
     imageSrc: '/tip-3d-2.webp',
     imageAlt: 'Ilustrasi Teko Kaca Air Lemon Mint Segar dan Gelas Dingin',
   },
   3: {
-    bannerBg: 'bg-gradient-to-r from-[#F4EDFC] via-[#ECE1FA] to-[#E3D4F7]',
-    bannerBorder: 'border-purple-100/80',
-    pillBg: 'bg-[#F3E8FF]',
+    bannerBg: 'bg-gradient-to-r from-[#FAF5FF] via-[#F3EBFD] to-[#ECE1FA]',
+    bannerBorder: 'border-purple-100',
+    pillBg: 'bg-[#F4EBFE]',
     pillText: 'text-[#7E22CE]',
     imageSrc: '/tip-3d-3.webp',
     imageAlt: 'Ilustrasi Ibu Hamil Tidur Tenang Nyaman di Bantal Lounger Lembut',
   },
   4: {
-    bannerBg: 'bg-gradient-to-r from-[#FFEBEF] via-[#FEDFE5] to-[#FDD3DD]',
-    bannerBorder: 'border-pink-100/80',
-    pillBg: 'bg-[#FFE4E6]',
+    bannerBg: 'bg-gradient-to-r from-[#FFF2F5] via-[#FFE8ED] to-[#FFDEE5]',
+    bannerBorder: 'border-pink-100',
+    pillBg: 'bg-[#FFEBF0]',
     pillText: 'text-[#BE123C]',
     imageSrc: '/tip-3d-4.webp',
     imageAlt: 'Ilustrasi 3D Obrolan Hangat dengan Pasangan',
   },
   5: {
-    bannerBg: 'bg-gradient-to-r from-[#F2F8EA] via-[#E9F4DC] to-[#DFEFCD]',
-    bannerBorder: 'border-[#D5DCB6]/80',
-    pillBg: 'bg-[#F5F7EA]',
+    bannerBg: 'bg-gradient-to-r from-[#F6FAF0] via-[#EFF6E5] to-[#E8F2DA]',
+    bannerBorder: 'border-[#E0E8D0]',
+    pillBg: 'bg-[#F2F7EB]',
     pillText: 'text-[#56632A]',
     imageSrc: '/tip-3d-5.webp',
     imageAlt: 'Ilustrasi 3D Informasi Tepercaya dan Buku KIA',
   },
   6: {
-    bannerBg: 'bg-gradient-to-r from-[#FFF6E5] via-[#FEEDCF] to-[#FEE3B8]',
-    bannerBorder: 'border-amber-100/80',
-    pillBg: 'bg-[#FEF3C7]',
+    bannerBg: 'bg-gradient-to-r from-[#FFF9ED] via-[#FEF3DC] to-[#FDECCA]',
+    bannerBorder: 'border-amber-100',
+    pillBg: 'bg-[#FEF5E0]',
     pillText: 'text-[#B45309]',
     imageSrc: '/tip-3d-6.webp',
     imageAlt: 'Ilustrasi 3D Jurnal Rasa Syukur dan Afirmasi Positif',
@@ -98,7 +98,7 @@ export function TipCard({ tip, isSaved, onToggleSave, orderNumber }: TipCardProp
   return (
     <article
       aria-label={`Tips: ${tip.title}`}
-      className="group relative flex flex-col justify-between rounded-[28px] sm:rounded-[30px] border border-[#ECE7F2] bg-white p-5 sm:p-6 shadow-[0_4px_16px_rgba(42,45,34,0.03)] hover:shadow-[0_14px_32px_rgba(40,40,60,0.08)] hover:-translate-y-1 transition-all duration-300"
+      className="group relative flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.06)] hover:-translate-y-1 transition-all duration-300"
     >
       <div>
         {/* ===================================================================
@@ -177,9 +177,9 @@ export function TipCard({ tip, isSaved, onToggleSave, orderNumber }: TipCardProp
            =================================================================== */}
         <div className="mt-4">
           <div
-            className={`w-full h-36 sm:h-40 rounded-[20px] sm:rounded-[22px] border ${theme.bannerBorder} ${theme.bannerBg} flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:shadow-inner`}
+            className={`w-full h-32 sm:h-36 rounded-[16px] border ${theme.bannerBorder} ${theme.bannerBg} flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:shadow-inner`}
           >
-            <div className="relative h-28 w-28 sm:h-32 sm:w-32 transition-transform duration-300 group-hover:scale-110">
+            <div className="relative h-24 w-24 sm:h-28 sm:w-28 transition-transform duration-300 group-hover:scale-108">
               <Image
                 src={theme.imageSrc}
                 alt={theme.imageAlt}

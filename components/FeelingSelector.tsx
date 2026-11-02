@@ -280,14 +280,14 @@ export function FeelingSelector() {
         </p>
       </div>
 
-      {/* Kontainer: Menu Perasaan di Kiri & Kanvas Putih di Kanan */}
-      <div className="overflow-hidden rounded-[28px] border border-pink-100 bg-green-500 p-3 shadow-green-soft sm:p-4">
+      {/* Kontainer: Menu Perasaan di Kiri & Kanvas Putih di Kanan (Profesional, Bersih, dan Segar) */}
+      <div className="overflow-hidden rounded-[22px] border border-[#ECE7F2] bg-white p-2.5 sm:p-3 shadow-[0_4px_20px_rgba(40,40,60,0.03)]">
         <div className="flex flex-col md:flex-row gap-3">
           {/* Kolom Kiri: Daftar Pilihan Perasaan dengan Pill Tab yang Rapi */}
           <div
             role="tablist"
             aria-label="Pilih perasaan yang sedang Ibu hadapi"
-            className="grid grid-cols-2 gap-2 pb-2 md:flex md:w-60 md:shrink-0 md:flex-col md:justify-center md:gap-2 md:py-2"
+            className="grid grid-cols-2 gap-1.5 pb-1 md:flex md:w-56 md:shrink-0 md:flex-col md:justify-center md:gap-1.5 md:p-1.5 bg-[#FAF9FB] rounded-[18px] border border-[#F0ECF5]"
           >
             {topics.map((topic) => {
               const isSelected = topic.id === activeTopic.id;
@@ -301,26 +301,26 @@ export function FeelingSelector() {
                   aria-controls={`feeling-panel-${topic.id}`}
                   id={`feeling-tab-${topic.id}`}
                   onClick={() => setSelectedId(topic.id)}
-                  className={`group relative flex min-h-[46px] items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all cursor-pointer ${
+                  className={`group relative flex min-h-[42px] items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all duration-200 cursor-pointer ${
                     isSelected
-                      ? 'bg-surface font-bold text-ink shadow-sm'
-                      : 'font-semibold text-ink/80 hover:bg-surface/30 hover:text-ink'
+                      ? 'bg-white font-bold text-[#2A2D22] shadow-xs border border-pink-200/80'
+                      : 'font-medium text-[#6E6A6C] hover:bg-white/70 hover:text-[#2A2D22]'
                   }`}
                 >
                   <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors ${
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors ${
                       isSelected
-                        ? 'bg-pink-100 text-pink-700'
-                        : 'bg-surface/60 text-ink group-hover:bg-surface'
+                        ? 'bg-[#FDF2F5] text-[#C84B71]'
+                        : 'bg-white text-[#8C8896] group-hover:text-[#2A2D22]'
                     }`}
                   >
                     <Icon
-                      className="h-4 w-4"
+                      className="h-3.5 w-3.5"
                       strokeWidth={1.75}
                       aria-hidden="true"
                     />
                   </span>
-                  <span className="text-sm leading-snug">{topic.label}</span>
+                  <span className="text-xs sm:text-[13px] leading-snug">{topic.label}</span>
                 </button>
               );
             })}
@@ -332,60 +332,60 @@ export function FeelingSelector() {
               role="tabpanel"
               id={`feeling-panel-${activeTopic.id}`}
               aria-labelledby={`feeling-tab-${activeTopic.id}`}
-              className="flex flex-1 flex-col justify-between rounded-[24px] bg-surface p-6 sm:p-8"
+              className="flex flex-1 flex-col justify-between rounded-[18px] bg-white p-5 sm:p-6 border border-[#F0ECF5]"
             >
               {/* Bagian Atas: Ilustrasi + Judul + Saran Bidan */}
-              <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-                <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-[24px] border border-pink-100 bg-page p-2 shadow-2xs">
+              <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-pink-100 bg-[#FDF9FA] p-1.5 shadow-2xs">
                   <FeelingIllustration id={activeTopic.id} />
                 </div>
 
                 <div className="flex-1">
-                  <span className="inline-flex items-center rounded-full border border-pink-100 bg-pink-50 px-3.5 py-1 text-xs font-bold text-pink-700">
+                  <span className="inline-flex items-center rounded-full border border-pink-200 bg-[#FDF2F5] px-3 py-0.5 text-[11px] font-bold text-[#C84B71]">
                     {activeTopic.label}
                   </span>
 
-                  <h3 className="mt-2.5 font-heading text-xl font-bold text-ink sm:text-2xl">
+                  <h3 className="mt-2 font-heading text-lg font-bold text-[#2A2D22] sm:text-xl">
                     {activeTopic.title}
                   </h3>
 
-                  <p className="mt-2 text-base leading-relaxed text-ink-muted">
+                  <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C]">
                     {activeTopic.advice}
                   </p>
                 </div>
               </div>
 
-              {/* Bagian Bawah: Baris Tombol Aksi yang Rapi */}
-              <div className="mt-7 flex flex-col gap-3 border-t border-pink-100 pt-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+              {/* Bagian Bawah: Baris Tombol Aksi yang Rapi & Proporsional */}
+              <div className="mt-6 flex flex-col gap-2.5 border-t border-[#F0ECF5] pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                 <button
                   type="button"
                   onClick={() =>
                     openModuleReader(activeTopic.recommendedModuleId)
                   }
-                  className="btn-pill inline-flex min-h-[46px] items-center justify-center gap-2.5 border border-pink-100 bg-page px-5 py-2.5 text-sm font-bold text-ink hover:bg-pink-50 cursor-pointer"
+                  className="inline-flex h-9.5 items-center justify-center gap-2 rounded-full border border-[#ECE7F2] bg-[#FAF8FC] px-4 text-xs font-semibold text-[#2A2D22] hover:bg-white hover:border-pink-200 hover:text-[#C84B71] transition-all cursor-pointer shadow-2xs hover:-translate-y-0.5 active:scale-95"
                 >
                   <BookOpen
-                    className="h-4 w-4 shrink-0 text-pink-700"
-                    strokeWidth={1.75}
+                    className="h-3.5 w-3.5 text-[#C84B71]"
+                    strokeWidth={1.8}
                     aria-hidden="true"
                   />
                   <span>{activeTopic.recommendedModuleLabel}</span>
                   <ArrowRight
-                    className="h-4 w-4 shrink-0 text-pink-700"
-                    strokeWidth={1.75}
+                    className="h-3.5 w-3.5 text-[#C84B71]"
+                    strokeWidth={1.8}
                     aria-hidden="true"
                   />
                 </button>
 
-                <div className="flex flex-wrap items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={handleOpenAnxietyCheck}
-                    className="btn-pill inline-flex min-h-[46px] flex-1 sm:flex-initial items-center justify-center gap-2 rounded-full bg-[#C84B71] px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-[#b23b60] transition-colors cursor-pointer"
+                    className="inline-flex h-9.5 flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#C84B71] px-4.5 text-xs font-semibold text-white shadow-xs hover:bg-[#b23b60] transition-all cursor-pointer hover:-translate-y-0.5 active:scale-95"
                   >
                     <ClipboardCheck
-                      className="h-4 w-4 shrink-0"
-                      strokeWidth={1.75}
+                      className="h-3.5 w-3.5"
+                      strokeWidth={1.8}
                       aria-hidden="true"
                     />
                     <span>{uiContent.feelingsSection.checkAnxietyButton}</span>
@@ -394,11 +394,11 @@ export function FeelingSelector() {
                   <button
                     type="button"
                     onClick={handleContactExpert}
-                    className="btn-pill inline-flex min-h-[46px] flex-1 sm:flex-initial items-center justify-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-bold text-ink shadow-green-soft hover:bg-green-600 transition-colors cursor-pointer"
+                    className="inline-flex h-9.5 flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#EBF7EE] border border-green-200 px-4 text-xs font-semibold text-green-700 hover:bg-green-100 transition-all cursor-pointer hover:-translate-y-0.5 active:scale-95"
                   >
                     <HeartHandshake
-                      className="h-4 w-4 shrink-0"
-                      strokeWidth={1.75}
+                      className="h-3.5 w-3.5"
+                      strokeWidth={1.8}
                       aria-hidden="true"
                     />
                     <span>{uiContent.feelingsSection.contactExpertButton}</span>

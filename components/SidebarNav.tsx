@@ -61,8 +61,8 @@ export function SidebarNav({
   return (
     <aside
       aria-label="Navigasi WebApp Teman Kasih"
-      className={`flex h-full flex-col justify-between rounded-[28px] sm:rounded-[32px] bg-white border border-[#ECE7F2] shadow-[0_8px_30px_rgba(40,40,60,0.06)] text-[#2A2D22] select-none transition-all duration-300 ${
-        isCollapsed ? 'p-2.5 sm:p-3 items-center' : 'p-4 sm:p-5'
+      className={`flex h-full flex-col justify-between rounded-[24px] bg-white border border-[#ECE7F2] shadow-[0_4px_24px_rgba(40,40,60,0.04)] text-[#2A2D22] select-none transition-all duration-300 ${
+        isCollapsed ? 'p-2.5 items-center' : 'p-3.5'
       }`}
     >
       <div className="w-full">
@@ -159,9 +159,9 @@ export function SidebarNav({
                   title={item.label}
                   aria-label={item.label}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`group relative flex h-11 w-11 items-center justify-center rounded-2xl transition-all cursor-pointer ${
+                  className={`group relative flex h-10 w-10 items-center justify-center rounded-xl transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#C84B71] text-white shadow-md shadow-pink-500/25 scale-105 font-bold'
+                      ? 'bg-[#C84B71] text-white shadow-xs scale-105 font-bold'
                       : 'text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22]'
                   }`}
                 >
@@ -176,9 +176,9 @@ export function SidebarNav({
                 type="button"
                 onClick={() => handleNavClick(item.id)}
                 aria-current={isActive ? 'page' : undefined}
-                className={`group relative flex w-full items-center gap-3.5 rounded-2xl px-3.5 py-2.5 text-left text-sm font-semibold transition-all cursor-pointer ${
+                className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-[#C84B71] text-white font-bold shadow-md shadow-pink-500/25'
+                    ? 'bg-[#C84B71] text-white font-bold shadow-xs'
                     : 'text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22]'
                 }`}
               >
@@ -199,10 +199,10 @@ export function SidebarNav({
           3. BAGIAN BAWAH: WEBSITE UTAMA, KUESIONER, & MASUK/KELUAR
          =================================================================== */}
       <div
-        className={`w-full pt-3 border-t border-[#F0ECF5] ${
+        className={`w-full pt-2.5 border-t border-[#F0ECF5] ${
           isCollapsed
-            ? 'flex flex-col items-center gap-2'
-            : 'space-y-1.5'
+            ? 'flex flex-col items-center gap-1.5'
+            : 'space-y-1'
         }`}
       >
         {/* Kuesioner Perasaan (Mood Check) */}

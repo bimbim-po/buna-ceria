@@ -49,13 +49,13 @@ export function EditorialHeroBanner({
   subtitle,
   actionButton,
   bgGradientClass,
-  shadowClass = 'shadow-[0_16px_40px_rgba(0,0,0,0.18)]',
+  shadowClass = 'shadow-[0_6px_20px_rgba(40,40,60,0.06),0_1px_4px_rgba(40,40,60,0.03)]',
   containerHeightClass = 'min-h-[220px] sm:min-h-[260px] lg:min-h-[290px]',
 }: EditorialHeroBannerProps) {
   if (bannerImageSrc) {
     return (
       <div
-        className={`group/banner relative w-full overflow-hidden rounded-[24px] sm:rounded-[30px] lg:rounded-[34px] ${shadowClass} select-none transition-all duration-300 hover:shadow-[0_20px_48px_rgba(0,0,0,0.22)]`}
+        className={`group/banner relative w-full overflow-hidden rounded-[22px] sm:rounded-[26px] lg:rounded-[28px] ${shadowClass} select-none transition-all duration-300 hover:shadow-[0_12px_30px_rgba(40,40,60,0.09)]`}
       >
         {/* Photographic Landscape Banner with pre-baked high fidelity typography & characters */}
         <Image

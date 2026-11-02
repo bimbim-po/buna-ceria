@@ -96,8 +96,8 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     badgeText: 'Modul 01',
     badgeBg: 'bg-[#FCE8EE]',
     badgeTextColor: 'text-[#C84B71]',
-    cardGradient: 'bg-gradient-to-br from-[#FFF0F4] via-[#FCE9EE] to-[#FCE4EC]',
-    cardBorder: 'border-pink-200/80 hover:border-pink-300',
+    cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFF5F8]',
+    cardBorder: 'border-[#F0E6EC] hover:border-pink-300',
     imageSrc: '/modul-3d-1.webp',
     imageAlt: 'Ilustrasi Ibu Hamil Duduk Bersila Meditasi dan Relaksasi Tenang',
     type: 'module',
@@ -119,8 +119,8 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     badgeText: 'Modul 02',
     badgeBg: 'bg-[#FFEADA]',
     badgeTextColor: 'text-[#D97706]',
-    cardGradient: 'bg-gradient-to-br from-[#FFF5EC] via-[#FFEEDF] to-[#FFE7D4]',
-    cardBorder: 'border-orange-200/80 hover:border-orange-300',
+    cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFF8F3]',
+    cardBorder: 'border-[#F2EAE0] hover:border-amber-300',
     imageSrc: '/modul-3d-2.webp',
     imageAlt: 'Ilustrasi Bantal Hamil U-Shape Peach dengan Boneka Bintang Ramah',
     type: 'module',
@@ -142,8 +142,8 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     badgeText: 'Modul 03',
     badgeBg: 'bg-[#F5F7EA]',
     badgeTextColor: 'text-[#56632A]',
-    cardGradient: 'bg-gradient-to-br from-[#F5F8EB] via-[#EDF3DC] to-[#E5ECD0]',
-    cardBorder: 'border-[#D5DCB6] hover:border-[#A8B371]',
+    cardGradient: 'bg-gradient-to-b from-white via-white to-[#F8FAF2]',
+    cardBorder: 'border-[#E6EBE0] hover:border-lime-300',
     imageSrc: '/modul-3d-3.webp',
     imageAlt: 'Ilustrasi Dua Tangan Saling Merangkul Lembut Hati Pink',
     type: 'module',
@@ -165,8 +165,8 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     badgeText: 'Modul 04',
     badgeBg: 'bg-[#E6F7F3]',
     badgeTextColor: 'text-[#0D9488]',
-    cardGradient: 'bg-gradient-to-br from-[#EDF9F6] via-[#E0F4EF] to-[#D5EFE8]',
-    cardBorder: 'border-teal-200/80 hover:border-teal-300',
+    cardGradient: 'bg-gradient-to-b from-white via-white to-[#F3FAF8]',
+    cardBorder: 'border-[#E0EFEA] hover:border-teal-300',
     imageSrc: '/modul-3d-4.webp',
     imageAlt: 'Ilustrasi Tas Bersalin Rumah Sakit Hijau Sage dan Perlengkapan Bayi',
     type: 'module',
@@ -188,8 +188,8 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     badgeText: 'Tahap 05',
     badgeBg: 'bg-[#FEF3C7]',
     badgeTextColor: 'text-[#B45309]',
-    cardGradient: 'bg-gradient-to-br from-[#FFFBEB] via-[#FEF5D0] to-[#FEF0C7]',
-    cardBorder: 'border-amber-200/80 hover:border-amber-300',
+    cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFFDF2]',
+    cardBorder: 'border-[#F2EED8] hover:border-yellow-300',
     imageSrc: '/modul-3d-5.webp',
     imageAlt: 'Ilustrasi Piala Emas Juara dan Buku Catatan Checklist Kehamilan',
     type: 'quiz',
@@ -210,8 +210,8 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     badgeText: 'Tahap 06',
     badgeBg: 'bg-[#EDE9FE]',
     badgeTextColor: 'text-[#6D28D9]',
-    cardGradient: 'bg-gradient-to-br from-[#F5F0FF] via-[#EFE6FD] to-[#EAE0FA]',
-    cardBorder: 'border-purple-200/80 hover:border-purple-300',
+    cardGradient: 'bg-gradient-to-b from-white via-white to-[#FAF6FF]',
+    cardBorder: 'border-[#EDE5F8] hover:border-purple-300',
     imageSrc: '/modul-3d-6.webp',
     imageAlt: 'Ilustrasi Buku Jurnal Ungu Self Care dan Big Dreams dengan Pulpen',
     type: 'reflection',
@@ -400,7 +400,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         characterSrc="/hero-beranda-ibu.webp"
                         characterAlt="Ibu Hamil Bahagia Teman Kasih"
                         bgGradientClass="bg-gradient-to-r from-[#4E1E2F] via-[#66283F] to-[#4E1E2F]"
-                        shadowClass="shadow-[0_16px_40px_rgba(78,30,47,0.25)]"
+                        shadowClass="shadow-[0_8px_24px_rgba(78,30,47,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
                         leftBadge={{
                           icon: <Sparkles className="h-3 w-3 text-pink-200" />,
                           label: "Ruang Belajar Tenang",
@@ -517,7 +517,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       </section>
 
                       {/* Footer WebApp Narahubung */}
-                      <footer className="rounded-[24px] border border-[#ECE7F2] bg-[#FAF8FC] p-6 sm:p-7">
+                      <footer className="rounded-[22px] border border-[#ECE7F2] bg-[#FAFAF9] p-5 sm:p-6">
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12 items-center">
                           <div className="lg:col-span-7">
                             <span className="text-[11px] font-bold uppercase tracking-wider text-[#C84B71]">
@@ -580,7 +580,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         characterSrc="/hero-materi-mentor.webp"
                         characterAlt="Mentor Edukasi Materi Kehamilan"
                         bgGradientClass="bg-gradient-to-r from-[#243315] via-[#33461E] to-[#243315]"
-                        shadowClass="shadow-[0_16px_40px_rgba(36,51,21,0.25)]"
+                        shadowClass="shadow-[0_8px_24px_rgba(36,51,21,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
                         leftBadge={{
                           icon: <BookOpen className="h-3 w-3 text-lime-200" />,
                           label: "Kurikulum Terpadu",
@@ -641,7 +641,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                               <div
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
-                                className={`group relative overflow-visible rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 border ${card.cardBorder} ${card.cardGradient} shadow-2xs hover:shadow-[0_16px_36px_rgba(40,40,60,0.1)] hover:-translate-y-1 transition-all duration-300 cursor-pointer min-h-[220px] sm:min-h-[235px] flex flex-col justify-between`}
+                                className={`group relative overflow-visible rounded-[22px] sm:rounded-[24px] p-5 sm:p-6 border ${card.cardBorder} ${card.cardGradient} shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer min-h-[210px] sm:min-h-[225px] flex flex-col justify-between`}
                               >
                                 {/* Top Row: Badge + Category on Left, "?" Button on Right */}
                                 <div className="flex items-center justify-between gap-3 relative z-10">
@@ -665,7 +665,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                     }}
                                     title={`Lihat ringkasan ${card.title}`}
                                     aria-label={`Informasi ${card.title}`}
-                                    className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white/80 hover:bg-white text-[#4A4D40] hover:text-[#111] text-xs font-black shadow-2xs hover:shadow-xs transition-all hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-xs"
+                                    className="flex h-7 w-7 sm:h-7.5 sm:w-7.5 items-center justify-center rounded-full bg-white/95 border border-[#ECE7F2] text-[#4A4D40] hover:bg-white hover:text-black hover:border-gray-300 text-xs font-black shadow-2xs hover:shadow-xs transition-all hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-xs"
                                   >
                                     ?
                                   </button>
@@ -707,7 +707,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 </div>
 
                                 {/* 3D Illustration yang "menjulang keluar" (Pop-Out Effect) */}
-                                <div className="absolute -bottom-2.5 -right-2 sm:-bottom-3.5 sm:-right-3 md:-bottom-4 md:-right-4 w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 pointer-events-none transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-2 group-hover:translate-x-1 z-20">
+                                <div className="absolute -bottom-2 -right-1.5 sm:-bottom-3 sm:-right-2.5 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 pointer-events-none transition-transform duration-300 group-hover:scale-108 group-hover:-translate-y-1.5 group-hover:translate-x-1 z-20">
                                   <Image
                                     src={card.imageSrc}
                                     alt={card.imageAlt}
@@ -863,7 +863,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         characterSrc="/hero-tips-kaka.webp"
                         characterAlt="Kaka Tenaga Kesehatan Pendamping Tips Kehamilan"
                         bgGradientClass="bg-gradient-to-r from-[#1E204E] via-[#282B61] to-[#1E204E]"
-                        shadowClass="shadow-[0_16px_40px_rgba(30,32,78,0.28)]"
+                        shadowClass="shadow-[0_8px_24px_rgba(30,32,78,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
                         leftBadge={{
                           icon: <Sparkles className="h-3 w-3 text-pink-200" />,
                           label: "Terkurasi Medis",
@@ -912,7 +912,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         characterSrc="/hero-kontak-bidan.webp"
                         characterAlt="Bidan & Konselor Kehamilan Berlisensi"
                         bgGradientClass="bg-gradient-to-r from-[#143242] via-[#1E4357] to-[#143242]"
-                        shadowClass="shadow-[0_16px_40px_rgba(20,50,66,0.25)]"
+                        shadowClass="shadow-[0_8px_24px_rgba(20,50,66,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
                         leftBadge={{
                           icon: <HeartHandshake className="h-3 w-3 text-cyan-200" />,
                           label: "Pendamping Berlisensi",
@@ -950,7 +950,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           return (
                             <div
                               key={exp.id}
-                              className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-3.5 shadow-2xs hover:shadow-[0_12px_28px_rgba(80,50,110,0.08)] hover:-translate-y-1 transition-all"
+                              className="group flex flex-col justify-between rounded-[20px] border border-[#ECE7F2] bg-white p-4 shadow-2xs hover:shadow-[0_10px_24px_rgba(80,50,110,0.06)] hover:-translate-y-0.5 transition-all"
                             >
                               <div>
                                 <div className="relative aspect-[1.15/1] w-full overflow-hidden rounded-[16px] bg-[#FAF8FC]">
@@ -1114,7 +1114,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg rounded-[28px] bg-white p-6 sm:p-7 shadow-2xl border border-gray-100 space-y-4"
+            className="relative w-full max-w-lg rounded-[22px] bg-white p-5 sm:p-6 shadow-xl border border-[#ECE7F2] space-y-4"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2">
