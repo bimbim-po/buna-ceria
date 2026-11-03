@@ -7,6 +7,8 @@ import {
   ArrowRight,
   Award,
   BookOpen,
+  GraduationCap,
+  Heart,
   Building2,
   CheckCircle2,
   HeartHandshake,
@@ -480,192 +482,97 @@ export function LandingPage() {
             </p>
           </div>
 
-          {/* 4 Showcase Feature Cards with Peeking App Mockups (Khas Desain Referensi) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* CARD 1: Matcha Sage Green Theme — 5 Tingkatan Belajar */}
+          {/* 4 Showcase Feature Cards - Simple, Elegant & Clean White (Sesuai Referensi Gambar) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* CARD 1: 5 Tingkatan Belajar (Alur Sage Green) */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#56632A] via-[#637330] to-[#3B4619] p-6 text-white shadow-[0_16px_36px_rgba(86,99,42,0.24)] hover:-translate-y-2 hover:shadow-[0_24px_48px_rgba(86,99,42,0.36)] transition-all duration-300 cursor-pointer min-h-[460px]"
+              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(86,99,42,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[240px]"
             >
               <div>
-                <h3 className="font-heading text-xl font-bold text-white tracking-tight">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F5F8EB] text-[#56632A] border border-[#E4EAC9] transition-transform duration-300 group-hover:scale-105 shadow-2xs">
+                  <GraduationCap className="h-6 w-6" strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-4 font-heading text-lg font-bold text-[#2A2D22] group-hover:text-[#56632A] transition-colors leading-snug">
                   5 Tingkatan Belajar
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-white/85">
+                <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C]">
                   Materi → Kuis → Refleksi → Evaluasi → Hasil Saya. Dibuka bertahap agar tidak kewalahan.
                 </p>
               </div>
 
-              {/* Peeking Mockup Window */}
-              <div className="mt-8 -mb-6 -mx-2 overflow-hidden rounded-t-[20px] bg-white/95 p-3.5 shadow-2xl backdrop-blur-xs transition-transform duration-300 group-hover:translate-y-[-4px]">
-                {/* Window Header Dots */}
-                <div className="flex items-center gap-1.5 pb-2.5 border-b border-gray-100">
-                  <span className="h-2 w-2 rounded-full bg-red-400" />
-                  <span className="h-2 w-2 rounded-full bg-amber-400" />
-                  <span className="h-2 w-2 rounded-full bg-green-400" />
-                  <span className="ml-1 text-[9px] font-bold text-gray-400">Tahapan Interaktif</span>
-                </div>
-                {/* Mini Stepper Preview */}
-                <div className="pt-3 space-y-2.5">
-                  <div className="flex items-center justify-between text-[10px] font-bold text-gray-700">
-                    <span>Progres Kurikulum</span>
-                    <span className="text-[#56632A] font-bold">40% Selesai</span>
-                  </div>
-                  <div className="h-2 w-full rounded-full bg-[#F5F7EA] overflow-hidden">
-                    <div className="h-full w-2/5 rounded-full bg-[#A8B371]" />
-                  </div>
-                  <div className="grid grid-cols-5 gap-1 pt-1 text-center">
-                    <span className="rounded-lg bg-[#E4EAC9] py-1 text-[8px] font-bold text-[#56632A]">01 ✓</span>
-                    <span className="rounded-lg bg-[#A8B371] text-white py-1 text-[8px] font-bold">02 ●</span>
-                    <span className="rounded-lg bg-gray-100 py-1 text-[8px] font-bold text-gray-400">03 🔒</span>
-                    <span className="rounded-lg bg-gray-100 py-1 text-[8px] font-bold text-gray-400">04 🔒</span>
-                    <span className="rounded-lg bg-gray-100 py-1 text-[8px] font-bold text-gray-400">05 🔒</span>
-                  </div>
-                  <div className="rounded-xl bg-[#F5F7EA] p-2 text-center text-[10px] font-bold text-[#56632A]">
-                    Tahap 2: Kuis Pemahaman
-                  </div>
-                </div>
+              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#56632A]">
+                <span>Buka Alur Belajar</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
             </div>
 
-            {/* CARD 2: Rose/Berry Theme — Ruang Baca Dicoding Style */}
+            {/* CARD 2: Ruang Baca Fokus (Rose Cherry Blossom) */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#C84B71] via-[#B23E63] to-[#7B1D39] p-6 text-white shadow-[0_16px_36px_rgba(200,75,113,0.25)] hover:-translate-y-2 hover:shadow-[0_24px_48px_rgba(200,75,113,0.36)] transition-all duration-300 cursor-pointer min-h-[460px]"
+              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(200,75,113,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[240px]"
             >
               <div>
-                <h3 className="font-heading text-xl font-bold text-white tracking-tight">
-                  Ruang Baca Dicoding
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FDF2F5] text-[#C84B71] border border-pink-100 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
+                  <BookOpen className="h-6 w-6" strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-4 font-heading text-lg font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors leading-snug">
+                  Ruang Baca Fokus
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-white/85">
-                  Mode kelas layar penuh dengan silabus materi, ukuran teks (Aa), tema baca, dan bebas distraksi.
+                <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C]">
+                  Mode kelas layar penuh dengan silabus materi terstruktur, ukuran teks (Aa), dan bebas distraksi.
                 </p>
               </div>
 
-              {/* Peeking Mockup Window */}
-              <div className="mt-8 -mb-6 -mx-2 overflow-hidden rounded-t-[20px] bg-white/95 p-3.5 shadow-2xl backdrop-blur-xs transition-transform duration-300 group-hover:translate-y-[-4px]">
-                {/* Window Header Dots */}
-                <div className="flex items-center justify-between pb-2.5 border-b border-gray-100">
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-red-400" />
-                    <span className="h-2 w-2 rounded-full bg-amber-400" />
-                    <span className="h-2 w-2 rounded-full bg-green-400" />
-                  </div>
-                  <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[8.5px] font-bold text-[#C84B71]">
-                    Focus Mode
-                  </span>
-                </div>
-                {/* Mini Classroom Preview */}
-                <div className="pt-3 space-y-2 text-[#2A2D22]">
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="font-bold text-gray-800">Modul 01: Nutrisi Janin</span>
-                    <span className="text-[9px] text-gray-400">3 mnt baca</span>
-                  </div>
-                  <div className="rounded-xl border border-pink-100 bg-[#FDF2F5] p-2 text-[9px] text-[#C84B71] font-semibold leading-relaxed">
-                    ✨ Intisari: Asupan asam folat dan zat besi esensial di trimester awal.
-                  </div>
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[9px] font-bold text-gray-600">Aa Teks</span>
-                    <span className="rounded-full bg-green-600 px-3 py-1 text-[9px] font-bold text-white">Lanjut Modul →</span>
-                  </div>
-                </div>
+              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#C84B71]">
+                <span>Mulai Membaca</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
             </div>
 
-            {/* CARD 3: Amber/Gold Theme — Kuis Pemahaman Ringan */}
+            {/* CARD 3: Kuis Pemahaman (Warm Amber/Honey) */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#D97706] via-[#B45309] to-[#78350F] p-6 text-white shadow-[0_16px_36px_rgba(217,119,6,0.22)] hover:-translate-y-2 hover:shadow-[0_24px_48px_rgba(217,119,6,0.34)] transition-all duration-300 cursor-pointer min-h-[460px]"
+              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(217,119,6,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[240px]"
             >
               <div>
-                <h3 className="font-heading text-xl font-bold text-white tracking-tight">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFF8EB] text-[#C26100] border border-amber-100 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
+                  <Award className="h-6 w-6" strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-4 font-heading text-lg font-bold text-[#2A2D22] group-hover:text-[#C26100] transition-colors leading-snug">
                   Kuis Pemahaman
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-white/85">
-                  Pertanyaan reflektif interaktif tanpa tekanan nilai dengan pembahasan menenangkan.
+                <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C]">
+                  Pertanyaan reflektif interaktif tanpa tekanan nilai dengan ulasan pembahasan menenangkan.
                 </p>
               </div>
 
-              {/* Peeking Mockup Window */}
-              <div className="mt-8 -mb-6 -mx-2 overflow-hidden rounded-t-[20px] bg-white/95 p-3.5 shadow-2xl backdrop-blur-xs transition-transform duration-300 group-hover:translate-y-[-4px]">
-                {/* Window Header Dots */}
-                <div className="flex items-center justify-between pb-2.5 border-b border-gray-100">
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-red-400" />
-                    <span className="h-2 w-2 rounded-full bg-amber-400" />
-                    <span className="h-2 w-2 rounded-full bg-green-400" />
-                  </div>
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[8.5px] font-bold text-amber-800">
-                    Soal 2 dari 5
-                  </span>
-                </div>
-                {/* Mini Quiz Preview */}
-                <div className="pt-3 space-y-2 text-[#2A2D22]">
-                  <p className="text-[10px] font-bold leading-tight text-gray-800">
-                    Kapan waktu terbaik minum suplemen zat besi?
-                  </p>
-                  <div className="space-y-1 text-[9px]">
-                    <div className="rounded-lg bg-green-50 border border-green-200 px-2 py-1 font-bold text-green-700 flex items-center justify-between">
-                      <span>Bersama air jeruk segar</span>
-                      <span>✓ Benar</span>
-                    </div>
-                    <div className="rounded-lg bg-gray-50 border border-gray-100 px-2 py-1 text-gray-500">
-                      <span>Bersama susu panas</span>
-                    </div>
-                  </div>
-                  <div className="rounded-xl bg-amber-50 p-1.5 text-center text-[9px] font-bold text-amber-800">
-                    Skor: 100% Sempurna
-                  </div>
-                </div>
+              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#C26100]">
+                <span>Ikuti Kuis</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
             </div>
 
-            {/* CARD 4: Ocean Azure Theme — Kontak Bidan & Sapa Perasaan */}
+            {/* CARD 4: Dampingan Bidan & Emosi (Calm Sky Blue) */}
             <div
               onClick={() => enterWebApp('kontak-ahli')}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#0284C7] via-[#0369A1] to-[#075985] p-6 text-white shadow-[0_16px_36px_rgba(2,132,199,0.22)] hover:-translate-y-2 hover:shadow-[0_24px_48px_rgba(2,132,199,0.34)] transition-all duration-300 cursor-pointer min-h-[460px]"
+              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(2,132,199,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[240px]"
             >
               <div>
-                <h3 className="font-heading text-xl font-bold text-white tracking-tight">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8FF] text-[#0284C7] border border-blue-100 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
+                  <HeartHandshake className="h-6 w-6" strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-4 font-heading text-lg font-bold text-[#2A2D22] group-hover:text-[#0284C7] transition-colors leading-snug">
                   Dampingan Bidan &amp; Emosi
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-white/85">
+                <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C]">
                   Tersambung langsung via WhatsApp dengan bidan terverifikasi dan fitur sapa perasaan harian.
                 </p>
               </div>
 
-              {/* Peeking Mockup Window */}
-              <div className="mt-8 -mb-6 -mx-2 overflow-hidden rounded-t-[20px] bg-white/95 p-3.5 shadow-2xl backdrop-blur-xs transition-transform duration-300 group-hover:translate-y-[-4px]">
-                {/* Window Header Dots */}
-                <div className="flex items-center justify-between pb-2.5 border-b border-gray-100">
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-red-400" />
-                    <span className="h-2 w-2 rounded-full bg-amber-400" />
-                    <span className="h-2 w-2 rounded-full bg-green-400" />
-                  </div>
-                  <span className="flex items-center gap-1 text-[8.5px] font-bold text-green-600">
-                    <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                    Bidan Online
-                  </span>
-                </div>
-                {/* Mini Chat / Hotline Preview */}
-                <div className="pt-3 space-y-2 text-[#2A2D22]">
-                  <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-full bg-blue-100 text-[#0284C7] flex items-center justify-center font-bold text-xs shrink-0">
-                      B
-                    </div>
-                    <div className="min-w-0">
-                      <span className="block text-[10px] font-bold truncate">Bidan Siti Rahma, S.ST</span>
-                      <span className="block text-[8px] text-gray-500">Puskesmas Maternal Care</span>
-                    </div>
-                  </div>
-                  <div className="rounded-xl bg-[#F0F9FF] p-2 text-[9px] text-[#0369A1] leading-relaxed">
-                    💬 &quot;Halo Ibu, bagaimana detak gerak janin hari ini? Ada keluhan pusing?&quot;
-                  </div>
-                  <div className="rounded-full bg-green-600 py-1.5 text-center text-[9px] font-bold text-white shadow-2xs">
-                    Konsultasi via WhatsApp →
-                  </div>
-                </div>
+              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#0284C7]">
+                <span>Konsultasi Bidan</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
             </div>
           </div>
@@ -738,31 +645,35 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Banner Ajakan Masuk WebApp (Harmonisasi Cherry Blossom & Tema Hijau Sage/Matcha) */}
-          <div className="mt-12 rounded-[28px] bg-gradient-to-r from-[#C84B71] to-[#A8B371] p-8 sm:p-10 text-white shadow-[0_16px_40px_rgba(168,179,113,0.25)]">
-            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
+          {/* Banner Ajakan Masuk WebApp - Clean, Light & Airy (Sesuai Referensi Gambar) */}
+          <div className="mt-12 rounded-[24px] border border-[#ECE7F2] bg-white/95 p-6 sm:p-8 lg:p-10 shadow-[0_4px_24px_rgba(40,40,60,0.04)] backdrop-blur-xs">
+            <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12">
               <div className="lg:col-span-8">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-bold backdrop-blur-xs">
-                  <Sparkles className="h-3.5 w-3.5 text-[#E4EAC9]" />
+                <span className="inline-flex items-center gap-2 rounded-full border border-pink-200/80 bg-[#FDF2F5] px-3.5 py-1 text-xs font-bold text-[#C84B71]">
+                  <Heart className="h-3.5 w-3.5 fill-[#C84B71]" />
                   <span>Ruang Belajar Interaktif</span>
                 </span>
-                <h3 className="mt-4 font-sans text-2xl font-bold sm:text-3xl">
+                <h3 className="mt-3 font-heading text-2xl sm:text-3xl font-bold text-[#2A2D22] tracking-tight">
                   Siap memulai perjalanan kehamilan yang tenang?
                 </h3>
-                <p className="mt-2 max-w-xl text-xs sm:text-sm text-white/90 leading-relaxed">
-                  Buka WebApp Teman Kasih sekarang untuk menikmati alur 5 tahapan belajar,
-                  ruang baca layar penuh tanpa iklan, kuis mandiri, dan dukungan bidan.
+                <p className="mt-2 text-xs sm:text-sm text-[#6E6A6C] leading-relaxed max-w-xl">
+                  Buka WebApp Teman Kasih sekarang untuk menikmati alur 5 tahapan belajar, ruang baca layar penuh tanpa iklan, kuis mandiri, dan dukungan bidan.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 lg:col-span-4 lg:justify-end">
+              <div className="hidden lg:flex lg:col-span-1 justify-center">
+                <div className="h-16 w-px bg-[#EAE6EE]" />
+              </div>
+
+              <div className="flex lg:col-span-3 lg:justify-end">
                 <button
                   type="button"
                   onClick={() => enterWebApp('beranda')}
-                  className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-xs font-bold text-[#C84B71] shadow-md hover:bg-[#FDF2F5] transition-all cursor-pointer"
+                  className="inline-flex min-h-[46px] w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-[#C84B71] hover:bg-[#b23b60] px-7 py-3 text-sm font-bold text-white shadow-xs hover:shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
                 >
                   <BookOpen className="h-4 w-4" />
                   <span>Masuk ke WebApp</span>
+                  <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
             </div>

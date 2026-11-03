@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
-import { Heart, Mail, MessageCircle, UserCheck, Users } from 'lucide-react';
+import { Mail, MessageCircle, UserCheck, Users } from 'lucide-react';
 import { getFooterContact } from '@/lib/api';
 import { uiContent } from '@/data/uiContent';
 
@@ -13,91 +15,91 @@ export function Footer() {
   return (
     <footer
       id="narahubung"
-      className="relative overflow-hidden border-t border-pink-100/80 bg-[#FEF4F3] pt-10 text-ink sm:pt-12"
+      className="relative overflow-hidden border-t border-[#ECE7F2] bg-gradient-to-r from-white via-white to-[#FDF2F5]/50 pt-10 pb-8 text-[#2A2D22]"
     >
-      {/* Top 2 Cards */}
-      <div className="relative z-20 mx-auto max-w-5xl px-4 sm:px-6 lg:px-10">
+      {/* Top 2 Clean Cards */}
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2">
           {/* Card Kiri: Identitas Teman Kasih */}
-          <div className="flex flex-col justify-between rounded-[28px] border border-pink-100/80 bg-surface p-6 shadow-pink-soft sm:p-7">
+          <div className="flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-6 shadow-2xs">
             <div>
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-pink-100 bg-surface p-1.5 shadow-2xs">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-pink-100 bg-[#FDF2F5] p-2 shadow-2xs">
                   <Image
                     src="/logo.png"
                     alt="Teman Kasih"
-                    width={36}
-                    height={36}
-                    className="h-8 w-8 object-contain"
+                    width={32}
+                    height={32}
+                    className="h-7 w-7 object-contain"
                   />
                 </span>
-                <span className="font-heading text-2xl font-bold text-ink sm:text-[26px]">
+                <span className="font-heading text-xl sm:text-2xl font-bold text-[#2A2D22]">
                   {uiContent.brand.name}
                 </span>
               </div>
 
-              <p className="mt-3.5 text-[15px] leading-relaxed text-ink-muted">
+              <p className="mt-3.5 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C]">
                 Ruang belajar kehamilan yang hangat, dirancang khusus agar nyaman dibaca
                 melalui ponsel oleh Ibu kapan saja.
               </p>
             </div>
 
-            <div className="mt-5 flex items-start gap-3.5 rounded-[20px] bg-[#FCEEF0]/90 p-4">
+            <div className="mt-5 flex items-start gap-3 rounded-[16px] bg-[#FDF2F5]/90 border border-pink-100/70 p-3.5">
               <Users
-                className="mt-0.5 h-5 w-5 shrink-0 text-[#D46A7E]"
+                className="mt-0.5 h-4 w-4 shrink-0 text-[#C84B71]"
                 strokeWidth={1.8}
                 aria-hidden="true"
               />
-              <p className="text-xs leading-relaxed text-ink-muted sm:text-[13px]">
+              <p className="text-[11px] sm:text-xs leading-relaxed text-[#767A6E]">
                 {contact.disclaimerText}
               </p>
             </div>
           </div>
 
           {/* Card Kanan: Narahubung Penanggung Jawab */}
-          <div className="flex flex-col justify-between rounded-[28px] border border-pink-100/80 bg-surface p-6 shadow-pink-soft sm:p-7">
+          <div className="flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-6 shadow-2xs">
             <div>
-              <h2 className="font-heading text-xl font-bold text-ink sm:text-[22px]">
+              <h2 className="font-heading text-lg sm:text-xl font-bold text-[#2A2D22]">
                 Narahubung Program Teman Kasih
               </h2>
 
-              <div className="mt-4 divide-y divide-pink-100/70 text-sm text-ink-muted">
+              <div className="mt-4 space-y-3 text-xs sm:text-[13px] text-[#6E6A6C]">
                 {/* Baris 1: Penanggung Jawab */}
-                <div className="flex items-start gap-3.5 pb-3.5">
+                <div className="flex items-start gap-3">
                   <UserCheck
-                    className="mt-0.5 h-5 w-5 shrink-0 text-[#D46A7E]"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[#C84B71]"
                     strokeWidth={1.8}
                     aria-hidden="true"
                   />
                   <div>
-                    <span className="block text-[15px] font-bold leading-snug text-ink">
+                    <span className="block font-bold leading-snug text-[#2A2D22]">
                       {contact.personInCharge}
                     </span>
-                    <span className="mt-0.5 block text-xs text-ink-muted sm:text-[13px]">
+                    <span className="text-[11px] text-[#767A6E]">
                       {contact.role}
                     </span>
                   </div>
                 </div>
 
                 {/* Baris 2: Email */}
-                <div className="flex items-center gap-3.5 py-3.5">
+                <div className="flex items-center gap-3">
                   <Mail
-                    className="h-5 w-5 shrink-0 text-[#D46A7E]"
+                    className="h-4 w-4 shrink-0 text-[#C84B71]"
                     strokeWidth={1.8}
                     aria-hidden="true"
                   />
                   <a
                     href={`mailto:${contact.email}`}
-                    className="inline-flex items-center text-[15px] font-medium text-ink transition-colors hover:text-pink-700"
+                    className="font-medium text-[#2A2D22] transition-colors hover:text-[#C84B71]"
                   >
                     {contact.email}
                   </a>
                 </div>
 
                 {/* Baris 3: WhatsApp */}
-                <div className="flex items-center gap-3.5 pt-3.5">
+                <div className="flex items-center gap-3">
                   <MessageCircle
-                    className="h-5 w-5 shrink-0 text-[#7E9448]"
+                    className="h-4 w-4 shrink-0 text-green-600"
                     strokeWidth={1.8}
                     aria-hidden="true"
                   />
@@ -105,7 +107,7 @@ export function Footer() {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-[15px] font-medium text-ink transition-colors hover:text-green-700"
+                    className="font-medium text-[#2A2D22] transition-colors hover:text-green-700"
                   >
                     WhatsApp: {contact.displayWhatsapp}
                   </a>
@@ -113,70 +115,32 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="mt-5 pt-3 border-t border-pink-100/60 text-xs text-ink-muted">
+            <div className="mt-5 pt-3 border-t border-[#F0ECF5] text-[11px] text-[#767A6E]">
               <span>Jam Layanan: Senin – Sabtu, 08.00 – 17.00 WIB</span>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Scenic Area: Waves + Left/Right Illustrations + Heart & Copyright */}
-      <div className="relative mt-6 pt-8 pb-8 sm:mt-8 sm:pt-12 sm:pb-10">
-        {/* Layered Soft Pastel Waves */}
-        <svg
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-28 w-full sm:h-36"
-          viewBox="0 0 1440 160"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M0,64 C240,20 480,105 720,88 C960,70 1200,18 1440,52 L1440,160 L0,160 Z"
-            fill="#FDE9EA"
-          />
-          <path
-            d="M0,96 C260,132 460,68 720,108 C980,148 1180,76 1440,104 L1440,160 L0,160 Z"
-            fill="#FDD6D7"
-          />
-        </svg>
-
-        {/* Left Pregnant Mother Illustration */}
-        <div className="pointer-events-none absolute bottom-0 left-0 z-10 w-[135px] sm:w-[200px] md:w-[235px]">
-          <Image
-            src="/footer-left.png"
-            alt=""
-            width={235}
-            height={191}
-            className="h-auto w-full object-contain object-bottom"
-          />
-        </div>
-
-        {/* Right Pregnant Mother & Midwife Illustration */}
-        <div className="pointer-events-none absolute bottom-0 right-0 z-10 w-[145px] sm:w-[215px] md:w-[254px]">
-          <Image
-            src="/footer-right.png"
-            alt=""
-            width={254}
-            height={191}
-            className="h-auto w-full object-contain object-bottom"
-          />
-        </div>
-
-        {/* Center Heart Divider & Copyright */}
-        <div className="relative z-20 mx-auto max-w-md px-4 text-center sm:max-w-xl">
-          <div className="mb-3 flex items-center justify-center gap-2.5">
-            <span className="h-[2.5px] w-2.5 rounded-full bg-[#F29AA7]" />
-            <Heart
-              className="h-5 w-5 fill-[#F29AA7] text-[#F29AA7]"
-              aria-hidden="true"
-            />
-            <span className="h-[2.5px] w-2.5 rounded-full bg-[#F29AA7]" />
+        {/* Bottom Bar: Copyright on Left + Navigation Links on Right (Sesuai Referensi) */}
+        <div className="mt-8 pt-5 border-t border-[#F0ECF5] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#8C8896]">
+          <p>© 2026 Teman Kasih — Ruang Belajar Kehamilan yang Hangat &amp; Menenangkan.</p>
+          <div className="flex flex-wrap items-center gap-3 text-xs text-[#767A6E]">
+            <a href="#tentang-kami" className="hover:text-[#C84B71] transition-colors">
+              Tentang Kami
+            </a>
+            <span className="text-[#D0CCD6]">|</span>
+            <a href="#bantuan" className="hover:text-[#C84B71] transition-colors">
+              Bantuan
+            </a>
+            <span className="text-[#D0CCD6]">|</span>
+            <a href="#kebijakan-privasi" className="hover:text-[#C84B71] transition-colors">
+              Kebijakan Privasi
+            </a>
+            <span className="text-[#D0CCD6]">|</span>
+            <a href="#syarat-ketentuan" className="hover:text-[#C84B71] transition-colors">
+              Syarat &amp; Ketentuan
+            </a>
           </div>
-
-          <p className="text-xs font-medium leading-relaxed text-ink-muted sm:text-[13px]">
-            © 2026 Teman Kasih — Ruang Belajar Kehamilan yang Hangat &amp; Menenangkan.
-            <br />
-            Seluruh hak cipta dilindungi.
-          </p>
         </div>
       </div>
     </footer>
