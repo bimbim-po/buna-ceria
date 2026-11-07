@@ -79,10 +79,7 @@ export function StagePanel() {
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F0ECF5] pb-5">
           <div>
-            <span className="inline-flex items-center rounded-full bg-[#FDF2F5] px-3 py-0.5 text-xs font-bold text-[#C84B71]">
-              Level 1 dari 4
-            </span>
-            <h3 className="mt-1.5 font-heading text-xl font-bold text-[#2A2D22] sm:text-2xl">
+            <h3 className="font-heading text-xl font-bold text-[#2A2D22] sm:text-2xl">
               {currentStage.title}
             </h3>
             <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">
@@ -240,10 +237,7 @@ export function StagePanel() {
         >
           <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#F0ECF5] pb-4">
             <div>
-              <span className="inline-flex items-center rounded-full bg-[#FDF2F5] px-3 py-0.5 text-xs font-bold text-[#C84B71]">
-                Level 3 dari 4
-              </span>
-              <h3 className="mt-1.5 font-heading text-xl font-bold text-[#2A2D22] sm:text-2xl">
+              <h3 className="font-heading text-xl font-bold text-[#2A2D22] sm:text-2xl">
                 {currentStage.title}
               </h3>
               <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">

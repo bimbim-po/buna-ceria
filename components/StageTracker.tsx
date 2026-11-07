@@ -296,9 +296,9 @@ export function StageTracker({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22, ease: CUSTOM_EASE }}
-            className="mx-auto mt-4 flex max-w-md items-center justify-center gap-2 rounded-full border border-pink-200 bg-[#FDF2F5] px-5 py-2 text-center text-xs sm:text-sm font-bold text-[#C84B71] shadow-2xs"
+            className="mx-auto mt-4 flex max-w-md items-center justify-center gap-2 rounded-full border border-pink-200 bg-[#FDF2F5] px-5 py-2 text-center text-xs sm:text-sm font-semibold text-[#C84B71]"
           >
-            <Sparkles className="h-4 w-4 shrink-0 text-[#C84B71]" />
+            <Lock className="h-3.5 w-3.5 shrink-0 text-[#C84B71]" />
             <span>{lockedNotice}</span>
           </motion.div>
         )}

@@ -52,14 +52,10 @@ export function ResultSummary() {
       {/* Header Hasil Saya (Level 4) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-pink-100 pb-5">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3.5 py-1 text-sm font-bold text-green-700">
-            <Award className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-            <span>Level 4 • Rangkuman Perjalanan Belajar</span>
-          </span>
-          <h3 className="mt-2 font-heading text-2xl font-bold text-ink sm:text-3xl">
+          <h3 className="font-heading text-2xl font-bold text-ink sm:text-3xl">
             Hasil Saya — {session?.name ?? 'Ibu'}
           </h3>
-          <p className="mt-1 text-base text-ink-muted">
+          <p className="mt-1 text-sm sm:text-base text-ink-muted">
             Catatan progres 4 level, skor kuis terbaik, dan hasil kuesioner kecemasan Ibu dalam
             satu halaman yang tenang.
           </p>

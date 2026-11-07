@@ -741,19 +741,14 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       </div>
 
                       {/* KARTU VISUAL 3D MODUL & EVALUASI */}
-                      <section aria-labelledby="kurikulum-materi-heading" className="space-y-4 pt-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#56632A]">
-                              Kartu Pintas Interaktif 3D
-                            </span>
-                            <h2
-                              id="kurikulum-materi-heading"
-                              className="font-heading text-xl font-bold text-[#2A2D22]"
-                            >
-                              Jelajahi Modul, Quiz &amp; Hasil Belajar
-                            </h2>
-                          </div>
+                      <section aria-labelledby="kurikulum-materi-heading" className="space-y-4 pt-2">
+                        <div className="flex flex-wrap items-baseline justify-between gap-2">
+                          <h2
+                            id="kurikulum-materi-heading"
+                            className="font-heading text-xl font-bold text-[#2A2D22]"
+                          >
+                            Modul &amp; Evaluasi Pembelajaran
+                          </h2>
                           <span className="text-xs text-[#767A6E]">
                             Klik kartu untuk membuka &bull; Klik &ldquo;?&rdquo; untuk ringkasan
                           </span>
@@ -783,12 +778,11 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 <div className="flex items-center justify-between gap-3 relative z-10">
                                   <div className="inline-flex items-center gap-2 min-w-0">
                                     <span
-                                      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold ${card.badgeBg} ${card.badgeTextColor} shadow-2xs`}
+                                      className={`inline-flex shrink-0 items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold ${card.badgeBg} ${card.badgeTextColor}`}
                                     >
-                                      <Sparkles className="h-3 w-3" />
-                                      <span>{card.badgeText}</span>
+                                      {card.badgeText}
                                     </span>
-                                    <span className="truncate text-[11px] font-semibold text-[#767A6E]">
+                                    <span className="truncate text-[11px] font-medium text-[#767A6E]">
                                       {card.category}
                                     </span>
                                   </div>
@@ -1025,13 +1019,9 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-6"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[24px] bg-gradient-to-r from-[#FDF2F5] via-white to-[#F5F8EB] border border-[#ECE7F2] p-6 sm:p-7">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[24px] bg-[#FAF8F6] border border-[#ECE7F2] p-6 sm:p-7">
                         <div>
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-pink-200 px-3 py-1 text-xs font-bold text-[#C84B71]">
-                            <Settings className="h-3.5 w-3.5" />
-                            <span>Pengaturan Akun &amp; Profil Pengguna</span>
-                          </span>
-                          <h1 className="mt-2.5 font-heading text-2xl font-bold text-[#2A2D22] sm:text-3xl">
+                          <h1 className="font-heading text-2xl font-bold text-[#2A2D22] sm:text-3xl">
                             Informasi Akun &amp; Ubah Profil
                           </h1>
                           <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">

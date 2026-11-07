@@ -170,19 +170,14 @@ export function AdminDashboard() {
   return (
     <div className="space-y-6">
       {/* Header Banner Admin */}
-      <div className="rounded-[24px] border border-[#ECE7F2] bg-gradient-to-r from-[#F4F7EA] via-[#FFFAF0] to-[#FFF5F7] p-6 sm:p-7 shadow-2xs">
+      <div className="rounded-[24px] border border-[#ECE7F2] bg-[#FAF8F6] p-6 sm:p-7 shadow-2xs">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#56632A] px-3.5 py-1 text-xs font-bold text-white">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              <span>Panel Khusus Admin Buna Ceria</span>
-            </span>
-            <h1 className="mt-2.5 font-heading text-2xl sm:text-3xl font-bold text-[#2A2D22]">
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#2A2D22]">
               Kelola Pengguna &amp; Materi Pembelajaran
             </h1>
             <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">
-              Sesuai hak akses Admin: kelola user yang mendaftar serta edit dan
-              tambahkan materi pembelajaran di dalam WebApp.
+              Kelola akun pengguna terdaftar serta tambahkan atau perbarui materi pembelajaran di dalam WebApp.
             </p>
           </div>
 

@@ -586,14 +586,10 @@ export function SelfieStudio() {
   return (
     <div className="space-y-6">
       {/* Header Banner Fitur Take Selfie */}
-      <div className="rounded-[24px] border border-[#ECE7F2] bg-gradient-to-r from-[#FFF5F7] via-[#FFFAF0] to-[#F4F7EA] p-6 sm:p-8 shadow-2xs">
+      <div className="rounded-[24px] border border-[#ECE7F2] bg-[#FAF8F6] p-6 sm:p-7 shadow-2xs">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-pink-200 bg-white px-3.5 py-1 text-xs font-bold text-[#C84B71]">
-              <Camera className="h-3.5 w-3.5" />
-              <span>Fitur Take Selfie Bersama Pasangan</span>
-            </span>
-            <h1 className="mt-2.5 font-heading text-2xl sm:text-3xl font-bold text-[#2A2D22]">
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#2A2D22]">
               Abadikan Momen Kehamilan Bunda &amp; Pasangan
             </h1>
             <p className="mt-1.5 max-w-2xl text-xs sm:text-sm leading-relaxed text-[#6E6A6C]">

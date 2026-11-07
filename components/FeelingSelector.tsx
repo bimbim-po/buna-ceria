@@ -341,11 +341,7 @@ export function FeelingSelector() {
                 </div>
 
                 <div className="flex-1">
-                  <span className="inline-flex items-center rounded-full border border-pink-200 bg-[#FDF2F5] px-3 py-0.5 text-[11px] font-bold text-[#C84B71]">
-                    {activeTopic.label}
-                  </span>
-
-                  <h3 className="mt-2 font-heading text-lg font-bold text-[#2A2D22] sm:text-xl">
+                  <h3 className="font-heading text-lg font-bold text-[#2A2D22] sm:text-xl">
                     {activeTopic.title}
                   </h3>
 

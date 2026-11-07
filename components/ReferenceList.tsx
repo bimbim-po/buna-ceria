@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { BookMarked, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { ReferenceItem } from '@/types';
 
 const CUSTOM_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -12,7 +12,7 @@ interface ReferenceListProps {
 }
 
 export function ReferenceList({ references }: ReferenceListProps) {
-  const [openIds, setOpenIds] = useState<string[]>([references[0]?.id ?? '']);
+  const [openIds, setOpenIds] = useState<string[]>([]);
   const prefersReducedMotion = useReducedMotion();
 
   const toggleReference = (id: string) => {
@@ -22,7 +22,7 @@ export function ReferenceList({ references }: ReferenceListProps) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       {references.map((ref, index) => {
         const isOpen = openIds.includes(ref.id);
         const panelId = `reference-panel-${ref.id}`;
@@ -31,7 +31,7 @@ export function ReferenceList({ references }: ReferenceListProps) {
         return (
           <div
             key={ref.id}
-            className="card-lift overflow-hidden rounded-[24px] border border-pink-100 bg-surface"
+            className="overflow-hidden rounded-2xl border border-[#F5E4EA] bg-[#FFFDFD] transition-colors hover:border-[#EBB8C8]"
           >
             <h3>
               <button
@@ -40,27 +40,22 @@ export function ReferenceList({ references }: ReferenceListProps) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggleReference(ref.id)}
-                className="flex min-h-[60px] w-full items-center justify-between gap-3 px-5 py-4 text-left transition-colors hover:bg-pink-50/50 cursor-pointer"
+                className="flex min-h-[46px] w-full items-center justify-between gap-3 px-4 py-2.5 text-left cursor-pointer"
               >
-                <div className="flex items-start gap-3.5">
-                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-pink-100 bg-pink-50 font-heading text-sm font-bold text-pink-700">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FCEBEF] font-sans text-xs font-bold text-[#E46C8E]">
                     {index + 1}
                   </span>
-                  <div>
-                    <span className="block font-heading text-lg font-bold text-ink">
-                      {ref.title}
-                    </span>
-                    <span className="mt-0.5 block text-sm font-medium text-ink-muted">
-                      {ref.author} ({ref.year})
-                    </span>
-                  </div>
+                  <span className="truncate font-sans text-xs sm:text-[13px] font-medium text-[#2A2D22]">
+                    {ref.title}
+                  </span>
                 </div>
 
                 <ChevronDown
-                  className={`h-5 w-5 shrink-0 text-ink-muted transition-transform duration-200 ${
-                    isOpen ? 'rotate-180 text-pink-700' : ''
+                  className={`h-4 w-4 shrink-0 text-[#9E989A] transition-transform duration-200 ${
+                    isOpen ? 'rotate-180 text-[#E46C8E]' : ''
                   }`}
-                  strokeWidth={1.75}
+                  strokeWidth={1.8}
                   aria-hidden="true"
                 />
               </button>
@@ -83,23 +78,14 @@ export function ReferenceList({ references }: ReferenceListProps) {
                       ? { opacity: 0 }
                       : { opacity: 0, height: 0 }
                   }
-                  transition={{ duration: 0.28, ease: CUSTOM_EASE }}
-                  className="overflow-hidden border-t border-pink-100 bg-page"
+                  transition={{ duration: 0.24, ease: CUSTOM_EASE }}
+                  className="overflow-hidden border-t border-[#F5E4EA] bg-[#FAF7F8]"
                 >
-                  <div className="flex items-start gap-3 px-5 py-4 text-sm leading-relaxed text-ink-muted">
-                    <BookMarked
-                      className="mt-0.5 h-4 w-4 shrink-0 text-green-700"
-                      strokeWidth={1.75}
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <p className="font-semibold text-ink">
-                        Sumber: <span className="font-normal">{ref.source}</span>
-                      </p>
-                      <p className="mt-1.5 text-ink-muted">
-                        {ref.summaryNote}
-                      </p>
-                    </div>
+                  <div className="px-4 py-3 text-xs leading-relaxed text-[#6E6A6C] space-y-1">
+                    <p className="font-semibold text-[#2A2D22]">
+                      {ref.author} ({ref.year}) — <span className="font-normal">{ref.source}</span>
+                    </p>
+                    <p>{ref.summaryNote}</p>
                   </div>
                 </motion.div>
               )}
