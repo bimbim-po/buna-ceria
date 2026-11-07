@@ -24,7 +24,6 @@ export function StagePanel() {
     progress,
     moduleStatuses,
     openModuleReader,
-    handleCompleteModule,
     handleCompleteStage,
     selectStage,
   } = useApp();
@@ -67,36 +66,39 @@ export function StagePanel() {
   };
 
   // --------------------------------------------------------------------------
-  // TAHAP 1: MATERI
+  // LEVEL 1: MATERI (4 Modul Bertahap)
   // --------------------------------------------------------------------------
   if (activeStageId === 'materi') {
     const completedModulesCount = progress?.completedModuleIds.length ?? 0;
-    const allModulesDone = completedModulesCount === modules.length;
+    const allModulesDone = completedModulesCount >= modules.length;
 
     return (
       <div
         id="stage-panel-anchor"
-        className="scroll-mt-24 rounded-[28px] border border-pink-100 bg-surface p-5 shadow-pink-soft sm:p-8"
+        className="scroll-mt-24 rounded-[26px] border border-[#ECE7F2] bg-white p-5 shadow-2xs sm:p-7"
       >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-pink-100 pb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F0ECF5] pb-5">
           <div>
-            <h3 className="font-heading text-2xl font-bold text-ink sm:text-3xl">
+            <span className="inline-flex items-center rounded-full bg-[#FDF2F5] px-3 py-0.5 text-xs font-bold text-[#C84B71]">
+              Level 1 dari 4
+            </span>
+            <h3 className="mt-1.5 font-heading text-xl font-bold text-[#2A2D22] sm:text-2xl">
               {currentStage.title}
             </h3>
-            <p className="mt-1 text-base text-ink-muted">
-              Pilih bacaan untuk mulai membaca di Ruang Baca Fokus (mendukung
-              Mode Layar Penuh).
+            <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">
+              Pilih modul yang terbuka untuk membaca di Ruang Baca Fokus. Modul
+              berikutnya terbuka otomatis setelah modul sebelumnya selesai.
             </p>
           </div>
 
-          <div className="shrink-0 rounded-[20px] border border-pink-100 bg-page px-5 py-2.5 text-center">
-            <span className="font-heading text-xl font-bold text-ink">
-              {completedModulesCount} / {modules.length} Selesai
+          <div className="shrink-0 rounded-2xl border border-[#E4EAC9] bg-[#F7F9EE] px-4 py-2.5 text-center">
+            <span className="font-heading text-base sm:text-lg font-bold text-[#56632A]">
+              {completedModulesCount} / {modules.length} Modul Selesai
             </span>
           </div>
         </div>
 
-        {/* Daftar Berbaris 4 Materi di dalam Panel */}
+        {/* Daftar Berbaris Modul di dalam Panel Level 1 */}
         <div className="mt-5 space-y-3">
           {modules.map((mod) => {
             const status = moduleStatuses[mod.id];
@@ -108,78 +110,62 @@ export function StagePanel() {
                 key={mod.id}
                 type="button"
                 onClick={() => openModuleReader(mod.id)}
-                className={`card-lift flex min-h-[68px] w-full flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[20px] border p-4 text-left cursor-pointer ${
+                className={`flex min-h-[68px] w-full flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border p-4 text-left transition-all cursor-pointer ${
                   isCompleted
-                    ? 'border-pink-100 bg-green-50/70'
+                    ? 'border-[#E4EAC9] bg-[#F7F9EE]/80'
                     : isLocked
-                    ? 'border-locked-border bg-locked-bg/60 text-ink-muted'
-                    : 'border-pink-100 bg-pink-50/60'
+                    ? 'border-gray-200 bg-gray-50/70 text-[#8C8896]'
+                    : 'border-pink-200 bg-[#FFF5F7]/70 hover:border-[#C84B71]'
                 }`}
               >
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-bold text-ink-muted">
-                      Materi {mod.order} • {mod.readingTimeMinutes}{' '}
+                    <span className="text-xs font-bold text-[#6E6A6C]">
+                      Modul {mod.order} • {mod.readingTimeMinutes}{' '}
                       {uiContent.modulesSection.readTimeUnit}
                     </span>
                     <span
-                      className={`inline-flex items-center gap-1 rounded-full px-3 py-0.5 text-sm font-bold ${
+                      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold ${
                         isCompleted
-                          ? 'bg-green-100 text-green-700'
+                          ? 'bg-[#EBF3D8] text-[#56632A]'
                           : isLocked
-                          ? 'bg-locked-bg text-ink-muted'
-                          : 'bg-pink-100 text-pink-700'
+                          ? 'bg-gray-200/70 text-[#8C8896]'
+                          : 'bg-[#FDF2F5] text-[#C84B71]'
                       }`}
                     >
                       {isCompleted ? (
                         <>
-                          <Check
-                            className="h-3.5 w-3.5"
-                            strokeWidth={2}
-                            aria-hidden="true"
-                          />
+                          <Check className="h-3 w-3" strokeWidth={2.2} />
                           <span>Selesai</span>
                         </>
                       ) : isLocked ? (
                         <>
-                          <Lock
-                            className="h-3.5 w-3.5"
-                            strokeWidth={1.75}
-                            aria-hidden="true"
-                          />
+                          <Lock className="h-3 w-3" strokeWidth={1.8} />
                           <span>Terkunci</span>
                         </>
                       ) : (
                         <>
-                          <CircleDot
-                            className="h-3.5 w-3.5"
-                            strokeWidth={2}
-                            aria-hidden="true"
-                          />
-                          <span>Aktif</span>
+                          <CircleDot className="h-3 w-3" strokeWidth={2} />
+                          <span>Terbuka</span>
                         </>
                       )}
                     </span>
                   </div>
-                  <p className="mt-1 font-heading text-lg font-bold text-ink">
+                  <p className="mt-1 font-heading text-base sm:text-lg font-bold text-[#2A2D22]">
                     {mod.title}
                   </p>
                 </div>
 
                 <span
-                  className={`btn-pill inline-flex min-h-[40px] shrink-0 items-center justify-center gap-1.5 px-4 py-1.5 text-sm font-bold ${
+                  className={`inline-flex min-h-[38px] shrink-0 items-center justify-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold ${
                     isCompleted
-                      ? 'bg-surface border border-pink-100 text-green-700'
+                      ? 'bg-white border border-[#E4EAC9] text-[#56632A]'
                       : isLocked
-                      ? 'bg-locked-bg text-ink-muted'
-                      : 'bg-pink-500 text-ink'
+                      ? 'bg-gray-100 text-[#8C8896]'
+                      : 'bg-[#C84B71] text-white shadow-2xs'
                   }`}
                 >
-                  <BookOpen
-                    className="h-4 w-4"
-                    strokeWidth={1.75}
-                    aria-hidden="true"
-                  />
+                  <BookOpen className="h-3.5 w-3.5" strokeWidth={1.8} />
                   <span>
                     {isCompleted
                       ? 'Baca Ulang'
@@ -193,35 +179,27 @@ export function StagePanel() {
           })}
         </div>
 
-        {/* Jika keempat materi sudah selesai, tampilkan tombol lanjut ke Quiz */}
+        {/* Jika semua modul selesai, tampilkan tombol lanjut ke Level 2: Quiz */}
         {allModulesDone && (
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-[24px] border border-green-100 bg-green-50 p-5">
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-[#E4EAC9] bg-[#F7F9EE] p-5">
             <div className="flex items-center gap-3">
-              <CheckCircle2
-                className="h-6 w-6 shrink-0 text-green-700"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
+              <CheckCircle2 className="h-6 w-6 shrink-0 text-[#56632A]" />
               <div>
-                <p className="font-heading text-lg font-bold text-ink">
-                  Keempat materi telah selesai dibaca
+                <p className="font-heading text-base sm:text-lg font-bold text-[#2A2D22]">
+                  Semua modul pada Level 1 telah selesai dibaca!
                 </p>
-                <p className="text-sm text-ink-muted">
-                  Tahap Quiz kini sudah terbuka untuk Ibu.
+                <p className="text-xs sm:text-sm text-[#6E6A6C]">
+                  Level 2 (Quiz Pemahaman) kini sudah terbuka untuk Bunda.
                 </p>
               </div>
             </div>
             <button
               type="button"
               onClick={() => scrollToTrackerAndAdvance('quiz')}
-              className="btn-pill inline-flex min-h-[48px] w-full sm:w-auto shrink-0 items-center justify-center gap-2 bg-pink-500 px-6 py-3 text-base font-bold text-ink shadow-pink-soft cursor-pointer"
+              className="inline-flex min-h-[44px] w-full sm:w-auto shrink-0 items-center justify-center gap-2 rounded-full bg-[#C84B71] px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-[#b23b60] cursor-pointer"
             >
-              <span>Lanjut ke Tahap Quiz</span>
-              <ArrowRight
-                className="h-4 w-4"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
+              <span>Lanjut ke Level 2: Quiz</span>
+              <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         )}
@@ -230,7 +208,7 @@ export function StagePanel() {
   }
 
   // --------------------------------------------------------------------------
-  // TAHAP 2: QUIZ
+  // LEVEL 2: QUIZ PEMAHAMAN
   // --------------------------------------------------------------------------
   if (activeStageId === 'quiz') {
     return (
@@ -241,30 +219,34 @@ export function StagePanel() {
   }
 
   const stageModalClass = isFullscreenStage
-    ? 'fixed inset-0 z-50 overflow-y-auto bg-page p-4 sm:p-8'
-    : 'scroll-mt-24 rounded-[28px] border border-pink-100 bg-surface p-5 shadow-pink-soft sm:p-8';
+    ? 'fixed inset-0 z-50 overflow-y-auto bg-[#FFFAF0] p-4 sm:p-8'
+    : 'scroll-mt-24 rounded-[26px] border border-[#ECE7F2] bg-white p-5 shadow-2xs sm:p-7';
 
   // --------------------------------------------------------------------------
-  // TAHAP 3: REFLEKSI
+  // LEVEL 3: TAHAP 3 (REFLEKSI & RENCANA HARIAN)
   // --------------------------------------------------------------------------
   if (activeStageId === 'tahap-3') {
     const prompts = currentStage.prompts ?? [];
+    const evalPrompts = currentStage.evaluationPrompts ?? [];
 
     return (
       <div id="stage-panel-anchor" className={stageModalClass}>
         <div
           className={
             isFullscreenStage
-              ? 'mx-auto max-w-3xl rounded-[28px] border border-pink-100 bg-surface p-6 shadow-pink-soft sm:p-9'
+              ? 'mx-auto max-w-3xl rounded-[28px] border border-pink-100 bg-white p-6 shadow-md sm:p-9'
               : ''
           }
         >
-          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-pink-100 pb-4">
+          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#F0ECF5] pb-4">
             <div>
-              <h3 className="font-heading text-2xl font-bold text-ink sm:text-3xl">
+              <span className="inline-flex items-center rounded-full bg-[#FDF2F5] px-3 py-0.5 text-xs font-bold text-[#C84B71]">
+                Level 3 dari 4
+              </span>
+              <h3 className="mt-1.5 font-heading text-xl font-bold text-[#2A2D22] sm:text-2xl">
                 {currentStage.title}
               </h3>
-              <p className="mt-1 text-base text-ink-muted">
+              <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">
                 {currentStage.description}
               </p>
             </div>
@@ -273,7 +255,7 @@ export function StagePanel() {
               <button
                 type="button"
                 onClick={() => setIsFullscreenStage((prev) => !prev)}
-                className="btn-pill inline-flex min-h-[38px] items-center gap-1.5 border border-pink-100 bg-page px-3.5 py-1 text-xs font-bold text-ink hover:bg-pink-50 cursor-pointer"
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-[#ECE7F2] bg-[#FAF8FC] px-3.5 py-1 text-xs font-bold text-[#2A2D22] hover:bg-pink-50 cursor-pointer"
               >
                 {isFullscreenStage ? (
                   <>
@@ -282,7 +264,7 @@ export function StagePanel() {
                   </>
                 ) : (
                   <>
-                    <Maximize2 className="h-3.5 w-3.5 text-pink-700" />
+                    <Maximize2 className="h-3.5 w-3.5 text-[#C84B71]" />
                     <span>Mode Fokus</span>
                   </>
                 )}
@@ -292,7 +274,7 @@ export function StagePanel() {
                   type="button"
                   onClick={() => setIsFullscreenStage(false)}
                   aria-label="Tutup mode layar penuh"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-pink-100 bg-surface text-ink-muted hover:text-ink cursor-pointer"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:text-gray-800 cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -300,11 +282,12 @@ export function StagePanel() {
             </div>
           </div>
 
+          {/* Bagian A: Poin Refleksi Perasaan */}
           <fieldset className="mt-5">
-            <legend className="text-base font-bold text-ink">
-              Pilih satu atau beberapa hal yang Ibu rasakan hari ini:
+            <legend className="text-sm font-bold text-[#2A2D22]">
+              1. Pilih hal baik yang Bunda rasakan hari ini:
             </legend>
-            <div className="mt-3 space-y-3">
+            <div className="mt-2.5 space-y-2.5">
               {prompts.map((prompt) => {
                 const checked = reflectionItems.includes(prompt);
                 return (
@@ -316,23 +299,20 @@ export function StagePanel() {
                     onClick={() =>
                       toggleItem(reflectionItems, setReflectionItems, prompt)
                     }
-                    className={`card-lift flex min-h-[52px] w-full items-start gap-3.5 rounded-[20px] border p-4 text-left text-base cursor-pointer ${
+                    className={`flex min-h-[48px] w-full items-start gap-3 rounded-2xl border p-3.5 text-left text-xs sm:text-sm transition-all cursor-pointer ${
                       checked
-                        ? 'border-green-700 bg-green-50 text-ink font-semibold'
-                        : 'border-pink-100 bg-page text-ink hover:bg-pink-50/60'
+                        ? 'border-[#56632A] bg-[#F7F9EE] text-[#2A2D22] font-semibold'
+                        : 'border-[#ECE7F2] bg-[#FAF8FC] text-[#2A2D22] hover:bg-white'
                     }`}
                   >
                     <span
-                      className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
                         checked
-                          ? 'border-green-700 bg-green-500 text-ink'
-                          : 'border-pink-100 bg-surface'
+                          ? 'border-[#56632A] bg-[#A8B371] text-white'
+                          : 'border-gray-300 bg-white'
                       }`}
-                      aria-hidden="true"
                     >
-                      {checked && (
-                        <Check className="h-3.5 w-3.5" strokeWidth={2.2} />
-                      )}
+                      {checked && <Check className="h-3 w-3" strokeWidth={2.5} />}
                     </span>
                     <span>{prompt}</span>
                   </button>
@@ -341,24 +321,68 @@ export function StagePanel() {
             </div>
           </fieldset>
 
+          {/* Bagian B: Rencana Kebiasaan Kecil */}
+          {evalPrompts.length > 0 && (
+            <fieldset className="mt-5">
+              <legend className="text-sm font-bold text-[#2A2D22]">
+                2. Pilih kebiasaan kecil yang ingin Bunda jalankan minggu ini:
+              </legend>
+              <div className="mt-2.5 space-y-2.5">
+                {evalPrompts.map((prompt) => {
+                  const checked = evaluationItems.includes(prompt);
+                  return (
+                    <button
+                      key={prompt}
+                      type="button"
+                      role="checkbox"
+                      aria-checked={checked}
+                      onClick={() =>
+                        toggleItem(evaluationItems, setEvaluationItems, prompt)
+                      }
+                      className={`flex min-h-[48px] w-full items-start gap-3 rounded-2xl border p-3.5 text-left text-xs sm:text-sm transition-all cursor-pointer ${
+                        checked
+                          ? 'border-[#C84B71] bg-[#FFF5F7] text-[#2A2D22] font-semibold'
+                          : 'border-[#ECE7F2] bg-[#FAF8FC] text-[#2A2D22] hover:bg-white'
+                      }`}
+                    >
+                      <span
+                        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                          checked
+                            ? 'border-[#C84B71] bg-[#C84B71] text-white'
+                            : 'border-gray-300 bg-white'
+                        }`}
+                      >
+                        {checked && (
+                          <Check className="h-3 w-3" strokeWidth={2.5} />
+                        )}
+                      </span>
+                      <span>{prompt}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </fieldset>
+          )}
+
+          {/* Bagian C: Catatan Pribadi */}
           <div className="mt-5">
             <label
               htmlFor="reflection-note-input"
-              className="block text-base font-bold text-ink"
+              className="block text-sm font-bold text-[#2A2D22]"
             >
-              Catatan Kecil untuk Diri Sendiri (Opsional)
+              3. Catatan Hangat untuk Diri Sendiri &amp; Buah Hati (Opsional)
             </label>
             <textarea
               id="reflection-note-input"
               rows={3}
               value={reflectionNote}
               onChange={(e) => setReflectionNote(e.target.value)}
-              placeholder="Tuliskan satu kalimat hangat untuk diri Ibu hari ini..."
-              className="mt-2 w-full rounded-[20px] border border-pink-100 bg-page p-4 text-base text-ink placeholder:text-ink-muted/70 focus:border-pink-700 focus:bg-surface"
+              placeholder="Tuliskan satu kalimat penyemangat untuk diri Bunda hari ini..."
+              className="mt-2 w-full rounded-2xl border border-[#ECE7F2] bg-[#FAF8FC] p-3.5 text-xs sm:text-sm text-[#2A2D22] placeholder:text-[#8C8896] focus:border-[#C84B71] focus:bg-white outline-none"
             />
           </div>
 
-          <div className="mt-6 flex justify-end border-t border-pink-100 pt-4">
+          <div className="mt-6 flex justify-end border-t border-[#F0ECF5] pt-4">
             <button
               type="button"
               onClick={() => {
@@ -369,144 +393,20 @@ export function StagePanel() {
                     reflectionItems.length > 0
                       ? reflectionItems
                       : prompts.slice(0, 1),
-                  advanceToNext: true,
-                });
-              }}
-              className="btn-pill inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center gap-2 bg-pink-500 px-7 py-3 text-base font-bold text-ink shadow-pink-soft cursor-pointer"
-            >
-              <span>{currentStage.actionLabel ?? 'Selesaikan Tahap 3'}</span>
-              <ArrowRight
-                className="h-4 w-4"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // --------------------------------------------------------------------------
-  // TAHAP 4: EVALUASI AKHIR
-  // --------------------------------------------------------------------------
-  if (activeStageId === 'tahap-4') {
-    const prompts = currentStage.prompts ?? [];
-
-    return (
-      <div id="stage-panel-anchor" className={stageModalClass}>
-        <div
-          className={
-            isFullscreenStage
-              ? 'mx-auto max-w-3xl rounded-[28px] border border-pink-100 bg-surface p-6 shadow-pink-soft sm:p-9'
-              : ''
-          }
-        >
-          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-pink-100 pb-4">
-            <div>
-              <h3 className="font-heading text-2xl font-bold text-ink sm:text-3xl">
-                {currentStage.title}
-              </h3>
-              <p className="mt-1 text-base text-ink-muted">
-                {currentStage.description}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setIsFullscreenStage((prev) => !prev)}
-                className="btn-pill inline-flex min-h-[38px] items-center gap-1.5 border border-pink-100 bg-page px-3.5 py-1 text-xs font-bold text-ink hover:bg-pink-50 cursor-pointer"
-              >
-                {isFullscreenStage ? (
-                  <>
-                    <Minimize2 className="h-3.5 w-3.5" />
-                    <span>Kecilkan</span>
-                  </>
-                ) : (
-                  <>
-                    <Maximize2 className="h-3.5 w-3.5 text-pink-700" />
-                    <span>Mode Fokus</span>
-                  </>
-                )}
-              </button>
-              {isFullscreenStage && (
-                <button
-                  type="button"
-                  onClick={() => setIsFullscreenStage(false)}
-                  aria-label="Tutup mode layar penuh"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-pink-100 bg-surface text-ink-muted hover:text-ink cursor-pointer"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          <fieldset className="mt-5">
-            <legend className="text-base font-bold text-ink">
-              Pilih kebiasaan kecil yang ingin Ibu jalankan minggu ini:
-            </legend>
-            <div className="mt-3 space-y-3">
-              {prompts.map((prompt) => {
-                const checked = evaluationItems.includes(prompt);
-                return (
-                  <button
-                    key={prompt}
-                    type="button"
-                    role="checkbox"
-                    aria-checked={checked}
-                    onClick={() =>
-                      toggleItem(evaluationItems, setEvaluationItems, prompt)
-                    }
-                    className={`card-lift flex min-h-[52px] w-full items-start gap-3.5 rounded-[20px] border p-4 text-left text-base cursor-pointer ${
-                      checked
-                        ? 'border-green-700 bg-green-50 text-ink font-semibold'
-                        : 'border-pink-100 bg-page text-ink hover:bg-pink-50/60'
-                    }`}
-                  >
-                    <span
-                      className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                        checked
-                          ? 'border-green-700 bg-green-500 text-ink'
-                          : 'border-pink-100 bg-surface'
-                      }`}
-                      aria-hidden="true"
-                    >
-                      {checked && (
-                        <Check className="h-3.5 w-3.5" strokeWidth={2.2} />
-                      )}
-                    </span>
-                    <span>{prompt}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </fieldset>
-
-          <div className="mt-6 flex justify-end border-t border-pink-100 pt-4">
-            <button
-              type="button"
-              onClick={() => {
-                setIsFullscreenStage(false);
-                handleCompleteStage('tahap-4', {
                   evaluationCheckedItems:
                     evaluationItems.length > 0
                       ? evaluationItems
-                      : prompts.slice(0, 1),
+                      : evalPrompts.slice(0, 1),
                   advanceToNext: true,
                 });
               }}
-              className="btn-pill inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center gap-2 bg-green-500 px-7 py-3 text-base font-bold text-ink shadow-green-soft cursor-pointer"
+              className="inline-flex min-h-[46px] w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[#C84B71] px-7 py-3 text-sm font-bold text-white shadow-md hover:bg-[#b23b60] cursor-pointer"
             >
-              <CheckCircle2
-                className="h-5 w-5"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
               <span>
-                {currentStage.actionLabel ?? 'Selesaikan & Lihat Hasil Saya'}
+                {currentStage.actionLabel ??
+                  'Simpan Tahap 3 & Buka Hasil Saya'}
               </span>
+              <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -515,7 +415,7 @@ export function StagePanel() {
   }
 
   // --------------------------------------------------------------------------
-  // TAHAP 5: HASIL SAYA
+  // LEVEL 4: HASIL SAYA
   // --------------------------------------------------------------------------
   return (
     <div id="stage-panel-anchor" className="scroll-mt-24">

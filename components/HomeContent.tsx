@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
@@ -9,16 +9,19 @@ import {
   Award,
   Bookmark,
   BookOpen,
+  Camera,
   Check,
   CheckCircle,
   Clock,
+  Globe,
   Heart,
   HeartHandshake,
-  HelpCircle,
+  LogOut,
   Mail,
-  Maximize2,
   MessageCircle,
   Phone,
+  RefreshCw,
+  Save,
   Settings,
   ShieldCheck,
   Sparkles,
@@ -64,6 +67,16 @@ const ResultSummary = dynamic(
   { ssr: false }
 );
 
+const SelfieStudio = dynamic(
+  () => import('@/components/SelfieStudio').then((mod) => mod.SelfieStudio),
+  { ssr: false }
+);
+
+const AdminDashboard = dynamic(
+  () => import('@/components/AdminDashboard').then((mod) => mod.AdminDashboard),
+  { ssr: false }
+);
+
 const CUSTOM_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 interface UnifiedCard {
@@ -91,7 +104,7 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     id: 'modul-1',
     orderNumber: '01',
     title: 'Mengenali Perubahan & Ketenangan Diri',
-    category: 'Tahap Awal Kehamilan',
+    category: 'Level 1 • Materi 01',
     description: 'Memahami perubahan hormon dan rutinitas relaksasi 4 menit untuk menenangkan pikiran.',
     badgeText: 'Modul 01',
     badgeBg: 'bg-[#FCE8EE]',
@@ -114,7 +127,7 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     id: 'modul-2',
     orderNumber: '02',
     title: 'Kenyamanan Harian & Istirahat Berkualitas',
-    category: 'Keseharian & Relaksasi',
+    category: 'Level 1 • Materi 02',
     description: 'Menata posisi tidur nyaman dengan bantal hamil dan menjaga kesegaran tubuh Ibu.',
     badgeText: 'Modul 02',
     badgeBg: 'bg-[#FFEADA]',
@@ -137,7 +150,7 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     id: 'modul-3',
     orderNumber: '03',
     title: 'Komunikasi Hangat Bersama Pasangan',
-    category: 'Dukungan Sosial & Keluarga',
+    category: 'Level 1 • Materi 03',
     description: 'Cara santun berbagi rasa dan menyampaikan kebutuhan bersama pasangan tercinta.',
     badgeText: 'Modul 03',
     badgeBg: 'bg-[#F5F7EA]',
@@ -160,7 +173,7 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     id: 'modul-4',
     orderNumber: '04',
     title: 'Kesiapan Menjelang Persalinan',
-    category: 'Persiapan & Hari Kelahiran',
+    category: 'Level 1 • Materi 04',
     description: 'Daftar perlengkapan tas rumah sakit dan langkah tenang menyambut kelahiran bayi.',
     badgeText: 'Modul 04',
     badgeBg: 'bg-[#E6F7F3]',
@@ -183,9 +196,9 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     id: 'kuis-evaluasi',
     orderNumber: '05',
     title: 'Kuis Pemahaman Kehamilan',
-    category: 'Evaluasi Pembelajaran',
+    category: 'Level 2 • Evaluasi',
     description: '8 soal interaktif dengan ulasan lembut untuk memperkuat pemahaman materi.',
-    badgeText: 'Tahap 05',
+    badgeText: 'Level 02',
     badgeBg: 'bg-[#FEF3C7]',
     badgeTextColor: 'text-[#B45309]',
     cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFFDF2]',
@@ -204,10 +217,10 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
   {
     id: 'refleksi-hasil',
     orderNumber: '06',
-    title: 'Refleksi Diri & Hasil Belajar',
-    category: 'Rangkuman & Pencapaian',
+    title: 'Refleksi Diri & Hasil Saya',
+    category: 'Level 3 & 4 • Pencapaian',
     description: 'Tandai langkah kecil kesiapan dan lihat rangkuman pencapaian belajar Ibu.',
-    badgeText: 'Tahap 06',
+    badgeText: 'Level 03–04',
     badgeBg: 'bg-[#EDE9FE]',
     badgeTextColor: 'text-[#6D28D9]',
     cardGradient: 'bg-gradient-to-b from-white via-white to-[#FAF6FF]',
@@ -216,21 +229,14 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
     imageAlt: 'Ilustrasi Buku Jurnal Ungu Self Care dan Big Dreams dengan Pulpen',
     type: 'reflection',
     readingTime: 'Hasil & Jurnal',
-    infoOverview: 'Ruang jeda penuh makna untuk mengevaluasi komitmen harian merawat diri dan melihat rangkuman capaian belajar Ibu Kasih.',
+    infoOverview: 'Ruang jeda penuh makna untuk mengevaluasi komitmen harian merawat diri dan melihat rangkuman capaian belajar 4 level.',
     infoKeyPoints: [
       'Refleksi afirmasi positif untuk ketenangan pikiran',
       'Daftar komitmen langkah kecil merawat tubuh',
-      'Rangkuman lengkap perjalanan belajar Teman Kasih',
+      'Rangkuman lengkap perjalanan belajar Buna Ceria • Teman Kasih',
     ],
   },
 ];
-
-const MODULE_PREVIEW_IMAGES: Record<number, string> = {
-  1: '/scan-1.jpg',
-  2: '/scan-2.jpg',
-  3: '/scan-3.jpg',
-  4: '/scan-4.jpg',
-};
 
 export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
   const {
@@ -238,8 +244,10 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
     activeSection,
     setActiveSection,
     enterWebApp,
+    enterLandingPage,
     session,
     progress,
+    anxietySubmission,
     moduleStatuses,
     activeModuleId,
     openLoginDialog,
@@ -247,6 +255,10 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
     openModuleReader,
     closeModuleReader,
     handleCompleteModule,
+    handleUpdateProfile,
+    handleLogout,
+    selectStage,
+    dataVersion,
   } = useApp();
 
   const prefersReducedMotion = useReducedMotion();
@@ -259,7 +271,27 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
   const [isReflectionModalOpen, setIsReflectionModalOpen] = useState(false);
 
-  const modules = getModules();
+  // State Form Edit Profil di halaman Pengaturan (Item 20)
+  const [profileName, setProfileName] = useState(session?.name ?? '');
+  const [profileEmail, setProfileEmail] = useState(session?.email ?? '');
+  const [profilePhone, setProfilePhone] = useState(session?.phone ?? '');
+  const [profileTrimester, setProfileTrimester] = useState(
+    session?.trimesterLabel ?? 'Trimester Pertama'
+  );
+  const [profilePassword, setProfilePassword] = useState('');
+  const [profileSavedNotice, setProfileSavedNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (session) {
+      setProfileName(session.name);
+      setProfileEmail(session.email);
+      setProfilePhone(session.phone);
+      setProfileTrimester(session.trimesterLabel ?? 'Trimester Pertama');
+    }
+  }, [session]);
+
+  // Re-fetch dynamic data when dataVersion changes (e.g., Admin edits modules)
+  const modules = React.useMemo(() => getModules(), [dataVersion]);
   const tips = getTips();
   const experts = getExperts();
   const footerContact = getFooterContact();
@@ -271,19 +303,21 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
       if (!session) {
         openLoginDialog();
       } else {
+        selectStage('quiz');
         setIsQuizModalOpen(true);
       }
     } else if (card.type === 'reflection') {
       if (!session) {
         openLoginDialog();
       } else {
+        selectStage('hasil-saya');
         setIsReflectionModalOpen(true);
       }
     }
   };
 
   // Sinkronkan initialMode bila dibuka langsung dari rute /belajar
-  React.useEffect(() => {
+  useEffect(() => {
     if (initialMode === 'webapp') {
       enterWebApp();
     }
@@ -304,24 +338,28 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
     );
   };
 
+  const handleProfileSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!session) {
+      openLoginDialog();
+      return;
+    }
+    handleUpdateProfile({
+      name: profileName,
+      email: profileEmail,
+      phone: profilePhone || session.phone || '0857-0130-8514',
+      trimesterLabel: profileTrimester,
+      ...(profilePassword.trim() ? { password: profilePassword.trim() } : {}),
+    });
+    setProfilePassword('');
+    setProfileSavedNotice('Profil Ibu berhasil diperbarui dan disimpan!');
+    setTimeout(() => setProfileSavedNotice(null), 3500);
+  };
+
   const completedModules = progress?.completedModuleIds.length ?? 0;
   const completedStages = progress?.completedStageIds.length ?? 0;
 
-  const totalCompletedActivities =
-    (moduleStatuses['materi-1'] === 'selesai' ? 1 : 0) +
-    (moduleStatuses['materi-2'] === 'selesai' ? 1 : 0) +
-    (moduleStatuses['materi-3'] === 'selesai' ? 1 : 0) +
-    (moduleStatuses['materi-4'] === 'selesai' ? 1 : 0) +
-    ((progress?.bestQuizScore ?? 0) > 0 || progress?.completedStageIds.includes('quiz') ? 1 : 0) +
-    (progress?.completedStageIds.includes('hasil-saya') || (progress?.reflectionSelectedItems?.length ?? 0) > 0 ? 1 : 0);
-
-  // Filter pencarian sederhana untuk materi dan tips
-  const filteredModules = modules.filter(
-    (m) =>
-      m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.summary.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+  // Filter pencarian sederhana untuk tips
   const filteredTips = tips.filter(
     (t) =>
       t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -337,19 +375,22 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
   return (
     <>
+      {/* Item 24: Animasi Logo saat Loading */}
       <SplashScreen />
 
       {appMode === 'landing' ? (
         <LandingPage />
       ) : (
         /* =====================================================================
-           WEBAPP PEMBELAJARAN (FULL SCREEN EDGE-TO-EDGE)
-           Tata letak sesuai instruksi klien:
-           - Beranda: Sapa perasaan pengguna & pintasan ke fitur utama
-           - Materi Kehamilan: Tingkatan materi belajar (stepper) & 4 modul materi
+           WEBAPP PEMBELAJARAN (BUNA CERIA • TEMAN KASIH)
+           Sesuai Client Brief Items 11-24 & User Flow 1-10:
+           - Beranda: Sapa perasaan + tips, Kuesioner Kecemasan, 4 Bulatan Level, & Tombol Cepat
+           - Tahapan & Materi: 4 Level Bulatan & Garis Penghubung + Modul, Quiz, Refleksi, Hasil
            - Tips Kehamilan: Tips harian dengan fitur bookmark
            - Kontak Ahli: Daftar bidan & konselor via WhatsApp
-           - Pengaturan: Profil pengguna & kuesioner perasaan
+           - Take Selfie: Foto bersama pasangan dengan garis putus-putus, edit nama, download
+           - Pengaturan: Informasi akun, ubah profil, kembali ke website, ganti/keluar akun
+           - Admin: Kelola pengguna terdaftar & edit/tambah modul pembelajaran
            ===================================================================== */
         <div className="flex h-screen w-full overflow-hidden bg-white text-[#2A2D22]">
           {/* 1. NAVBAR DI KIRI (COLLAPSIBLE FLOATING PILL) */}
@@ -385,7 +426,11 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
               <div className="mx-auto max-w-6xl space-y-8 pb-16">
                 <AnimatePresence mode="wait">
                   {/* =========================================================
-                      1. BERANDA WEBAPP (Sapa Perasaan & Pintasan Fitur)
+                      1. BERANDA WEBAPP (Item 12 & Alur User 4–5)
+                         - Pertanyaan perasaan + tipsnya
+                         - Kuesioner kecemasan (jawaban disimpan)
+                         - 4 Bulatan tingkatan dengan garis penghubung
+                         - Tombol cepat menuju fitur lain dalam webapp
                      ========================================================= */}
                   {activeSection === 'beranda' && (
                     <motion.div
@@ -393,25 +438,25 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-8"
                     >
-                      {/* Editorial Hero Banner: Beranda Teman Kasih */}
+                      {/* Editorial Hero Banner: Beranda Buna Ceria • Teman Kasih */}
                       <EditorialHeroBanner
                         bannerImageSrc="/hero-banner-beranda.webp"
-                        bgText="TEMAN KASIH"
+                        bgText="BUNA CERIA"
                         characterSrc="/hero-beranda-ibu.webp"
-                        characterAlt="Ibu Hamil Bahagia Teman Kasih"
+                        characterAlt="Ibu Hamil Bahagia Buna Ceria Teman Kasih"
                         bgGradientClass="bg-gradient-to-r from-[#4E1E2F] via-[#66283F] to-[#4E1E2F]"
                         shadowClass="shadow-[0_8px_24px_rgba(78,30,47,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
                         leftBadge={{
                           icon: <Sparkles className="h-3 w-3 text-pink-200" />,
-                          label: "Ruang Belajar Tenang",
+                          label: "WebApp Buna Ceria • Teman Kasih",
                         }}
                         rightBadge={{
                           icon: <Heart className="h-3 w-3 text-pink-200" />,
                           label: session?.trimesterLabel ?? "Trimester Pertama",
                         }}
-                        subtitle={`Selamat datang, ${session ? session.name : 'Ibu Kasih'}. Lanjutkan perjalanan kehamilan yang tenang, nyaman, dan terarah.`}
+                        subtitle={`Selamat datang, ${session ? session.name : 'Ibu Kasih'}. Mari kenali perasaan hari ini dan ikuti 4 tahapan belajar dengan tenang.`}
                         actionButton={{
-                          label: "Kuesioner Perasaan",
+                          label: "Isi Kuesioner Kecemasan",
                           onClick: () => {
                             if (!session) openLoginDialog();
                             else openAnxietyDialog();
@@ -419,27 +464,91 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         }}
                       />
 
-                      {/* A. PERTANYAAN PERASAAN USER */}
-                      <section aria-labelledby="perasaan-heading">
+                      {/* A. PERTANYAAN PERASAAN USER BESERTA TIPSNYA & KUESIONER KECEMASAN */}
+                      <section aria-labelledby="perasaan-heading" className="space-y-4">
                         <FeelingSelector />
+
+                        {/* Status Kuesioner Kecemasan yang Tersimpan (Alur Langkah 4) */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[22px] border border-pink-100 bg-[#FDF2F5]/70 px-5 py-4">
+                          <div className="flex items-start gap-3.5">
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#C84B71] border border-pink-100 shadow-2xs">
+                              <Heart className="h-5 w-5 fill-[#C84B71]" />
+                            </span>
+                            <div>
+                              <h3 className="font-heading text-sm sm:text-base font-bold text-[#2A2D22]">
+                                {anxietySubmission
+                                  ? `Kuesioner Kecemasan Tersimpan: Skor ${anxietySubmission.totalScore}/${anxietySubmission.maxScore} (Tingkat ${anxietySubmission.level.toUpperCase()})`
+                                  : 'Kuesioner Kecemasan Kehamilan (Belum Diisi)'}
+                              </h3>
+                              <p className="text-xs text-[#6E6A6C] mt-0.5">
+                                {anxietySubmission
+                                  ? 'Jawaban kuesioner kecemasan Ibu telah disimpan otomatis di sistem dan dapat dilihat pada Level 4 (Hasil Saya).'
+                                  : 'Yuk isi 9 pertanyaan singkat untuk mengenali tingkat ketenangan emosi Ibu hari ini. Jawaban akan disimpan otomatis.'}
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (!session) openLoginDialog();
+                              else openAnxietyDialog();
+                            }}
+                            className="inline-flex min-h-[40px] shrink-0 items-center justify-center gap-2 rounded-full bg-[#C84B71] hover:bg-[#b23b60] px-5 py-2 text-xs font-bold text-white shadow-2xs transition-colors cursor-pointer"
+                          >
+                            <Heart className="h-3.5 w-3.5" />
+                            <span>
+                              {anxietySubmission ? 'Perbarui Kuesioner' : 'Isi Kuesioner Sekarang'}
+                            </span>
+                          </button>
+                        </div>
                       </section>
 
-                      {/* B. KARTU PINTAS MENU FITUR UTAMA */}
+                      {/* B. 4 BULATAN TINGKATAN PEMBELAJARAN BERTAHAP (Item 12 & 13, Alur Langkah 4–5) */}
+                      <section aria-labelledby="tahapan-beranda-heading" className="space-y-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div>
+                            <h2
+                              id="tahapan-beranda-heading"
+                              className="font-heading text-lg font-bold text-[#2A2D22]"
+                            >
+                              Alur 4 Level Pembelajaran Bertahap
+                            </h2>
+                            <p className="text-xs text-[#767A6E]">
+                              Ikuti secara berurutan mulai dari Level 1 (Materi) hingga Level 4 (Hasil Saya).
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleSelectSection('materi')}
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C84B71] hover:underline cursor-pointer"
+                          >
+                            <span>Buka Halaman Materi Lengkap</span>
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+
+                        <div onClick={() => handleSelectSection('materi')} className="cursor-pointer">
+                          <StageTracker />
+                        </div>
+                      </section>
+
+                      {/* C. TOMBOL CEPAT MENUJU FITUR LAIN DALAM WEBAPP (Item 12) */}
                       <section aria-labelledby="fitur-pintas-heading">
                         <div className="flex items-center justify-between mb-3">
                           <h2
                             id="fitur-pintas-heading"
                             className="font-heading text-base font-bold text-[#2A2D22]"
                           >
-                            Fitur Pembelajaran Teman Kasih
+                            Tombol Cepat Fitur WebApp
                           </h2>
                           <span className="text-xs text-[#767A6E]">
-                            Pilih menu untuk memulai
+                            Pilih fitur untuk mengakses langsung
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                          {/* Tile 1: Materi Kehamilan (Alur Belajar & Modul) */}
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                          {/* Tile 1: Tahapan & Materi (4 Level) */}
                           <button
                             type="button"
                             onClick={() => handleSelectSection('materi')}
@@ -451,15 +560,15 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                   <BookOpen className="h-5 w-5" />
                                 </span>
                                 <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
-                                  Materi Kehamilan
+                                  Tahapan &amp; Materi
                                 </h3>
                               </div>
                               <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
-                                Tingkatan alur belajar 5 tahap &amp; 4 modul kehamilan fokus layar penuh.
+                                Ikuti 4 level pembelajaran bertahap, baca modul kehamilan, &amp; kerjakan kuis.
                               </p>
                             </div>
                             <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
-                              <span>{completedStages}/5 Tahap Selesai</span>
+                              <span>{completedStages}/4 Level Selesai</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
                           </button>
@@ -472,18 +581,18 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           >
                             <div>
                               <div className="flex items-center gap-3">
-                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EBF7EE] text-green-700 transition-transform group-hover:scale-105">
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5F8EB] text-[#56632A] transition-transform group-hover:scale-105">
                                   <Sun className="h-5 w-5" />
                                 </span>
-                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-green-700 transition-colors">
+                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-[#56632A] transition-colors">
                                   Tips Kehamilan
                                 </h3>
                               </div>
                               <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
-                                Langkah kecil harian merawat tubuh dan ketenangan pikiran.
+                                Langkah kecil harian merawat tubuh, nutrisi, dan ketenangan pikiran.
                               </p>
                             </div>
-                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-green-700">
+                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#56632A]">
                               <span>{savedTipIds.length} Tersimpan</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -505,23 +614,48 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 </h3>
                               </div>
                               <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
-                                Konsultasi langsung via WhatsApp dengan bidan &amp; konselor.
+                                Konsultasi langsung via WhatsApp dengan bidan &amp; konselor ahli.
                               </p>
                             </div>
                             <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-blue-600">
-                              <span>4 Tenaga Medis</span>
+                              <span>4 Tenaga Ahli</span>
+                              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                            </div>
+                          </button>
+
+                          {/* Tile 4: Take Selfie Pasangan */}
+                          <button
+                            type="button"
+                            onClick={() => handleSelectSection('selfie')}
+                            className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-300 hover:shadow-[0_10px_24px_rgba(200,75,113,0.1)] hover:-translate-y-0.5 transition-all cursor-pointer"
+                          >
+                            <div>
+                              <div className="flex items-center gap-3">
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71] transition-transform group-hover:scale-105">
+                                  <Camera className="h-5 w-5" />
+                                </span>
+                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
+                                  Take Selfie
+                                </h3>
+                              </div>
+                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
+                                Foto bersama pasangan dengan siluet garis putus-putus, edit nama, &amp; unduh.
+                              </p>
+                            </div>
+                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
+                              <span>Buka Studio Foto</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
                           </button>
                         </div>
                       </section>
 
-                      {/* Footer WebApp Narahubung */}
+                      {/* Footer WebApp Narahubung (Kak Faiza 085701308514) */}
                       <footer className="rounded-[22px] border border-[#ECE7F2] bg-[#FAFAF9] p-5 sm:p-6">
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12 items-center">
                           <div className="lg:col-span-7">
                             <span className="text-[11px] font-bold uppercase tracking-wider text-[#C84B71]">
-                              Narahubung Program Teman Kasih
+                              Narahubung Program Buna Ceria • Teman Kasih
                             </span>
                             <h3 className="font-heading text-base font-bold text-[#2A2D22] mt-0.5">
                               {footerContact.personInCharge}
@@ -557,15 +691,15 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
                         <div className="mt-5 border-t border-[#ECE7F2] pt-4 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-[#A09CA8]">
                           <span>{footerContact.copyrightText}</span>
-                          <span>Teman Kasih • Edukasi Kehamilan</span>
+                          <span>Team Buna Ceria • Kak Faiza (085701308514)</span>
                         </div>
                       </footer>
                     </motion.div>
                   )}
 
                   {/* =========================================================
-                      2. HALAMAN KHUSUS: MATERI KEHAMILAN
-                         (Memuat Tingkatan Materi Belajar + 4 Modul Materi)
+                      2. HALAMAN: TAHAPAN & MATERI KEHAMILAN (4 LEVEL)
+                         (Items 13 & 14: 4 Bulatan Level + Garis Penghubung + Modul, Quiz, Refleksi, Hasil)
                      ========================================================= */}
                   {activeSection === 'materi' && (
                     <motion.div
@@ -573,48 +707,51 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-8"
                     >
-                      {/* Editorial Hero Banner: Kurikulum Materi Kehamilan */}
+                      {/* Editorial Hero Banner: Kurikulum 4 Level */}
                       <EditorialHeroBanner
                         bannerImageSrc="/hero-banner-materi.webp"
-                        bgText="MODUL MATERI"
+                        bgText="4 LEVEL BELAJAR"
                         characterSrc="/hero-materi-mentor.webp"
                         characterAlt="Mentor Edukasi Materi Kehamilan"
                         bgGradientClass="bg-gradient-to-r from-[#243315] via-[#33461E] to-[#243315]"
                         shadowClass="shadow-[0_8px_24px_rgba(36,51,21,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
                         leftBadge={{
                           icon: <BookOpen className="h-3 w-3 text-lime-200" />,
-                          label: "Kurikulum Terpadu",
+                          label: "Alur 4 Level Bertahap",
                         }}
                         rightBadge={{
                           icon: <CheckCircle className="h-3 w-3 text-lime-200" />,
-                          label: `${completedModules}/4 Modul Selesai`,
+                          label: `${completedModules}/${modules.length} Modul Selesai`,
                         }}
-                        subtitle="Pelajari 4 modul interaktif, uji pemahaman mandiri melalui kuis ramah, dan rekam refleksi harian."
+                        subtitle="Selesaikan setiap level secara berurutan: Level 1 Materi, Level 2 Quiz, Level 3 Refleksi, dan Level 4 Hasil Saya."
                         actionButton={{
-                          label: "Mulai Belajar",
+                          label: "Mulai Level 1",
                           onClick: () => {
-                            const heading = document.getElementById('kurikulum-materi-heading');
-                            heading?.scrollIntoView({ behavior: 'smooth' });
+                            selectStage('materi');
+                            const el = document.getElementById('stage-tracker-section');
+                            el?.scrollIntoView({ behavior: 'smooth' });
                           },
                         }}
                       />
 
-                      {/* =====================================================================
-                          KURIKULUM 6 KARTU MODUL & MATERI (1 JADI 1 SAJA)
-                          Desain Card Modern dengan Ilustrasi 3D yang "Menjulang Keluar",
-                          Pastel Gradient Menenangkan, dan Tombol Info "?" Interaktif
-                          ===================================================================== */}
-                      <section aria-labelledby="kurikulum-materi-heading" className="space-y-4">
+                      {/* 4 BULATAN LEVEL DENGAN GARIS PENGHUBUNG + PANEL LEVEL AKTIF (Items 13 & 14) */}
+                      <div id="stage-tracker-section" className="space-y-6">
+                        <StageTracker />
+                        <StagePanel />
+                      </div>
+
+                      {/* KARTU VISUAL 3D MODUL & EVALUASI */}
+                      <section aria-labelledby="kurikulum-materi-heading" className="space-y-4 pt-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <span className="text-[11px] font-bold uppercase tracking-wider text-[#56632A]">
-                              Pilihan Pembelajaran Interaktif
+                              Kartu Pintas Interaktif 3D
                             </span>
                             <h2
                               id="kurikulum-materi-heading"
                               className="font-heading text-xl font-bold text-[#2A2D22]"
                             >
-                              Jelajahi Modul &amp; Evaluasi
+                              Jelajahi Modul, Quiz &amp; Hasil Belajar
                             </h2>
                           </div>
                           <span className="text-xs text-[#767A6E]">
@@ -643,7 +780,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 onClick={() => handleCardClick(card)}
                                 className={`group relative overflow-visible rounded-[22px] sm:rounded-[24px] p-5 sm:p-6 border ${card.cardBorder} ${card.cardGradient} shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer min-h-[210px] sm:min-h-[225px] flex flex-col justify-between`}
                               >
-                                {/* Top Row: Badge + Category on Left, "?" Button on Right */}
                                 <div className="flex items-center justify-between gap-3 relative z-10">
                                   <div className="inline-flex items-center gap-2">
                                     <span
@@ -671,7 +807,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                   </button>
                                 </div>
 
-                                {/* Content: Title, Description, and Action CTA */}
                                 <div className="mt-3.5 relative z-10 max-w-[62%] sm:max-w-[65%] space-y-1.5">
                                   <h3 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug group-hover:text-[#C84B71] transition-colors">
                                     {card.title}
@@ -698,7 +833,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                             ? 'Mulai Baca'
                                             : card.type === 'quiz'
                                             ? 'Mulai Kuis'
-                                            : 'Mulai Refleksi'}
+                                            : 'Lihat Hasil'}
                                         </span>
                                         <ArrowRight className="h-3 w-3" />
                                       </span>
@@ -706,7 +841,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                   </div>
                                 </div>
 
-                                {/* 3D Illustration yang "menjulang keluar" (Pop-Out Effect) */}
                                 <div className="absolute -bottom-2 -right-1.5 sm:-bottom-3 sm:-right-2.5 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 pointer-events-none transition-transform duration-300 group-hover:scale-108 group-hover:-translate-y-1.5 group-hover:translate-x-1 z-20">
                                   <Image
                                     src={card.imageSrc}
@@ -722,13 +856,11 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           })}
                         </div>
                       </section>
-
-
                     </motion.div>
                   )}
 
                   {/* =========================================================
-                      3. HALAMAN KHUSUS: TIPS KEHAMILAN
+                      3. HALAMAN KHUSUS: TIPS KEHAMILAN (Item 15)
                      ========================================================= */}
                   {activeSection === 'tips' && (
                     <motion.div
@@ -736,7 +868,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-6"
                     >
-                      {/* Editorial Hero Banner: Tips Kehamilan Hari Ini (Gaya Healthcare Card) */}
                       <EditorialHeroBanner
                         bannerImageSrc="/hero-banner-tips.webp"
                         bgText="TIPS KEHAMILAN HARI INI"
@@ -777,7 +908,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   )}
 
                   {/* =========================================================
-                      4. HALAMAN KHUSUS: KONTAK AHLI
+                      4. HALAMAN KHUSUS: KONTAK AHLI (Item 16)
                      ========================================================= */}
                   {activeSection === 'kontak-ahli' && (
                     <motion.div
@@ -785,7 +916,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-6"
                     >
-                      {/* Editorial Hero Banner: Kontak Ahli Pendamping */}
                       <EditorialHeroBanner
                         bannerImageSrc="/hero-banner-kontak.webp"
                         bgText="KONTAK AHLI"
@@ -806,10 +936,10 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           label: "Tanya Bidan Sekarang",
                           onClick: () => {
                             const firstExp = experts[0];
-                            const num = firstExp?.whatsappNumber || '6281234567890';
+                            const num = firstExp?.whatsappNumber || '6285701308514';
                             window.open(
                               `https://wa.me/${num}?text=${encodeURIComponent(
-                                `Halo Bidan, saya ${session?.name ?? 'Ibu hamil pengguna Teman Kasih'}. Saya ingin berkonsultasi mengenai kehamilan saya.`
+                                `Halo Bidan, saya ${session?.name ?? 'Ibu hamil pengguna Buna Ceria'}. Saya ingin berkonsultasi mengenai kehamilan saya.`
                               )}`,
                               '_blank'
                             );
@@ -821,7 +951,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         {experts.map((exp, idx) => {
                           const waUrl = `https://wa.me/${exp.whatsappNumber}?text=${encodeURIComponent(
                             `Halo ${exp.name}, saya ${
-                              session?.name ?? 'Ibu hamil pengguna Teman Kasih'
+                              session?.name ?? 'Ibu hamil pengguna Buna Ceria • Teman Kasih'
                             }. Saya ingin berkonsultasi mengenai kehamilan saya.`
                           )}`;
                           const photoSrc =
@@ -875,7 +1005,19 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   )}
 
                   {/* =========================================================
-                      5. HALAMAN: PENGATURAN & AKUN IBU
+                      5. HALAMAN KHUSUS: TAKE SELFIE PASANGAN (Items 17, 18, 19)
+                     ========================================================= */}
+                  {activeSection === 'selfie' && (
+                    <motion.div
+                      key="view-selfie"
+                      {...viewTransitionProps}
+                    >
+                      <SelfieStudio />
+                    </motion.div>
+                  )}
+
+                  {/* =========================================================
+                      6. HALAMAN: PENGATURAN & UBAH PROFIL (Items 20, 22, 23)
                      ========================================================= */}
                   {activeSection === 'pengaturan' && (
                     <motion.div
@@ -883,80 +1025,232 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-6"
                     >
-                      <div className="rounded-[24px] bg-[#FAF8FC] border border-[#ECE7F2] p-6 sm:p-7">
-                        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-[#2A2D22]">
-                          Preferensi Belajar
-                        </span>
-                        <h1 className="mt-2.5 font-heading text-2xl font-bold text-[#2A2D22] sm:text-3xl">
-                          Pengaturan Akun &amp; Profil
-                        </h1>
-                      </div>
-
-                      <div className="rounded-[22px] border border-[#ECE7F2] bg-white p-6 shadow-2xs space-y-5">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[24px] bg-gradient-to-r from-[#FDF2F5] via-white to-[#F5F8EB] border border-[#ECE7F2] p-6 sm:p-7">
                         <div>
-                          <h2 className="font-heading text-base font-bold text-[#2A2D22]">
-                            Status Akun Pengguna
-                          </h2>
-                          <p className="text-xs text-[#767A6E] mt-0.5">
-                            {session
-                              ? `Masuk sebagai ${session.name} (${session.email})`
-                              : 'Saat ini Ibu menggunakan mode tamu tanpa login.'}
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-pink-200 px-3 py-1 text-xs font-bold text-[#C84B71]">
+                            <Settings className="h-3.5 w-3.5" />
+                            <span>Pengaturan Akun &amp; Profil Pengguna</span>
+                          </span>
+                          <h1 className="mt-2.5 font-heading text-2xl font-bold text-[#2A2D22] sm:text-3xl">
+                            Informasi Akun &amp; Ubah Profil
+                          </h1>
+                          <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">
+                            Kelola nama panggilan, email, usia trimester kehamilan, atau beralih akun dengan mudah.
                           </p>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                          <div className="rounded-xl border border-[#ECE7F2] p-3.5 bg-[#FAF8FC]">
-                            <span className="text-[11px] font-semibold text-[#8C8896]">
-                              Kategori Kehamilan
+                        {/* Item 22: Tombol Kembali ke Website */}
+                        <button
+                          type="button"
+                          onClick={enterLandingPage}
+                          className="inline-flex min-h-[42px] shrink-0 items-center justify-center gap-2 rounded-full border border-[#ECE7F2] bg-white px-5 py-2 text-xs font-bold text-[#2A2D22] hover:bg-[#FAF8FC] shadow-2xs transition-colors cursor-pointer"
+                        >
+                          <Globe className="h-4 w-4 text-[#C84B71]" />
+                          <span>Kembali ke Website</span>
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+                        {/* Kolom Kiri: Form Ubah Profil (Item 20) */}
+                        <form
+                          onSubmit={handleProfileSave}
+                          className="lg:col-span-7 rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs space-y-4"
+                        >
+                          <div className="flex items-center justify-between border-b border-[#F0ECF5] pb-3">
+                            <div>
+                              <h2 className="font-heading text-lg font-bold text-[#2A2D22]">
+                                Ubah Profil Ibu
+                              </h2>
+                              <p className="text-xs text-[#767A6E]">
+                                Perubahan nama juga otomatis tampil di sertifikat &amp; bingkai <em>Take Selfie</em>.
+                              </p>
+                            </div>
+                            <span className="rounded-full bg-[#F5F8EB] px-3 py-1 text-[11px] font-bold text-[#56632A]">
+                              {session?.role === 'admin' ? 'Akun Admin' : 'Pengguna Terdaftar'}
                             </span>
-                            <p className="text-sm font-bold text-[#2A2D22] mt-0.5">
-                              {session?.trimesterLabel ?? 'Trimester Awal'}
-                            </p>
                           </div>
 
-                          <div className="rounded-xl border border-[#ECE7F2] p-3.5 bg-[#FAF8FC]">
-                            <span className="text-[11px] font-semibold text-[#8C8896]">
-                              Status Akses
-                            </span>
-                            <p className="text-sm font-bold text-[#2A2D22] mt-0.5">
-                              Akses Lengkap &amp; Terverifikasi
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="pt-4 border-t border-[#F0ECF5] flex flex-wrap items-center justify-between gap-3">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (!session) openLoginDialog();
-                              else openAnxietyDialog();
-                            }}
-                            className="btn-pill inline-flex items-center gap-2 rounded-full border border-pink-200 bg-pink-50 px-5 py-2 text-xs font-bold text-[#C84B71] hover:bg-pink-100 transition-colors cursor-pointer"
-                          >
-                            <Heart className="h-3.5 w-3.5" />
-                            <span>Ulang Kuesioner Perasaan</span>
-                          </button>
-
-                          {!session ? (
-                            <button
-                              type="button"
-                              onClick={openLoginDialog}
-                              className="btn-pill inline-flex items-center gap-2 rounded-full bg-[#C84B71] px-6 py-2.5 text-xs font-bold text-white shadow-2xs hover:bg-[#b23b60] cursor-pointer"
-                            >
-                              <UserCheck className="h-4 w-4" />
-                              <span>Masuk Akun</span>
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => handleSelectSection('beranda')}
-                              className="btn-pill inline-flex items-center gap-2 rounded-full bg-[#C84B71] px-6 py-2.5 text-xs font-bold text-white shadow-2xs hover:bg-[#b23b60] cursor-pointer"
-                            >
-                              <span>Simpan &amp; Lanjut Belajar</span>
-                            </button>
+                          {profileSavedNotice && (
+                            <div className="flex items-center gap-2 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-xs font-bold text-green-800">
+                              <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />
+                              <span>{profileSavedNotice}</span>
+                            </div>
                           )}
+
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                              <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
+                                Nama Lengkap Ibu
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                value={profileName}
+                                onChange={(e) => setProfileName(e.target.value)}
+                                placeholder="Contoh: Ibu Sinta Rahmawati"
+                                className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm font-semibold text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
+                                Alamat Email
+                              </label>
+                              <input
+                                type="email"
+                                required
+                                value={profileEmail}
+                                onChange={(e) => setProfileEmail(e.target.value)}
+                                placeholder="nama@email.com"
+                                className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm font-semibold text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
+                                Fase / Trimester Kehamilan
+                              </label>
+                              <select
+                                value={profileTrimester}
+                                onChange={(e) => setProfileTrimester(e.target.value)}
+                                className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm font-semibold text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
+                              >
+                                <option value="Trimester Pertama (Minggu 1–12)">
+                                  Trimester Pertama (Minggu 1–12)
+                                </option>
+                                <option value="Trimester Kedua (Minggu 13–27)">
+                                  Trimester Kedua (Minggu 13–27)
+                                </option>
+                                <option value="Trimester Ketiga (Minggu 28–40)">
+                                  Trimester Ketiga (Minggu 28–40)
+                                </option>
+                                <option value="Masa Nifas & Menyusui">
+                                  Masa Nifas &amp; Menyusui
+                                </option>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
+                                Kata Sandi Baru (Opsional)
+                              </label>
+                              <input
+                                type="password"
+                                value={profilePassword}
+                                onChange={(e) => setProfilePassword(e.target.value)}
+                                placeholder="Kosongkan bila tidak diubah"
+                                className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="pt-3 border-t border-[#F0ECF5] flex flex-wrap items-center justify-between gap-3">
+                            <button
+                              type="submit"
+                              className="inline-flex min-h-[42px] items-center gap-2 rounded-full bg-[#C84B71] hover:bg-[#b23b60] px-6 py-2.5 text-xs font-bold text-white shadow-xs transition-all cursor-pointer"
+                            >
+                              <Save className="h-4 w-4" />
+                              <span>Simpan Perubahan Profil</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (!session) openLoginDialog();
+                                else openAnxietyDialog();
+                              }}
+                              className="inline-flex min-h-[42px] items-center gap-2 rounded-full border border-pink-200 bg-[#FDF2F5] px-4 py-2 text-xs font-bold text-[#C84B71] hover:bg-pink-100 transition-colors cursor-pointer"
+                            >
+                              <Heart className="h-3.5 w-3.5" />
+                              <span>Isi Ulang Kuesioner Kecemasan</span>
+                            </button>
+                          </div>
+                        </form>
+
+                        {/* Kolom Kanan: Aksi Akun, Ganti Akun, Keluar Akun, & Mode Admin (Items 22 & 23) */}
+                        <div className="lg:col-span-5 space-y-4">
+                          <div className="rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs space-y-4">
+                            <h2 className="font-heading text-lg font-bold text-[#2A2D22]">
+                              Kelola Sesi &amp; Peran Akun
+                            </h2>
+                            <p className="text-xs leading-relaxed text-[#6E6A6C]">
+                              Ibu dapat berganti akun pengguna terdaftar, beralih ke akun Admin (untuk mengelola user &amp; modul), atau kembali ke halaman Website utama.
+                            </p>
+
+                            <div className="space-y-2.5 pt-1">
+                              {/* Item 23: Tombol Ganti Akun */}
+                              <button
+                                type="button"
+                                onClick={openLoginDialog}
+                                className="flex w-full items-center justify-between rounded-2xl border border-[#E4EAC9] bg-[#F5F8EB] px-4 py-3 text-left text-xs font-bold text-[#56632A] hover:bg-[#ebf0d8] transition-colors cursor-pointer"
+                              >
+                                <span className="flex items-center gap-2.5">
+                                  <RefreshCw className="h-4 w-4" />
+                                  <span>Ganti Akun (User / Google / Admin)</span>
+                                </span>
+                                <ArrowRight className="h-4 w-4" />
+                              </button>
+
+                              {/* Pintasan Panel Admin */}
+                              <button
+                                type="button"
+                                onClick={() => handleSelectSection('admin')}
+                                className="flex w-full items-center justify-between rounded-2xl border border-pink-200 bg-[#FDF2F5] px-4 py-3 text-left text-xs font-bold text-[#C84B71] hover:bg-[#FCE8EE] transition-colors cursor-pointer"
+                              >
+                                <span className="flex items-center gap-2.5">
+                                  <ShieldCheck className="h-4 w-4" />
+                                  <span>Buka Panel Admin (Kelola User &amp; Modul)</span>
+                                </span>
+                                <ArrowRight className="h-4 w-4" />
+                              </button>
+
+                              {/* Item 22: Tombol Kembali ke Website */}
+                              <button
+                                type="button"
+                                onClick={enterLandingPage}
+                                className="flex w-full items-center justify-between rounded-2xl border border-[#ECE7F2] bg-[#FAF8FC] px-4 py-3 text-left text-xs font-bold text-[#2A2D22] hover:bg-gray-100 transition-colors cursor-pointer"
+                              >
+                                <span className="flex items-center gap-2.5">
+                                  <Globe className="h-4 w-4 text-[#8C8896]" />
+                                  <span>Kembali ke Website Utama</span>
+                                </span>
+                                <ArrowRight className="h-4 w-4" />
+                              </button>
+
+                              {/* Item 23: Tombol Keluar Akun */}
+                              {session && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    handleLogout();
+                                    enterLandingPage();
+                                  }}
+                                  className="flex w-full items-center justify-between rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-left text-xs font-bold text-red-700 hover:bg-red-100 transition-colors cursor-pointer"
+                                >
+                                  <span className="flex items-center gap-2.5">
+                                    <LogOut className="h-4 w-4" />
+                                    <span>Keluar Akun (Logout)</span>
+                                  </span>
+                                  <ArrowRight className="h-4 w-4" />
+                                </button>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
+                    </motion.div>
+                  )}
+
+                  {/* =========================================================
+                      7. HALAMAN KHUSUS: PANEL ADMIN (Role #3 Admin)
+                         Mengelola pengguna terdaftar dan mengedit/menambah modul pembelajaran
+                     ========================================================= */}
+                  {activeSection === 'admin' && (
+                    <motion.div
+                      key="view-admin"
+                      {...viewTransitionProps}
+                    >
+                      <AdminDashboard />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -1101,7 +1395,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   <Award className="h-4 w-4" />
                 </span>
                 <h3 className="font-heading text-lg font-bold text-[#2A2D22]">
-                  Kuis Pemahaman Kehamilan
+                  Level 2 • Kuis Pemahaman Kehamilan
                 </h3>
               </div>
               <button
@@ -1127,7 +1421,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   <CheckCircle className="h-4 w-4" />
                 </span>
                 <h3 className="font-heading text-lg font-bold text-[#2A2D22]">
-                  Refleksi &amp; Rangkuman Hasil Belajar
+                  Level 4 • Rangkuman Hasil Belajar
                 </h3>
               </div>
               <button
@@ -1143,7 +1437,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
         </div>
       )}
 
-      {/* Dialog Autentikasi Masuk */}
+      {/* Dialog Autentikasi Masuk / Daftar / Admin */}
       <LoginDialog />
 
       {/* Dialog Kuesioner Kecemasan / Sapa Perasaan */}

@@ -1,13 +1,14 @@
 import { FooterContactInfo } from '@/types';
 
-// TODO: Konfirmasi kontak resmi penanggung jawab program Teman Kasih
+// Informasi kontak resmi sesuai Client Brief Bagian 1 (Team Buna Ceria — Kak Faiza)
 export const mockFooterContact: FooterContactInfo = {
-  personInCharge: 'Annisa Rahmadani, S.Keb',
-  role: 'Koordinator Program Edukasi Teman Kasih',
-  email: 'kontak@temankasih.id',
-  whatsappNumber: '6281234567890',
-  displayWhatsapp: '+62 812-3456-7890',
-  copyrightText: '© 2026 Teman Kasih — Ruang Belajar Kehamilan yang Hangat & Menenangkan. Seluruh hak cipta dilindungi.',
+  personInCharge: 'Kak Faiza (Team Buna Ceria)',
+  role: 'Penanggung Jawab Utama WebApp Buna Ceria • Teman Kasih',
+  email: 'kontak@bunaceria.id',
+  whatsappNumber: '6285701308514',
+  displayWhatsapp: '0857-0130-8514',
+  copyrightText:
+    '© 2026 Buna Ceria (Teman Kasih) — Ruang Belajar Kehamilan yang Hangat & Menenangkan.',
   disclaimerText:
-    'Informasi di platform ini bersifat edukatif dan promotif untuk mendukung kenyamanan Ibu, serta tidak menggantikan pemeriksaan langsung dengan dokter spesialis kebidanan atau bidan.',
+    'Belajar hari ini untuk ibu dan buah hati esok nanti. Informasi di platform ini bersifat edukatif untuk mendukung ketenangan Bunda dan keluarga, serta berdampingan dengan pemeriksaan rutin bersama bidan atau dokter spesialis.',
 };

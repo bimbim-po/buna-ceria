@@ -1,65 +1,56 @@
 import { StageDefinition } from '@/types';
 
-// Definisi 5 tahapan belajar di Teman Kasih
-// Nama Tahap 3 (Refleksi) dan Tahap 4 (Evaluasi Akhir) dapat diubah langsung dari berkas ini
+// Definisi 4 Level Tahapan Pembelajaran di Buna Ceria (Teman Kasih)
+// Sesuai Client Brief No. 13, 14, dan User Flow No. 6:
+// Level 1: Materi -> Level 2: Quiz -> Level 3: Tahap 3 -> Level 4: Hasil Saya
 export const mockStages: StageDefinition[] = [
   {
     id: 'materi',
     order: 1,
-    title: 'Materi',
+    title: 'Level 1: Materi Kehamilan',
     shortTitle: 'Materi',
-    subtitle: '4 bacaan bertahap yang menenangkan',
+    subtitle: '4 modul bacaan bertahap yang menenangkan',
     description:
-      'Bacalah keempat materi contoh secara berurutan hingga selesai untuk membuka tahap berikutnya.',
+      'Pelajari keempat modul kehamilan secara berurutan hingga selesai untuk membuka Level 2 (Quiz).',
   },
   {
     id: 'quiz',
     order: 2,
-    title: 'Quiz',
+    title: 'Level 2: Quiz Pemahaman',
     shortTitle: 'Quiz',
     subtitle: '8 soal pilihan ganda dengan ulasan lembut',
     description:
-      'Ulas kembali poin-poin penting dari materi melalui 8 pertanyaan singkat. Ibu dapat mengulang kapan saja.',
+      'Ukur pemahaman Bunda dari materi yang telah dipelajari melalui 8 pertanyaan interaktif. Bunda dapat mengulang kapan saja.',
   },
   {
     id: 'tahap-3',
     order: 3,
-    title: 'Refleksi',
-    shortTitle: 'Refleksi',
-    subtitle: 'Tahap 3 — Mengenali hal baik yang Ibu rasakan',
+    title: 'Level 3: Tahap 3 (Refleksi & Rencana)',
+    shortTitle: 'Tahap 3',
+    subtitle: 'Refleksi perasaan & rencana sederhana Bunda',
     description:
-      'Luangkan waktu sejenak untuk memilih poin refleksi diri setelah membaca materi dan mengerjakan quiz.',
+      'Luangkan waktu sejenak untuk memilih poin refleksi diri dan langkah kecil yang ingin Bunda jalankan setelah membaca materi serta mengerjakan quiz.',
     prompts: [
       'Saya bersyukur telah meluangkan waktu untuk belajar dan merawat ketenangan diri hari ini.',
       'Saya memahami bahwa setiap perubahan perasaan di masa kehamilan adalah hal yang wajar.',
       'Saya siap berkomunikasi lebih hangat dan terbuka dengan pasangan atau keluarga.',
       'Saya tahu bahwa saya selalu bisa menghubungi pendamping ahli ketika membutuhkan teman bicara.',
     ],
-    actionLabel: 'Simpan & Selesaikan Refleksi',
-  },
-  {
-    id: 'tahap-4',
-    order: 4,
-    title: 'Evaluasi Akhir',
-    shortTitle: 'Evaluasi Akhir',
-    subtitle: 'Tahap 4 — Konfirmasi kesiapan & rencana sederhana',
-    description:
-      'Tandai langkah-langkah kecil yang ingin Ibu terapkan dalam keseharian sebelum melihat rangkuman Hasil Saya.',
-    prompts: [
+    evaluationPrompts: [
       'Menyediakan jeda bernapas tenang selama 5 menit setiap pagi.',
       'Menata waktu istirahat malam dengan mengurangi layar gawai sebelum tidur.',
       'Membagi rencana persiapan kehamilan menjadi langkah-langkah kecil mingguan.',
-      'Menyimpan nomor Kontak Ahli Teman Kasih untuk berdiskusi bila diperlukan.',
+      'Menyimpan nomor Kontak Ahli untuk berdiskusi bila diperlukan.',
     ],
-    actionLabel: 'Selesaikan Evaluasi Akhir & Lihat Hasil',
+    actionLabel: 'Simpan Tahap 3 & Buka Hasil Saya',
   },
   {
     id: 'hasil-saya',
-    order: 5,
-    title: 'Hasil Saya',
+    order: 4,
+    title: 'Level 4: Hasil Saya',
     shortTitle: 'Hasil Saya',
-    subtitle: 'Ringkasan perjalanan belajar Ibu',
+    subtitle: 'Ringkasan perjalanan belajar Bunda',
     description:
-      'Lihat rangkuman capaian belajar, skor quiz terbaik, serta catatan perasaan Ibu dalam satu tampilan yang hangat.',
+      'Lihat rangkuman capaian belajar 4 level, skor quiz terbaik, serta catatan perasaan Bunda dalam satu tampilan yang hangat.',
   },
 ];

@@ -1,9 +1,11 @@
-// Teks antarmuka terpusat — bersih, ringkas, hangat, tanpa subjudul berlebihan
+// Teks antarmuka terpusat — bersih, ringkas, hangat
 
 export const uiContent = {
   brand: {
-    name: 'Teman Kasih',
-    loadingText: 'Menyiapkan ruang belajar...',
+    name: 'Buna Ceria • Teman Kasih',
+    shortName: 'Teman Kasih',
+    subBrand: 'Team Buna Ceria',
+    loadingText: 'Menyiapkan ruang belajar Buna Ceria...',
   },
   navItems: [
     { id: 'beranda', label: 'Beranda', href: '#beranda' },
@@ -14,64 +16,66 @@ export const uiContent = {
     { id: 'daftar-pustaka', label: 'Daftar Pustaka', href: '#daftar-pustaka' },
   ],
   header: {
-    loginButton: 'Masuk',
+    loginButton: 'Masuk / Daftar',
     logoutButton: 'Keluar',
     menuButtonLabel: 'Buka menu navigasi',
     closeMenuLabel: 'Tutup menu navigasi',
   },
   hero: {
-    title: 'Belajar pelan-pelan, ditemani setiap minggu.',
+    title: 'Pendamping kehamilan pertama',
     greeting:
-      'Halo Ibu. Mari duduk sebentar, tarik napas yang nyaman, lalu baca materi hari ini sesuai ritme Ibu.',
-    ctaPrimary: 'Mulai Belajar',
-    ctaSecondary: 'Lihat 4 Materi',
+      'Halo Bunda. Mari duduk sebentar, tarik napas yang nyaman, lalu ikuti alur belajar hari ini sesuai ritme Bunda.',
+    ctaPrimary: 'Buka WebApp',
+    ctaSecondary: 'Fitur Lengkap Pembelajaran',
     summaryCards: {
       modulesLabel: 'Materi Selesai',
-      stagesLabel: 'Tahap Belajar',
+      stagesLabel: 'Level Belajar',
       quizLabel: 'Skor Quiz',
     },
   },
   pillarsSection: {
-    sectionTitle: 'Semua yang Ibu perlukan di kehamilan pertama',
-    ctaButton: 'Mulai Belajar Sekarang',
+    sectionTitle: '3 Tips Penting untuk Ibu Nifas',
+    sectionSubtitle:
+      'Langkah sederhana untuk mendukung menyusui dan menjaga kesehatan Bunda',
+    ctaButton: 'Mulai Belajar di WebApp',
   },
   feelingsSection: {
-    sectionTitle: 'Apa yang Sedang Ibu Rasakan?',
+    sectionTitle: 'Apa yang Sedang Bunda Rasakan Hari Ini?',
     sectionSubtitle:
-      'Yuk, pilih perasaan yang sedang Ibu hadapi dan temukan panduan serta bantuan yang Ibu butuhkan sekarang!',
-    checkAnxietyButton: 'Cek Tingkat Kecemasan',
-    contactExpertButton: 'Tanya Bidan / Konselor',
+      'Pilih perasaan yang sedang Bunda hadapi untuk melihat tips praktis, atau isi Kuesioner Kecemasan agar tersimpan di riwayat Bunda.',
+    checkAnxietyButton: 'Isi Pertanyaan Kecemasan',
+    contactExpertButton: 'Tanya Bidan / Ahli',
   },
   learningSection: {
-    sectionTitle: 'Tahap Belajar',
-    lockedStageHint: 'Selesaikan tahap sebelumnya dahulu',
-    guestCardTitle: 'Masuk untuk Memulai',
+    sectionTitle: '4 Level Tahapan Pembelajaran',
+    lockedStageHint: 'Selesaikan level sebelumnya terlebih dahulu agar level ini terbuka',
+    guestCardTitle: 'Masuk / Daftar untuk Memulai',
     guestCardDescription:
-      'Simpan bacaan, nilai kuis, dan catatan perasaan Ibu di perangkat ini.',
-    guestCardButton: 'Masuk Sekarang',
+      'Simpan progres 4 level belajar, nilai kuis, catatan kecemasan, dan foto selfie Bunda.',
+    guestCardButton: 'Masuk / Daftar Akun',
   },
   modulesSection: {
-    sectionTitle: 'Materi Kehamilan',
+    sectionTitle: 'Modul Pembelajaran (4 Level)',
     readTimeUnit: 'menit baca',
     statusLabels: {
       terkunci: 'Terkunci',
-      terbuka: 'Aktif',
+      terbuka: 'Terbuka',
       selesai: 'Selesai',
     },
-    lockedModuleHint: 'Selesaikan materi sebelumnya dahulu',
-    lockedGuestHint: 'Masuk dahulu untuk membuka materi',
+    lockedModuleHint: 'Selesaikan modul sebelumnya dahulu agar modul ini terbuka',
+    lockedGuestHint: 'Masuk dahulu untuk membuka modul pembelajaran',
     readButton: 'Baca Materi',
     rereadButton: 'Baca Ulang',
   },
   tipsSection: {
-    sectionTitle: 'Tips Harian',
+    sectionTitle: 'Tips Kehamilan',
   },
   expertsSection: {
     sectionTitle: 'Kontak Ahli',
     contactButton: 'Hubungi via WhatsApp',
     callButton: 'Telepon',
     whatsappDefaultMessage:
-      'Halo Ibu Bidan/Konselor, saya pengguna Teman Kasih dan ingin bertanya seputar kehamilan saya.',
+      'Halo Bidan/Konselor Buna Ceria, saya ingin berkonsultasi seputar kehamilan saya.',
   },
   referencesSection: {
     sectionTitle: 'Daftar Pustaka',

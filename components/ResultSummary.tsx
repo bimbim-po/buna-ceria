@@ -2,8 +2,10 @@
 
 import React from 'react';
 import {
+  ArrowRight,
   Award,
   BookOpen,
+  Camera,
   CheckCircle2,
   HeartHandshake,
   PhoneCall,
@@ -28,7 +30,7 @@ export function ResultSummary() {
   const { closingMessages } = getAnxietyConfig();
 
   const completedStagesCount = progress?.completedStageIds.length ?? 0;
-  const totalStagesCount = stages.length;
+  const totalStagesCount = stages.length; // 4 Level
   const stageProgressPct = Math.round(
     (completedStagesCount / totalStagesCount) * 100
   );
@@ -47,18 +49,18 @@ export function ResultSummary() {
 
   return (
     <div className="space-y-6 rounded-[28px] border border-pink-100 bg-surface p-5 shadow-pink-soft sm:p-8">
-      {/* Header Hasil Saya */}
+      {/* Header Hasil Saya (Level 4) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-pink-100 pb-5">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3.5 py-1 text-sm font-bold text-green-700">
             <Award className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-            <span>Rangkuman Perjalanan Belajar</span>
+            <span>Level 4 • Rangkuman Perjalanan Belajar</span>
           </span>
           <h3 className="mt-2 font-heading text-2xl font-bold text-ink sm:text-3xl">
             Hasil Saya — {session?.name ?? 'Ibu'}
           </h3>
           <p className="mt-1 text-base text-ink-muted">
-            Catatan bacaan, skor kuis terbaik, dan sapaan perasaan Ibu dalam
+            Catatan progres 4 level, skor kuis terbaik, dan hasil kuesioner kecemasan Ibu dalam
             satu halaman yang tenang.
           </p>
         </div>
@@ -73,7 +75,7 @@ export function ResultSummary() {
           />
           <div>
             <span className="block text-sm font-semibold text-green-700">
-              Progres Tahap
+              Progres 4 Level
             </span>
             <span className="font-heading text-2xl font-bold text-ink">
               <CountUpNumber value={stageProgressPct} suffix="%" />
@@ -110,7 +112,7 @@ export function ResultSummary() {
               <CountUpNumber value={stageProgressPct} suffix="%" />
             </p>
             <p className="mt-1 text-sm text-ink-muted">
-              {completedStagesCount} dari {totalStagesCount} tahap selesai •{' '}
+              {completedStagesCount} dari {totalStagesCount} level selesai •{' '}
               {completedModulesCount}/{totalModulesCount} materi dibaca
             </p>
           </div>
@@ -121,7 +123,7 @@ export function ResultSummary() {
               onClick={() => selectStage('materi')}
               className="btn-pill inline-flex min-h-[44px] w-full items-center justify-center gap-1.5 border border-pink-100 bg-surface px-4 py-2 text-sm font-bold text-ink cursor-pointer"
             >
-              <span>Baca Ulang Materi</span>
+              <span>Baca Ulang Materi (Level 1)</span>
             </button>
           </div>
         </div>
@@ -130,7 +132,7 @@ export function ResultSummary() {
         <div className="card-lift flex flex-col justify-between rounded-[24px] border border-pink-100 bg-page p-5">
           <div>
             <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-pink-700">
+              <div className="flex items-center justify-between gap-2 text-pink-700">
                 <Award
                   className="h-5 w-5"
                   strokeWidth={1.75}
@@ -160,7 +162,7 @@ export function ResultSummary() {
                 ? `${bestQuizCorrect} dari 8 soal tepat (${
                     progress?.quizAttempts ?? 1
                   }x percobaan)`
-                : 'Kerjakan tahap Quiz untuk menyimpan skor Ibu.'}
+                : 'Kerjakan Level 2 (Quiz) untuk menyimpan skor Ibu.'}
             </p>
           </div>
 
@@ -175,7 +177,7 @@ export function ResultSummary() {
                 strokeWidth={1.75}
                 aria-hidden="true"
               />
-              <span>Coba Quiz Lagi</span>
+              <span>Coba Quiz Lagi (Level 2)</span>
             </button>
           </div>
         </div>
@@ -191,7 +193,7 @@ export function ResultSummary() {
                   aria-hidden="true"
                 />
                 <h4 className="font-heading text-lg font-bold text-ink">
-                  Catatan Perasaan
+                  Kuesioner Kecemasan
                 </h4>
               </div>
               {anxietySubmission && (
@@ -223,7 +225,7 @@ export function ResultSummary() {
               </>
             ) : (
               <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                Ibu belum mengisi catatan perasaan awal. Luangkan 1 menit untuk
+                Ibu belum mengisi kuesioner kecemasan awal. Luangkan 1 menit untuk
                 mengenali perasaan hari ini.
               </p>
             )}
@@ -236,7 +238,7 @@ export function ResultSummary() {
                 onClick={openAnxietyDialog}
                 className="btn-pill inline-flex min-h-[44px] w-full items-center justify-center gap-1.5 bg-pink-500 px-4 py-2 text-sm font-bold text-ink cursor-pointer"
               >
-                <span>Isi Sapaan Perasaan</span>
+                <span>Isi Kuesioner Kecemasan</span>
               </button>
             ) : (
               <button
@@ -256,13 +258,13 @@ export function ResultSummary() {
         </div>
       </div>
 
-      {/* Ringkasan Refleksi & Langkah Pilihan Ibu */}
+      {/* Ringkasan Refleksi & Langkah Pilihan Ibu (Level 3) */}
       {progress?.reflectionSelectedItems?.length ||
       progress?.reflectionNote ||
       progress?.evaluationCheckedItems?.length ? (
         <div className="rounded-[24px] border border-pink-100 bg-green-50/60 p-5">
           <h4 className="font-heading text-lg font-bold text-ink">
-            Catatan Refleksi & Rencana Pilihan Ibu
+            Catatan Refleksi &amp; Rencana Pilihan Ibu (Level 3)
           </h4>
           {progress.reflectionNote && (
             <p className="mt-2 rounded-[20px] border border-pink-100 bg-surface p-4 text-base italic text-ink">
@@ -289,6 +291,33 @@ export function ResultSummary() {
           </div>
         </div>
       ) : null}
+
+      {/* Alur Langkah 9: Abadikan Momen Take Selfie Bersama Pasangan */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[24px] border border-pink-200 bg-gradient-to-r from-[#FDF2F5] via-[#FFF6F9] to-[#F5F8EB] p-5">
+        <div className="flex items-start gap-3.5">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#C84B71] text-white shadow-xs">
+            <Camera className="h-6 w-6" />
+          </span>
+          <div>
+            <h4 className="font-heading text-lg font-bold text-[#2A2D22]">
+              Abadikan Momen Belajar Bersama Pasangan!
+            </h4>
+            <p className="mt-0.5 text-xs sm:text-sm text-[#6E6A6C]">
+              Gunakan fitur <strong>Take Selfie</strong> dengan panduan pose garis putus-putus, tulis nama Ibu &amp; pasangan di bingkai foto, lalu unduh hasilnya.
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => enterWebApp('selfie')}
+          className="inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-full bg-[#C84B71] hover:bg-[#b23b60] px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-xs transition-all cursor-pointer"
+        >
+          <Camera className="h-4 w-4" />
+          <span>Buka Take Selfie</span>
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,5 @@
-// Lapisan data terpusat (Mock API) untuk Teman Kasih.
-// Semua komponen membaca dan menulis data hanya melalui fungsi di berkas ini.
-// Nantinya fungsi-fungsi ini dapat diganti dengan pemanggilan REST API / backend sungguhan.
+// Lapisan data terpusat (Mock API + LocalStorage Persistence) untuk Buna Ceria (Teman Kasih).
+// Mendukung 3 Role sesuai Client Brief: Pengunjung Umum, Pengguna Terdaftar, dan Admin.
 
 import { mockUsers } from '@/data/users';
 import { mockModules } from '@/data/modules';
@@ -38,13 +37,8 @@ import {
   UserSession,
 } from '@/types';
 
-const STAGE_ORDER: StageId[] = [
-  'materi',
-  'quiz',
-  'tahap-3',
-  'tahap-4',
-  'hasil-saya',
-];
+// 4 Level Tahapan Pembelajaran sesuai Client Brief No. 13, 14, dan User Flow No. 6
+const STAGE_ORDER: StageId[] = ['materi', 'quiz', 'tahap-3', 'hasil-saya'];
 
 function createDefaultProgress(userId: string): UserProgress {
   return {
@@ -63,20 +57,35 @@ function createDefaultProgress(userId: string): UserProgress {
 }
 
 // ============================================================================
-// 1. AUTENTIKASI & SESI
+// 1. MANAJEMEN PENGGUNA, REGISTRASI, LOGIN, PROFIL, & ADMIN USER CRUD
 // ============================================================================
+
+export function getAllUsers(): MockUser[] {
+  const saved = storage.getItem<MockUser[] | null>(STORAGE_KEYS.USERS_LIST, null);
+  if (!saved || saved.length === 0) {
+    return [...mockUsers];
+  }
+  return saved;
+}
+
+function saveAllUsers(users: MockUser[]): void {
+  storage.setItem(STORAGE_KEYS.USERS_LIST, users);
+}
 
 export function getDemoAccounts(): Pick<
   MockUser,
-  'name' | 'email' | 'phone' | 'password' | 'trimesterLabel'
+  'name' | 'email' | 'phone' | 'password' | 'trimesterLabel' | 'role'
 >[] {
-  return mockUsers.map(({ name, email, phone, password, trimesterLabel }) => ({
-    name,
-    email,
-    phone,
-    password,
-    trimesterLabel,
-  }));
+  return getAllUsers().map(
+    ({ name, email, phone, password, trimesterLabel, role }) => ({
+      name,
+      email,
+      phone,
+      password,
+      trimesterLabel,
+      role,
+    })
+  );
 }
 
 export function getSession(): UserSession | null {
@@ -93,18 +102,19 @@ export function login(
   if (!cleanId) {
     return {
       success: false,
-      error: 'Mohon isi alamat email atau nomor HP Ibu terlebih dahulu.',
+      error: 'Mohon isi alamat email atau nomor HP terlebih dahulu.',
     };
   }
 
   if (!password.trim()) {
     return {
       success: false,
-      error: 'Mohon isi kata sandi Ibu terlebih dahulu.',
+      error: 'Mohon isi kata sandi terlebih dahulu.',
     };
   }
 
-  const matchedUser = mockUsers.find(
+  const users = getAllUsers();
+  const matchedUser = users.find(
     (u) =>
       u.email.toLowerCase() === cleanId ||
       u.phone.replace(/[\s\-]/g, '') === cleanPhone
@@ -114,7 +124,7 @@ export function login(
     return {
       success: false,
       error:
-        'Maaf Ibu, email atau nomor HP tersebut belum terdaftar. Silakan gunakan salah satu dari 3 akun contoh yang tersedia.',
+        'Akun belum terdaftar. Silakan gunakan tab "Daftar Akun Baru" atau pilih salah satu akun contoh di bawah.',
     };
   }
 
@@ -131,7 +141,8 @@ export function login(
     name: matchedUser.name,
     email: matchedUser.email,
     phone: matchedUser.phone,
-    trimesterLabel: matchedUser.trimesterLabel,
+    trimesterLabel: matchedUser.trimesterLabel ?? 'Trimester 1',
+    role: matchedUser.role ?? 'user',
     loggedInAt: new Date().toISOString(),
   };
 
@@ -139,16 +150,183 @@ export function login(
   return { success: true, session };
 }
 
+export function registerUser(input: {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  trimesterLabel?: string;
+}): { success: true; session: UserSession } | { success: false; error: string } {
+  const name = input.name.trim();
+  const email = input.email.trim().toLowerCase();
+  const phone = input.phone.trim();
+  const password = input.password.trim();
+
+  if (!name) {
+    return { success: false, error: 'Mohon isi nama lengkap Bunda.' };
+  }
+  if (!email || !email.includes('@')) {
+    return { success: false, error: 'Mohon isi alamat email yang valid.' };
+  }
+  if (!password || password.length < 4) {
+    return {
+      success: false,
+      error: 'Kata sandi minimal terdiri dari 4 karakter.',
+    };
+  }
+
+  const users = getAllUsers();
+  if (users.some((u) => u.email.toLowerCase() === email)) {
+    return {
+      success: false,
+      error: 'Email tersebut sudah terdaftar. Silakan langsung masuk (Login).',
+    };
+  }
+
+  const newUser: MockUser = {
+    id: `user-${Date.now()}`,
+    name,
+    email,
+    phone: phone || '081200009999',
+    password,
+    trimesterLabel: input.trimesterLabel || 'Trimester 1',
+    role: 'user',
+  };
+
+  const updatedUsers = [...users, newUser];
+  saveAllUsers(updatedUsers);
+
+  const session: UserSession = {
+    id: newUser.id,
+    name: newUser.name,
+    email: newUser.email,
+    phone: newUser.phone,
+    trimesterLabel: newUser.trimesterLabel,
+    role: 'user',
+    loggedInAt: new Date().toISOString(),
+  };
+
+  storage.setItem(STORAGE_KEYS.SESSION, session);
+  return { success: true, session };
+}
+
+export function updateUserProfile(
+  userId: string,
+  updates: {
+    name: string;
+    email: string;
+    phone: string;
+    trimesterLabel?: string;
+    password?: string;
+  }
+): UserSession | null {
+  const users = getAllUsers();
+  const idx = users.findIndex((u) => u.id === userId);
+  const currentSession = getSession();
+
+  const updatedUser: MockUser =
+    idx >= 0
+      ? {
+          ...users[idx],
+          name: updates.name.trim() || users[idx].name,
+          email: updates.email.trim() || users[idx].email,
+          phone: updates.phone.trim() || users[idx].phone,
+          trimesterLabel: updates.trimesterLabel || users[idx].trimesterLabel,
+          password:
+            updates.password && updates.password.trim()
+              ? updates.password.trim()
+              : users[idx].password,
+        }
+      : {
+          id: userId,
+          name: updates.name.trim(),
+          email: updates.email.trim(),
+          phone: updates.phone.trim(),
+          trimesterLabel: updates.trimesterLabel || 'Trimester 1',
+          password: updates.password?.trim() || 'kasih123',
+          role: currentSession?.role ?? 'user',
+        };
+
+  if (idx >= 0) {
+    users[idx] = updatedUser;
+  } else {
+    users.push(updatedUser);
+  }
+  saveAllUsers(users);
+
+  if (currentSession && currentSession.id === userId) {
+    const newSession: UserSession = {
+      ...currentSession,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phone: updatedUser.phone,
+      trimesterLabel: updatedUser.trimesterLabel,
+    };
+    storage.setItem(STORAGE_KEYS.SESSION, newSession);
+    return newSession;
+  }
+  return currentSession;
+}
+
+export function adminSaveUser(user: MockUser): MockUser[] {
+  const users = getAllUsers();
+  const idx = users.findIndex((u) => u.id === user.id);
+  if (idx >= 0) {
+    users[idx] = user;
+  } else {
+    users.push(user);
+  }
+  saveAllUsers(users);
+  return [...users];
+}
+
+export function adminDeleteUser(userId: string): MockUser[] {
+  const users = getAllUsers().filter((u) => u.id !== userId);
+  saveAllUsers(users);
+  return users;
+}
+
 export function logout(): void {
   storage.removeItem(STORAGE_KEYS.SESSION);
 }
 
 // ============================================================================
-// 2. DATA KONTEN STATIS (MATERI, QUIZ, TIPS, AHLI, PUSTAKA, FOOTER)
+// 2. DATA KONTEN & ADMIN MATERI CRUD
 // ============================================================================
 
 export function getModules(): ModuleItem[] {
-  return [...mockModules].sort((a, b) => a.order - b.order);
+  const saved = storage.getItem<ModuleItem[] | null>(
+    STORAGE_KEYS.MODULES_LIST,
+    null
+  );
+  const source = saved && saved.length > 0 ? saved : mockModules;
+  return [...source].sort((a, b) => a.order - b.order);
+}
+
+export function adminSaveModule(mod: ModuleItem): ModuleItem[] {
+  const current = getModules();
+  const idx = current.findIndex((m) => m.id === mod.id);
+  if (idx >= 0) {
+    current[idx] = mod;
+  } else {
+    current.push(mod);
+  }
+  const sorted = [...current].sort((a, b) => a.order - b.order);
+  storage.setItem(STORAGE_KEYS.MODULES_LIST, sorted);
+  return sorted;
+}
+
+export function adminDeleteModule(moduleId: string): ModuleItem[] {
+  const filtered = getModules()
+    .filter((m) => m.id !== moduleId)
+    .map((m, idx) => ({ ...m, order: idx + 1 }));
+  storage.setItem(STORAGE_KEYS.MODULES_LIST, filtered);
+  return filtered;
+}
+
+export function adminResetModules(): ModuleItem[] {
+  storage.removeItem(STORAGE_KEYS.MODULES_LIST);
+  return getModules();
 }
 
 export function getQuizQuestions(): QuizQuestion[] {
@@ -198,7 +376,7 @@ export function getFooterContact(): FooterContactInfo {
 }
 
 // ============================================================================
-// 3. KUESIONER KECEMASAN (SEKALI TAMPIL PER AKUN)
+// 3. KUESIONER KECEMASAN (DISIMPAN PER AKUN)
 // ============================================================================
 
 export function getAnxietySubmission(userId: string): AnxietySubmission | null {
@@ -214,13 +392,12 @@ export function saveAnxietyAnswers(
   answers: Record<string, 0 | 1 | 2 | 3>
 ): AnxietySubmission {
   const questions = getAnxietyConfig().questions;
-  const maxScore = questions.length * 3; // 7 * 3 = 21
+  const maxScore = questions.length * 3;
   const totalScore = Object.values(answers).reduce<number>(
     (acc, val) => acc + val,
     0
   );
 
-  // Klasifikasi tingkat kecemasan secara lembut untuk menyesuaikan pesan pendampingan
   let level: 'rendah' | 'sedang' | 'tinggi' = 'rendah';
   if (totalScore >= 13) {
     level = 'tinggi';
@@ -248,7 +425,7 @@ export function saveAnxietyAnswers(
 }
 
 // ============================================================================
-// 4. PROGRES BELAJAR, ATURAN KUNCI TAHAPAN, DAN SKOR QUIZ
+// 4. PROGRES BELAJAR 4 LEVEL, ATURAN KUNCI TAHAPAN, DAN SKOR QUIZ
 // ============================================================================
 
 export function getUserProgress(userId: string): UserProgress {
@@ -256,7 +433,18 @@ export function getUserProgress(userId: string): UserProgress {
     STORAGE_KEYS.PROGRESS_BY_USER,
     {}
   );
-  return allProgress[userId] ?? createDefaultProgress(userId);
+  const saved = allProgress[userId];
+  if (!saved) {
+    return createDefaultProgress(userId);
+  }
+  // Normalisasi jika ada activeStageId lama ('tahap-4') menjadi 'tahap-3'
+  const validStage = STAGE_ORDER.includes(saved.activeStageId)
+    ? saved.activeStageId
+    : 'materi';
+  return {
+    ...saved,
+    activeStageId: validStage,
+  };
 }
 
 function saveUserProgress(progress: UserProgress): UserProgress {
@@ -275,7 +463,7 @@ function saveUserProgress(progress: UserProgress): UserProgress {
 
 /**
  * Menghitung status tiap materi (terkunci, terbuka, selesai).
- * Materi terbuka secara bertahap: Materi 1 terbuka saat sudah login,
+ * Materi terbuka secara bertahap: Materi 1 terbuka di awal,
  * Materi berikutnya terbuka setelah materi sebelumnya selesai dibaca.
  */
 export function getModuleStatuses(
@@ -285,8 +473,8 @@ export function getModuleStatuses(
   const statuses: Record<string, CompletionStatus> = {};
 
   if (!progress) {
-    modules.forEach((mod) => {
-      statuses[mod.id] = 'terkunci';
+    modules.forEach((mod, index) => {
+      statuses[mod.id] = index === 0 ? 'terbuka' : 'terkunci';
     });
     return statuses;
   }
@@ -308,18 +496,19 @@ export function getModuleStatuses(
 }
 
 /**
- * Menghitung status tiap bulatan tahapan (terkunci, terbuka, selesai).
- * Aturan kunci: Hanya tahap pertama yang terbuka di awal.
- * Tahap berikutnya terbuka hanya setelah tahap sebelumnya ditandai selesai.
+ * Menghitung status tiap bulatan 4 level tahapan (terkunci, terbuka, selesai).
+ * Aturan kunci (Client Brief No. 13 & User Flow No. 5-6):
+ * Hanya tahap pertama (Materi) yang terbuka di awal.
+ * Tahap berikutnya terbuka setelah tahap sebelumnya selesai:
+ * Level 1 (Materi) -> Level 2 (Quiz) -> Level 3 (Tahap 3) -> Level 4 (Hasil Saya).
  */
 export function getStageStatuses(
   progress: UserProgress | null
 ): Record<StageId, CompletionStatus> {
   const statuses: Record<StageId, CompletionStatus> = {
-    materi: 'terkunci',
+    materi: 'terbuka',
     quiz: 'terkunci',
     'tahap-3': 'terkunci',
-    'tahap-4': 'terkunci',
     'hasil-saya': 'terkunci',
   };
 
@@ -346,7 +535,6 @@ export function getStageStatuses(
 export function setActiveStage(userId: string, stageId: StageId): UserProgress {
   const current = getUserProgress(userId);
   const statuses = getStageStatuses(current);
-  // Cegah berpindah ke tahap yang masih terkunci
   if (statuses[stageId] === 'terkunci') {
     return current;
   }
@@ -358,7 +546,8 @@ export function setActiveStage(userId: string, stageId: StageId): UserProgress {
 
 /**
  * Menandai satu materi selesai dibaca.
- * Bila keempat materi sudah selesai dibaca, tahap 'materi' otomatis ditandai selesai.
+ * Bila semua materi sudah selesai dibaca, Level 1 ('materi') otomatis ditandai selesai
+ * sehingga Level 2 ('quiz') langsung terbuka.
  */
 export function completeModule(userId: string, moduleId: string): UserProgress {
   const current = getUserProgress(userId);
@@ -368,12 +557,10 @@ export function completeModule(userId: string, moduleId: string): UserProgress {
     ? current.completedModuleIds
     : [...current.completedModuleIds, moduleId];
 
-  const allFourCompleted = allModules.every((m) =>
-    updatedModules.includes(m.id)
-  );
+  const allCompleted = allModules.every((m) => updatedModules.includes(m.id));
 
   const updatedStages: StageId[] = [...current.completedStageIds];
-  if (allFourCompleted && !updatedStages.includes('materi')) {
+  if (allCompleted && !updatedStages.includes('materi')) {
     updatedStages.push('materi');
   }
 
@@ -385,8 +572,8 @@ export function completeModule(userId: string, moduleId: string): UserProgress {
 }
 
 /**
- * Menyimpan skor quiz. Menyimpan skor terbaik jika pengguna mengulang.
- * Setelah skor tersimpan, tahap 'quiz' otomatis ditandai selesai.
+ * Menyimpan skor quiz (Level 2).
+ * Setelah skor tersimpan, Level 2 ('quiz') otomatis selesai dan Level 3 ('tahap-3') terbuka.
  */
 export function saveQuizScore(
   userId: string,
@@ -406,9 +593,13 @@ export function saveQuizScore(
       ? correctCount
       : Math.max(current.bestQuizCorrectCount, correctCount);
 
-  const updatedStages: StageId[] = current.completedStageIds.includes('quiz')
-    ? current.completedStageIds
-    : [...current.completedStageIds, 'quiz'];
+  const updatedStages: StageId[] = [...current.completedStageIds];
+  if (!updatedStages.includes('materi')) {
+    updatedStages.push('materi');
+  }
+  if (!updatedStages.includes('quiz')) {
+    updatedStages.push('quiz');
+  }
 
   return saveUserProgress({
     ...current,
@@ -420,7 +611,7 @@ export function saveQuizScore(
 }
 
 /**
- * Menandai suatu tahap selesai dan membuka tahap berikutnya.
+ * Menandai suatu level selesai dan membuka level berikutnya.
  */
 export function completeStage(
   userId: string,
@@ -445,8 +636,6 @@ export function completeStage(
       ? STAGE_ORDER[currentIdx + 1]
       : current.activeStageId;
 
-  // Jika tahap berikutnya adalah 'hasil-saya' dan semua tahap sebelumnya selesai,
-  // tandai 'hasil-saya' selesai saat dibuka agar progres mencapai 100%.
   if (nextStageId === 'hasil-saya' && !updatedStages.includes('hasil-saya')) {
     updatedStages.push('hasil-saya');
   }

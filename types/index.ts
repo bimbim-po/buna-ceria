@@ -1,6 +1,8 @@
-// Definisi tipe data utama untuk aplikasi Teman Kasih
+// Definisi tipe data utama untuk aplikasi Buna Ceria (Teman Kasih)
 
 export type CompletionStatus = 'terkunci' | 'terbuka' | 'selesai';
+
+export type UserRole = 'user' | 'admin';
 
 export interface MockUser {
   id: string;
@@ -9,6 +11,7 @@ export interface MockUser {
   phone: string;
   password: string;
   trimesterLabel?: string;
+  role?: UserRole;
 }
 
 export interface UserSession {
@@ -17,6 +20,7 @@ export interface UserSession {
   email: string;
   phone: string;
   trimesterLabel?: string;
+  role?: UserRole;
   loggedInAt: string;
 }
 
@@ -93,7 +97,9 @@ export interface AnxietySubmission {
   completedAt: string;
 }
 
-export type StageId = 'materi' | 'quiz' | 'tahap-3' | 'tahap-4' | 'hasil-saya';
+// 4 Level Tahapan Pembelajaran sesuai Client Brief:
+// Level 1: Materi -> Level 2: Quiz -> Level 3: Tahap 3 (Refleksi & Evaluasi) -> Level 4: Hasil Saya
+export type StageId = 'materi' | 'quiz' | 'tahap-3' | 'hasil-saya';
 
 export interface StageDefinition {
   id: StageId;
@@ -102,8 +108,8 @@ export interface StageDefinition {
   shortTitle: string;
   subtitle: string;
   description: string;
-  // Konten tambahan untuk tahap refleksi / evaluasi akhir agar mudah diganti lewat berkas data
   prompts?: string[];
+  evaluationPrompts?: string[];
   actionLabel?: string;
 }
 
@@ -142,7 +148,7 @@ export interface ExpertContact {
   id: string;
   name: string;
   role: string;
-  whatsappNumber: string; // Format internasional tanpa +, misal 6281200000001 (fiktif)
+  whatsappNumber: string;
   displayPhone: string;
   initials: string;
   scheduleNote: string;

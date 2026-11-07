@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import {
   BookOpen,
+  Camera,
   ChevronLeft,
   ChevronRight,
   Globe,
@@ -12,7 +13,9 @@ import {
   Home,
   LogIn,
   Power,
+  RefreshCw,
   Settings,
+  ShieldCheck,
   Sun,
   X,
 } from 'lucide-react';
@@ -45,10 +48,14 @@ export function SidebarNav({
 
   const menuItems = [
     { id: 'beranda', label: 'Beranda', icon: Home },
-    { id: 'materi', label: 'Materi Kehamilan', icon: BookOpen },
+    { id: 'materi', label: 'Tahapan & Materi', icon: BookOpen },
     { id: 'tips', label: 'Tips Kehamilan', icon: Sun },
     { id: 'kontak-ahli', label: 'Kontak Ahli', icon: HeartHandshake },
+    { id: 'selfie', label: 'Take Selfie', icon: Camera, badge: 'Foto' },
     { id: 'pengaturan', label: 'Pengaturan', icon: Settings },
+    ...(session?.role === 'admin'
+      ? [{ id: 'admin', label: 'Panel Admin', icon: ShieldCheck, badge: 'Admin' }]
+      : []),
   ];
 
   const handleNavClick = (id: string) => {
@@ -60,7 +67,7 @@ export function SidebarNav({
 
   return (
     <aside
-      aria-label="Navigasi WebApp Teman Kasih"
+      aria-label="Navigasi WebApp Buna Ceria Teman Kasih"
       className={`flex h-full flex-col justify-between rounded-[24px] bg-white border border-[#ECE7F2] shadow-[0_4px_24px_rgba(40,40,60,0.04)] text-[#2A2D22] select-none transition-all duration-300 ${
         isCollapsed ? 'p-2.5 items-center' : 'p-3.5'
       }`}
@@ -70,7 +77,7 @@ export function SidebarNav({
             1. BRAND HEADER + TOGGLE BUTTON (BISA DIBUKA TUTUP)
            =================================================================== */}
         <div
-          className={`flex items-center pb-5 pt-1 ${
+          className={`flex items-center pb-4 pt-1 ${
             isCollapsed
               ? 'flex-col gap-3 justify-center'
               : 'justify-between gap-2'
@@ -83,12 +90,12 @@ export function SidebarNav({
             className={`flex items-center gap-3 text-left cursor-pointer group ${
               isCollapsed ? 'justify-center' : 'min-w-0'
             }`}
-            title="Teman Kasih - Beranda"
+            title="Buna Ceria • Teman Kasih - Beranda"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#FDF2F5] border border-pink-100 p-1.5 transition-transform group-hover:scale-105 shadow-2xs">
               <Image
                 src="/logo.png"
-                alt="Teman Kasih"
+                alt="Buna Ceria Teman Kasih"
                 width={32}
                 height={32}
                 className="h-7 w-7 object-contain"
@@ -98,10 +105,10 @@ export function SidebarNav({
             {!isCollapsed && (
               <div className="min-w-0 transition-opacity duration-200">
                 <span className="block font-heading text-base font-bold leading-tight text-[#2A2D22] truncate">
-                  Teman Kasih
+                  Buna Ceria
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#C84B71] truncate block">
-                  WebApp Belajar
+                  Teman Kasih App
                 </span>
               </div>
             )}
@@ -138,11 +145,11 @@ export function SidebarNav({
         </div>
 
         {/* ===================================================================
-            2. MENU NAVIGASI UTAMA
+            2. MENU NAVIGASI UTAMA (Item 21: Navbar untuk beralih ke halaman fitur)
            =================================================================== */}
         <nav
           aria-label="Menu WebApp"
-          className={`space-y-1.5 pt-2 ${
+          className={`space-y-1 pt-1 ${
             isCollapsed ? 'flex flex-col items-center' : ''
           }`}
         >
@@ -176,19 +183,34 @@ export function SidebarNav({
                 type="button"
                 onClick={() => handleNavClick(item.id)}
                 aria-current={isActive ? 'page' : undefined}
-                className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
+                className={`group relative flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
                   isActive
                     ? 'bg-[#C84B71] text-white font-bold shadow-xs'
                     : 'text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22]'
                 }`}
               >
-                <Icon
-                  className={`h-5 w-5 shrink-0 transition-colors ${
-                    isActive ? 'text-white' : 'text-[#8C8896] group-hover:text-[#2A2D22]'
-                  }`}
-                  strokeWidth={isActive ? 2.2 : 1.75}
-                />
-                <span className="truncate">{item.label}</span>
+                <div className="flex items-center gap-3 min-w-0">
+                  <Icon
+                    className={`h-4.5 w-4.5 shrink-0 transition-colors ${
+                      isActive ? 'text-white' : 'text-[#8C8896] group-hover:text-[#2A2D22]'
+                    }`}
+                    strokeWidth={isActive ? 2.2 : 1.75}
+                  />
+                  <span className="truncate">{item.label}</span>
+                </div>
+                {item.badge && (
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                      isActive
+                        ? 'bg-white/20 text-white'
+                        : item.id === 'admin'
+                        ? 'bg-[#F5F8EB] text-[#56632A]'
+                        : 'bg-[#FDF2F5] text-[#C84B71]'
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -196,16 +218,17 @@ export function SidebarNav({
       </div>
 
       {/* ===================================================================
-          3. BAGIAN BAWAH: WEBSITE UTAMA, KUESIONER, & MASUK/KELUAR
+          3. BAGIAN BAWAH: KEMBALI KE WEBSITE, KUESIONER, GANTI AKUN & KELUAR
+             (Items 22 & 23 Client Brief)
          =================================================================== */}
       <div
         className={`w-full pt-2.5 border-t border-[#F0ECF5] ${
           isCollapsed
-            ? 'flex flex-col items-center gap-1.5'
+            ? 'flex flex-col items-center gap-1'
             : 'space-y-1'
         }`}
       >
-        {/* Kuesioner Perasaan (Mood Check) */}
+        {/* Kuesioner Kecemasan */}
         {isCollapsed ? (
           <button
             type="button"
@@ -214,9 +237,9 @@ export function SidebarNav({
               if (!session) openLoginDialog();
               else openAnxietyDialog();
             }}
-            title="Kuesioner Perasaan"
-            aria-label="Kuesioner Perasaan"
-            className="flex h-10 w-10 items-center justify-center rounded-2xl text-pink-600 hover:bg-[#FDF2F5] transition-colors cursor-pointer"
+            title="Kuesioner Kecemasan"
+            aria-label="Kuesioner Kecemasan"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-pink-600 hover:bg-[#FDF2F5] transition-colors cursor-pointer"
           >
             <Heart className="h-4 w-4" />
           </button>
@@ -228,14 +251,14 @@ export function SidebarNav({
               if (!session) openLoginDialog();
               else openAnxietyDialog();
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-xs font-semibold text-[#6E6A6C] hover:bg-[#FDF2F5] hover:text-[#C84B71] transition-colors cursor-pointer"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-1.5 text-left text-xs font-semibold text-[#6E6A6C] hover:bg-[#FDF2F5] hover:text-[#C84B71] transition-colors cursor-pointer"
           >
-            <Heart className="h-4 w-4 text-pink-500" />
-            <span className="truncate">Kuesioner Perasaan</span>
+            <Heart className="h-4 w-4 text-pink-500 shrink-0" />
+            <span className="truncate">Kuesioner Kecemasan</span>
           </button>
         )}
 
-        {/* Link Kembali ke Website Utama (Landing Page) */}
+        {/* Item 22: Tombol Kembali ke Website */}
         {isCollapsed ? (
           <button
             type="button"
@@ -243,9 +266,9 @@ export function SidebarNav({
               if (onCloseMobile) onCloseMobile();
               enterLandingPage();
             }}
-            title="Lihat Website Utama"
-            aria-label="Lihat Website Utama"
-            className="flex h-10 w-10 items-center justify-center rounded-2xl text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22] transition-colors cursor-pointer"
+            title="Kembali ke Website"
+            aria-label="Kembali ke Website"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22] transition-colors cursor-pointer"
           >
             <Globe className="h-4 w-4" />
           </button>
@@ -256,41 +279,70 @@ export function SidebarNav({
               if (onCloseMobile) onCloseMobile();
               enterLandingPage();
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-xs font-semibold text-[#6E6A6C] hover:bg-gray-50 hover:text-[#2A2D22] transition-colors cursor-pointer"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-1.5 text-left text-xs font-semibold text-[#6E6A6C] hover:bg-gray-50 hover:text-[#2A2D22] transition-colors cursor-pointer"
           >
-            <Globe className="h-4 w-4 text-[#8C8896]" />
-            <span className="truncate">Website Utama</span>
+            <Globe className="h-4 w-4 text-[#8C8896] shrink-0" />
+            <span className="truncate">Kembali ke Website</span>
           </button>
         )}
 
-        {/* Tombol Masuk / Keluar */}
+        {/* Item 23: Tombol Ganti Akun / Keluar Akun */}
         {session ? (
-          isCollapsed ? (
-            <button
-              type="button"
-              onClick={() => {
-                if (onCloseMobile) onCloseMobile();
-                handleLogout();
-              }}
-              title="Keluar dari Akun"
-              aria-label="Keluar dari Akun"
-              className="flex h-10 w-10 items-center justify-center rounded-2xl text-pink-700 hover:bg-pink-50 transition-colors cursor-pointer"
-            >
-              <Power className="h-4 w-4" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                if (onCloseMobile) onCloseMobile();
-                handleLogout();
-              }}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-xs font-semibold text-pink-700 hover:bg-pink-50 transition-colors cursor-pointer"
-            >
-              <Power className="h-4 w-4" />
-              <span className="truncate">Keluar Akun</span>
-            </button>
-          )
+          <>
+            {isCollapsed ? (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onCloseMobile) onCloseMobile();
+                  openLoginDialog();
+                }}
+                title="Ganti Akun"
+                aria-label="Ganti Akun"
+                className="flex h-9 w-9 items-center justify-center rounded-xl text-[#56632A] hover:bg-[#F5F8EB] transition-colors cursor-pointer"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onCloseMobile) onCloseMobile();
+                  openLoginDialog();
+                }}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-1.5 text-left text-xs font-semibold text-[#56632A] hover:bg-[#F5F8EB] transition-colors cursor-pointer"
+              >
+                <RefreshCw className="h-4 w-4 shrink-0" />
+                <span className="truncate">Ganti Akun</span>
+              </button>
+            )}
+
+            {isCollapsed ? (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onCloseMobile) onCloseMobile();
+                  handleLogout();
+                }}
+                title="Keluar dari Akun"
+                aria-label="Keluar dari Akun"
+                className="flex h-9 w-9 items-center justify-center rounded-xl text-pink-700 hover:bg-pink-50 transition-colors cursor-pointer"
+              >
+                <Power className="h-4 w-4" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onCloseMobile) onCloseMobile();
+                  handleLogout();
+                }}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-1.5 text-left text-xs font-semibold text-pink-700 hover:bg-pink-50 transition-colors cursor-pointer"
+              >
+                <Power className="h-4 w-4 shrink-0" />
+                <span className="truncate">Keluar Akun</span>
+              </button>
+            )}
+          </>
         ) : isCollapsed ? (
           <button
             type="button"
@@ -298,9 +350,9 @@ export function SidebarNav({
               if (onCloseMobile) onCloseMobile();
               openLoginDialog();
             }}
-            title="Masuk Akun"
-            aria-label="Masuk Akun"
-            className="flex h-10 w-10 items-center justify-center rounded-2xl text-[#C84B71] hover:bg-pink-50 transition-colors cursor-pointer"
+            title="Masuk / Daftar Akun"
+            aria-label="Masuk / Daftar Akun"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-[#C84B71] hover:bg-pink-50 transition-colors cursor-pointer"
           >
             <LogIn className="h-4 w-4" />
           </button>
@@ -311,10 +363,10 @@ export function SidebarNav({
               if (onCloseMobile) onCloseMobile();
               openLoginDialog();
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-xs font-bold text-[#C84B71] hover:bg-pink-50 transition-colors cursor-pointer"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-1.5 text-left text-xs font-bold text-[#C84B71] hover:bg-pink-50 transition-colors cursor-pointer"
           >
-            <LogIn className="h-4 w-4" />
-            <span className="truncate">Masuk Akun</span>
+            <LogIn className="h-4 w-4 shrink-0" />
+            <span className="truncate">Masuk / Daftar Akun</span>
           </button>
         )}
       </div>

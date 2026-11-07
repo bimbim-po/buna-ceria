@@ -1,30 +1,41 @@
 import { MockUser } from '@/types';
 
-// TODO: Hubungkan dengan database autentikasi pengguna riil (OTP WhatsApp / Google Auth)
-// Data pengguna placeholder awal:
+// Data pengguna terdaftar & Admin sesuai Client Brief Bagian 3 (User Roles)
 export const mockUsers: MockUser[] = [
   {
     id: 'user-1',
-    name: 'Ibu Nadia Pratiwi',
-    email: 'nadia@temankasih.id',
+    name: 'Bunda Nadia Pratiwi',
+    email: 'nadia@bunaceria.id',
     phone: '081200001111',
     password: 'kasih123',
     trimesterLabel: 'Trimester 1',
+    role: 'user',
   },
   {
     id: 'user-2',
-    name: 'Ibu Raras Wulandari',
-    email: 'raras@temankasih.id',
+    name: 'Bunda Raras Wulandari',
+    email: 'raras@bunaceria.id',
     phone: '081200002222',
     password: 'kasih123',
     trimesterLabel: 'Trimester 2',
+    role: 'user',
   },
   {
     id: 'user-3',
-    name: 'Ibu Sinta Maharani',
-    email: 'sinta@temankasih.id',
+    name: 'Bunda Sinta Maharani',
+    email: 'sinta@bunaceria.id',
     phone: '081200003333',
     password: 'kasih123',
     trimesterLabel: 'Trimester 3',
+    role: 'user',
+  },
+  {
+    id: 'admin-1',
+    name: 'Kak Faiza (Admin Buna Ceria)',
+    email: 'admin@bunaceria.id',
+    phone: '085701308514',
+    password: 'admin123',
+    trimesterLabel: 'Administrator',
+    role: 'admin',
   },
 ];

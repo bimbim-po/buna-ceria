@@ -1,11 +1,13 @@
 // Modul pembungkus localStorage terpusat agar mudah diganti dengan penyimpanan backend nantinya
 
-const STORAGE_PREFIX = 'teman_kasih_v1_';
+const STORAGE_PREFIX = 'teman_kasih_v2_';
 
 export const STORAGE_KEYS = {
   SESSION: `${STORAGE_PREFIX}session`,
   ANXIETY_BY_USER: `${STORAGE_PREFIX}anxiety_by_user`,
   PROGRESS_BY_USER: `${STORAGE_PREFIX}progress_by_user`,
+  USERS_LIST: `${STORAGE_PREFIX}users_list`,
+  MODULES_LIST: `${STORAGE_PREFIX}modules_list`,
 } as const;
 
 function isBrowser(): boolean {
