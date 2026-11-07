@@ -384,7 +384,7 @@ export function LandingPage() {
                   className="h-full w-full object-contain"
                 />
               </div>
-              <h3 className="mt-6 font-sans text-base sm:text-lg font-bold text-[#2A2D22] leading-snug max-w-xs">
+              <h3 className="mt-6 min-h-[48px] font-sans text-base sm:text-lg font-bold text-[#2A2D22] leading-snug max-w-xs">
                 Dapatkan tips harian tentang kesehatan Bunda &amp; masa nifas
               </h3>
               <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#767A6E] max-w-xs">
@@ -403,7 +403,7 @@ export function LandingPage() {
                   className="h-full w-full object-contain"
                 />
               </div>
-              <h3 className="mt-6 font-sans text-base sm:text-lg font-bold text-[#2A2D22] leading-snug max-w-xs">
+              <h3 className="mt-6 min-h-[48px] font-sans text-base sm:text-lg font-bold text-[#2A2D22] leading-snug max-w-xs">
                 Memandu dalam setiap tahapan menyusui &amp; istirahat
               </h3>
               <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#767A6E] max-w-xs">
@@ -422,7 +422,7 @@ export function LandingPage() {
                   className="h-full w-full object-contain"
                 />
               </div>
-              <h3 className="mt-6 font-sans text-base sm:text-lg font-bold text-[#2A2D22] leading-snug max-w-xs">
+              <h3 className="mt-6 min-h-[48px] font-sans text-base sm:text-lg font-bold text-[#2A2D22] leading-snug max-w-xs">
                 Nggak usah lagi tebak-tebakan soal perawatan Bunda
               </h3>
               <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#767A6E] max-w-xs">
@@ -478,7 +478,7 @@ export function LandingPage() {
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
                 <BookOpen className="h-5 w-5" strokeWidth={1.8} />
               </span>
-              <h3 className="mt-4 font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
+              <h3 className="mt-4 truncate font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
                 4 Tingkatan Belajar
               </h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#767A6E]">
@@ -494,7 +494,7 @@ export function LandingPage() {
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
                 <FileText className="h-5 w-5" strokeWidth={1.8} />
               </span>
-              <h3 className="mt-4 font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
+              <h3 className="mt-4 truncate font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
                 Ruang Baca Fokus
               </h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#767A6E]">
@@ -510,7 +510,7 @@ export function LandingPage() {
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F2F5E8] text-[#8E9B5E]">
                 <CheckCircle2 className="h-5 w-5" strokeWidth={1.8} />
               </span>
-              <h3 className="mt-4 font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#8E9B5E] transition-colors">
+              <h3 className="mt-4 truncate font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#8E9B5E] transition-colors">
                 Kuis Pemahaman
               </h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#767A6E]">
@@ -526,7 +526,7 @@ export function LandingPage() {
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
                 <Heart className="h-5 w-5" strokeWidth={1.8} />
               </span>
-              <h3 className="mt-4 font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
+              <h3 className="mt-4 truncate font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
                 Dampingan Bidan &amp; Selfie
               </h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#767A6E]">

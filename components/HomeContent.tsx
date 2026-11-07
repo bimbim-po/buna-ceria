@@ -555,19 +555,19 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-200 hover:shadow-[0_10px_24px_rgba(200,75,113,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-3 min-w-0">
                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71] transition-transform group-hover:scale-105">
                                   <BookOpen className="h-5 w-5" />
                                 </span>
-                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
+                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
                                   Tahapan &amp; Materi
                                 </h3>
                               </div>
-                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
+                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
                                 Ikuti 4 level pembelajaran bertahap, baca modul kehamilan, &amp; kerjakan kuis.
                               </p>
                             </div>
-                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
+                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
                               <span>{completedStages}/4 Level Selesai</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -580,19 +580,19 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-green-200 hover:shadow-[0_10px_24px_rgba(80,110,50,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-3 min-w-0">
                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5F8EB] text-[#56632A] transition-transform group-hover:scale-105">
                                   <Sun className="h-5 w-5" />
                                 </span>
-                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-[#56632A] transition-colors">
+                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#56632A] transition-colors">
                                   Tips Kehamilan
                                 </h3>
                               </div>
-                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
+                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
                                 Langkah kecil harian merawat tubuh, nutrisi, dan ketenangan pikiran.
                               </p>
                             </div>
-                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#56632A]">
+                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#56632A]">
                               <span>{savedTipIds.length} Tersimpan</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -605,19 +605,19 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-blue-200 hover:shadow-[0_10px_24px_rgba(50,80,160,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-3 min-w-0">
                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-transform group-hover:scale-105">
                                   <HeartHandshake className="h-5 w-5" />
                                 </span>
-                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-blue-600 transition-colors">
+                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-blue-600 transition-colors">
                                   Kontak Ahli
                                 </h3>
                               </div>
-                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
+                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
                                 Konsultasi langsung via WhatsApp dengan bidan &amp; konselor ahli.
                               </p>
                             </div>
-                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-blue-600">
+                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-blue-600">
                               <span>4 Tenaga Ahli</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -630,19 +630,19 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-300 hover:shadow-[0_10px_24px_rgba(200,75,113,0.1)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-3 min-w-0">
                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71] transition-transform group-hover:scale-105">
                                   <Camera className="h-5 w-5" />
                                 </span>
-                                <h3 className="font-heading text-base font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
+                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
                                   Take Selfie
                                 </h3>
                               </div>
-                              <p className="mt-2.5 text-xs leading-relaxed text-[#767A6E]">
+                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
                                 Foto bersama pasangan dengan siluet garis putus-putus, edit nama, &amp; unduh.
                               </p>
                             </div>
-                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
+                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
                               <span>Buka Studio Foto</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -801,15 +801,17 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                   </button>
                                 </div>
 
-                                <div className="mt-4 relative z-10 max-w-[64%] space-y-1.5">
-                                  <h3 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug group-hover:text-[#C84B71] transition-colors">
-                                    {card.title}
-                                  </h3>
-                                  <p className="text-xs text-[#555] leading-relaxed line-clamp-2">
-                                    {card.description}
-                                  </p>
+                                <div className="mt-4 relative z-10 max-w-[64%] flex flex-col justify-between flex-1">
+                                  <div>
+                                    <h3 className="font-heading text-base font-bold text-[#2A2D22] leading-snug line-clamp-2 h-[44px] group-hover:text-[#C84B71] transition-colors">
+                                      {card.title}
+                                    </h3>
+                                    <p className="mt-1 text-xs text-[#555] leading-relaxed line-clamp-2 h-[38px]">
+                                      {card.description}
+                                    </p>
+                                  </div>
 
-                                  <div className="pt-2.5 flex flex-wrap items-center gap-2">
+                                  <div className="pt-3 flex items-center gap-2 whitespace-nowrap">
                                     <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#767A6E]">
                                       <Clock className="h-3 w-3" />
                                       <span>{card.readingTime}</span>
@@ -968,13 +970,16 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 </div>
 
                                 <div className="mt-3.5 px-1">
-                                  <h3 className="font-heading text-sm font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
+                                  <h3
+                                    title={exp.name}
+                                    className="truncate font-heading text-sm font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors"
+                                  >
                                     {exp.name}
                                   </h3>
-                                  <p className="mt-0.5 text-xs font-medium text-[#767A6E]">
+                                  <p className="mt-0.5 truncate text-xs font-medium text-[#767A6E]">
                                     {exp.role}
                                   </p>
-                                  <p className="mt-1 text-[11px] text-[#A09CA8]">
+                                  <p className="mt-1 truncate text-[11px] text-[#A09CA8]">
                                     {exp.experienceLabel ?? exp.scheduleNote}
                                   </p>
                                 </div>

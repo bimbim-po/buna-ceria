@@ -22,7 +22,7 @@ export const mockPregnancyTips: PregnancyTip[] = [
   },
   {
     id: 'tip-3',
-    title: 'Istirahat Tanpa Rasa Bersalah',
+    title: 'Istirahat Saat Tubuh Lelah',
     description:
       'Dengarkan sinyal tubuh saat mulai lelah dan beri izin diri sendiri untuk rebahan sejenak tanpa membebani pikiran.',
     iconName: 'Moon',
@@ -35,7 +35,7 @@ export const mockPregnancyTips: PregnancyTip[] = [
     description:
       'Luangkan 10 menit setiap malam untuk berbagi cerita ringan bersama pasangan agar ikatan emosional semakin hangat.',
     iconName: 'Heart',
-    tags: ['Dukungan Pasangan', 'Malam Hari', 'Harmonis'],
+    tags: ['Waktu Pasangan', 'Malam Hari', 'Harmonis'],
     category: 'Koneksi Keluarga',
   },
   {
@@ -44,8 +44,8 @@ export const mockPregnancyTips: PregnancyTip[] = [
     description:
       'Pilih bacaan tepercaya dan hindari menelusuri kabar simpang siur yang memicu rasa cemas menjelang waktu tidur.',
     iconName: 'ShieldCheck',
-    tags: ['Kesehatan Mental', 'Sebelum Tidur', 'Buku KIA'],
-    category: 'Penyaring Informasi',
+    tags: ['Pikiran Tenang', 'Buku KIA', 'Sebelum Tidur'],
+    category: 'Saring Informasi',
   },
   {
     id: 'tip-6',

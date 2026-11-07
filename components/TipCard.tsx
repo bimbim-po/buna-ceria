@@ -98,110 +98,110 @@ export function TipCard({ tip, isSaved, onToggleSave, orderNumber }: TipCardProp
   return (
     <article
       aria-label={`Tips: ${tip.title}`}
-      className="group relative flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.06)] hover:-translate-y-1 transition-all duration-300"
+      className="group relative flex h-full flex-col rounded-[22px] border border-[#ECE7F2] bg-white p-5 shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.06)] hover:-translate-y-0.5 transition-all duration-300"
     >
-      <div>
-        {/* ===================================================================
-            1. TOP ROW: Numbered Title (Left) + Bookmark & Actions (Right)
-            Sesuai tangkapan layar referensi: "1. Judul Tips" + Deskripsi
-           =================================================================== */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 pr-2">
-            <h3 className="font-heading text-base sm:text-[17px] font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors leading-snug">
-              {tipNum}. {tip.title}
-            </h3>
-            <p className="mt-1 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C] line-clamp-2">
-              {tip.description}
-            </p>
-          </div>
+      {/* ===================================================================
+          1. TOP ROW: Numbered Title (1 Line Fixed Height) + Bookmark & Actions
+         =================================================================== */}
+      <div className="flex h-7 items-center justify-between gap-2">
+        <h3
+          title={`${tipNum}. ${tip.title}`}
+          className="min-w-0 flex-1 truncate font-heading text-[15px] font-bold tracking-[-0.01em] text-[#2A2D22] group-hover:text-[#C84B71] transition-colors leading-snug"
+        >
+          {tipNum}. {tip.title}
+        </h3>
 
-          <div className="relative flex items-center gap-1 shrink-0 pt-0.5">
-            <button
-              type="button"
-              onClick={() => onToggleSave(tip.id)}
-              aria-label={isSaved ? 'Hapus dari simpanan' : 'Simpan tips kehamilan'}
-              title={isSaved ? 'Tersimpan di bookmark' : 'Simpan tips'}
-              className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors cursor-pointer ${
-                isSaved
-                  ? 'bg-pink-100 text-[#C84B71]'
-                  : 'bg-[#FAF8FC] text-[#8C8896] hover:bg-[#FDF2F5] hover:text-[#C84B71]'
-              }`}
-            >
-              <Bookmark
-                className={`h-4 w-4 ${isSaved ? 'fill-current' : ''}`}
-                strokeWidth={2}
-              />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              aria-expanded={menuOpen}
-              aria-label="Menu opsi tips"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FAF8FC] text-[#8C8896] hover:bg-gray-100 hover:text-[#2A2D22] transition-colors cursor-pointer"
-            >
-              <MoreVertical className="h-4 w-4" />
-            </button>
-
-            {menuOpen && (
-              <div
-                role="menu"
-                className="absolute right-0 top-9 z-30 w-36 overflow-hidden rounded-2xl border border-[#ECE7F2] bg-white p-1.5 shadow-lg select-none"
-              >
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#2A2D22] hover:bg-[#FAF8FC] transition-colors cursor-pointer"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="h-3.5 w-3.5 text-green-600" />
-                      <span className="text-green-700 font-bold">Tersalin!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="h-3.5 w-3.5 text-gray-400" />
-                      <span>Salin Tips</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ===================================================================
-            2. MIDDLE ROW: HORIZONTAL ILLUSTRATION BANNER
-            Sesuai referensi gambar klien (Wadah Banner Persegi Panjang Horizontal
-            dengan latar pastel lembut dan ilustrasi 3D di dalamnya)
-           =================================================================== */}
-        <div className="mt-4">
-          <div
-            className={`w-full h-32 sm:h-36 rounded-[16px] border ${theme.bannerBorder} ${theme.bannerBg} flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:shadow-inner`}
+        <div className="relative flex items-center gap-1 shrink-0">
+          <button
+            type="button"
+            onClick={() => onToggleSave(tip.id)}
+            aria-label={isSaved ? 'Hapus dari simpanan' : 'Simpan tips kehamilan'}
+            title={isSaved ? 'Tersimpan di bookmark' : 'Simpan tips'}
+            className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors cursor-pointer ${
+              isSaved
+                ? 'bg-pink-100 text-[#C84B71]'
+                : 'bg-[#FAF8FC] text-[#8C8896] hover:bg-[#FDF2F5] hover:text-[#C84B71]'
+            }`}
           >
-            <div className="relative h-24 w-24 sm:h-28 sm:w-28 transition-transform duration-300 group-hover:scale-108">
-              <Image
-                src={theme.imageSrc}
-                alt={theme.imageAlt}
-                fill
-                sizes="(max-width: 640px) 120px, 150px"
-                className="object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,0.12)]"
-                priority={tipNum <= 2}
-              />
+            <Bookmark
+              className={`h-3.5 w-3.5 ${isSaved ? 'fill-current' : ''}`}
+              strokeWidth={2}
+            />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-expanded={menuOpen}
+            aria-label="Menu opsi tips"
+            className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FAF8FC] text-[#8C8896] hover:bg-gray-100 hover:text-[#2A2D22] transition-colors cursor-pointer"
+          >
+            <MoreVertical className="h-3.5 w-3.5" />
+          </button>
+
+          {menuOpen && (
+            <div
+              role="menu"
+              className="absolute right-0 top-8 z-30 w-36 overflow-hidden rounded-2xl border border-[#ECE7F2] bg-white p-1.5 shadow-lg select-none"
+            >
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#2A2D22] hover:bg-[#FAF8FC] transition-colors cursor-pointer"
+              >
+                {copied ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-green-600" />
+                    <span className="text-green-700 font-bold">Tersalin!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5 text-gray-400" />
+                    <span>Salin Tips</span>
+                  </>
+                )}
+              </button>
             </div>
+          )}
+        </div>
+      </div>
+
+      {/* ===================================================================
+          2. DESCRIPTION ROW: Full-width, Exact 2-Line Height (38px)
+         =================================================================== */}
+      <p className="mt-1.5 h-[38px] w-full text-xs leading-[1.58] text-[#6E6A6C] line-clamp-2">
+        {tip.description}
+      </p>
+
+      {/* ===================================================================
+          3. MIDDLE ROW: HORIZONTAL ILLUSTRATION BANNER (Exact Same Y-Offset)
+         =================================================================== */}
+      <div className="mt-3.5">
+        <div
+          className={`w-full h-36 rounded-[16px] border ${theme.bannerBorder} ${theme.bannerBg} flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:shadow-inner`}
+        >
+          <div className="relative h-28 w-28 transition-transform duration-300 group-hover:scale-105">
+            <Image
+              src={theme.imageSrc}
+              alt={theme.imageAlt}
+              fill
+              sizes="(max-width: 640px) 120px, 150px"
+              className="object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,0.12)]"
+              priority={tipNum <= 2}
+            />
           </div>
         </div>
       </div>
 
-      {/* =====================================================================
-          3. CARD BOTTOM: Cute Pastel Pill Badges (Tags & Kategori)
-         ===================================================================== */}
-      <div className="mt-4 pt-3 border-t border-[#F0ECF5] flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap items-center gap-1.5">
-          {tags.map((tag, idx) => (
+      {/* ===================================================================
+          4. CARD BOTTOM: Single-Line Aligned Tags + Category (No Wrapping)
+         =================================================================== */}
+      <div className="mt-4 pt-3 border-t border-[#F0ECF5] flex h-8 items-center justify-between gap-2 whitespace-nowrap overflow-hidden">
+        <div className="flex items-center gap-1.5 min-w-0 overflow-hidden">
+          {tags.slice(0, 2).map((tag, idx) => (
             <span
               key={idx}
-              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+              className={`inline-flex shrink-0 items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
                 idx === 0
                   ? theme.pillBg + ' ' + theme.pillText
                   : 'bg-[#FAF8FC] text-[#6E6A6C] border border-[#ECE7F2]'
@@ -212,7 +212,7 @@ export function TipCard({ tip, isSaved, onToggleSave, orderNumber }: TipCardProp
           ))}
         </div>
 
-        <span className="text-[11px] font-semibold text-[#8C8896]">
+        <span className="shrink-0 text-[11px] font-semibold text-[#8C8896]">
           {tip.category ?? 'Tips Kehamilan'}
         </span>
       </div>
