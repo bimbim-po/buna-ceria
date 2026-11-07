@@ -183,7 +183,7 @@ export function SidebarNav({
                 type="button"
                 onClick={() => handleNavClick(item.id)}
                 aria-current={isActive ? 'page' : undefined}
-                className={`group relative flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
+                className={`group relative flex min-h-[40px] w-full items-center justify-between gap-2 rounded-xl px-3.5 py-2 text-left text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
                   isActive
                     ? 'bg-[#C84B71] text-white font-bold shadow-xs'
                     : 'text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22]'
@@ -191,7 +191,7 @@ export function SidebarNav({
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <Icon
-                    className={`h-4.5 w-4.5 shrink-0 transition-colors ${
+                    className={`h-[18px] w-[18px] shrink-0 transition-colors ${
                       isActive ? 'text-white' : 'text-[#8C8896] group-hover:text-[#2A2D22]'
                     }`}
                     strokeWidth={isActive ? 2.2 : 1.75}
@@ -200,7 +200,7 @@ export function SidebarNav({
                 </div>
                 {item.badge && (
                   <span
-                    className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                    className={`rounded-full px-2 py-0.5 text-[10px] font-bold shrink-0 ${
                       isActive
                         ? 'bg-white/20 text-white'
                         : item.id === 'admin'

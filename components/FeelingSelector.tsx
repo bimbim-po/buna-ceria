@@ -265,29 +265,29 @@ export function FeelingSelector() {
   return (
     <section
       aria-labelledby="feelings-heading"
-      className="space-y-5"
+      className="space-y-3.5"
     >
       {/* Kepala Bagian */}
       <div className="max-w-2xl">
         <h2
           id="feelings-heading"
-          className="font-heading text-2xl font-bold tracking-tight text-ink sm:text-3xl"
+          className="font-heading text-lg font-bold tracking-tight text-[#2A2D22] sm:text-xl"
         >
           {uiContent.feelingsSection.sectionTitle}
         </h2>
-        <p className="mt-1.5 text-base leading-relaxed text-ink-muted">
+        <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[#6E6A6C]">
           {uiContent.feelingsSection.sectionSubtitle}
         </p>
       </div>
 
-      {/* Kontainer: Menu Perasaan di Kiri & Kanvas Putih di Kanan (Profesional, Bersih, dan Segar) */}
-      <div className="overflow-hidden rounded-[22px] border border-[#ECE7F2] bg-white p-2.5 sm:p-3 shadow-[0_4px_20px_rgba(40,40,60,0.03)]">
-        <div className="flex flex-col md:flex-row gap-3">
+      {/* Kontainer: Menu Perasaan di Kiri & Kanvas Putih di Kanan */}
+      <div className="overflow-hidden rounded-[24px] border border-[#ECE7F2] bg-white p-3 sm:p-4 shadow-2xs">
+        <div className="flex flex-col md:flex-row gap-4 items-stretch">
           {/* Kolom Kiri: Daftar Pilihan Perasaan dengan Pill Tab yang Rapi */}
           <div
             role="tablist"
             aria-label="Pilih perasaan yang sedang Ibu hadapi"
-            className="grid grid-cols-2 gap-1.5 pb-1 md:flex md:w-56 md:shrink-0 md:flex-col md:justify-center md:gap-1.5 md:p-1.5 bg-[#FAF9FB] rounded-[18px] border border-[#F0ECF5]"
+            className="grid grid-cols-2 gap-1.5 md:flex md:w-60 md:shrink-0 md:flex-col md:justify-between md:gap-1.5 p-2 bg-[#FAF9FB] rounded-[18px] border border-[#F0ECF5]"
           >
             {topics.map((topic) => {
               const isSelected = topic.id === activeTopic.id;
@@ -303,8 +303,8 @@ export function FeelingSelector() {
                   onClick={() => setSelectedId(topic.id)}
                   className={`group relative flex min-h-[42px] items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all duration-200 cursor-pointer ${
                     isSelected
-                      ? 'bg-white font-bold text-[#2A2D22] shadow-xs border border-pink-200/80'
-                      : 'font-medium text-[#6E6A6C] hover:bg-white/70 hover:text-[#2A2D22]'
+                      ? 'bg-white font-bold text-[#2A2D22] shadow-2xs border border-pink-200/80'
+                      : 'font-medium text-[#6E6A6C] hover:bg-white/80 hover:text-[#2A2D22]'
                   }`}
                 >
                   <span
@@ -336,7 +336,7 @@ export function FeelingSelector() {
             >
               {/* Bagian Atas: Ilustrasi + Judul + Saran Bidan */}
               <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-pink-100 bg-[#FDF9FA] p-1.5 shadow-2xs">
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-pink-100 bg-[#FDF9FA] p-2 shadow-2xs">
                   <FeelingIllustration id={activeTopic.id} />
                 </div>
 
@@ -349,20 +349,20 @@ export function FeelingSelector() {
                     {activeTopic.title}
                   </h3>
 
-                  <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-[#6E6A6C]">
+                  <p className="mt-1.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
                     {activeTopic.advice}
                   </p>
                 </div>
               </div>
 
               {/* Bagian Bawah: Baris Tombol Aksi yang Rapi & Proporsional */}
-              <div className="mt-6 flex flex-col gap-2.5 border-t border-[#F0ECF5] pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+              <div className="mt-6 flex flex-col gap-3 border-t border-[#F0ECF5] pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                 <button
                   type="button"
                   onClick={() =>
                     openModuleReader(activeTopic.recommendedModuleId)
                   }
-                  className="inline-flex h-9.5 items-center justify-center gap-2 rounded-full border border-[#ECE7F2] bg-[#FAF8FC] px-4 text-xs font-semibold text-[#2A2D22] hover:bg-white hover:border-pink-200 hover:text-[#C84B71] transition-all cursor-pointer shadow-2xs hover:-translate-y-0.5 active:scale-95"
+                  className="inline-flex min-h-[40px] items-center justify-center gap-2 rounded-full border border-[#ECE7F2] bg-[#FAF8FC] px-4 py-2 text-xs font-bold text-[#2A2D22] hover:bg-white hover:border-pink-200 hover:text-[#C84B71] transition-all cursor-pointer shadow-2xs"
                 >
                   <BookOpen
                     className="h-3.5 w-3.5 text-[#C84B71]"
@@ -377,11 +377,11 @@ export function FeelingSelector() {
                   />
                 </button>
 
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <button
                     type="button"
                     onClick={handleOpenAnxietyCheck}
-                    className="inline-flex h-9.5 flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#C84B71] px-4.5 text-xs font-semibold text-white shadow-xs hover:bg-[#b23b60] transition-all cursor-pointer hover:-translate-y-0.5 active:scale-95"
+                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#C84B71] px-4 py-2 text-xs font-bold text-white shadow-2xs hover:bg-[#b23b60] transition-all cursor-pointer"
                   >
                     <ClipboardCheck
                       className="h-3.5 w-3.5"
@@ -394,7 +394,7 @@ export function FeelingSelector() {
                   <button
                     type="button"
                     onClick={handleContactExpert}
-                    className="inline-flex h-9.5 flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#EBF7EE] border border-green-200 px-4 text-xs font-semibold text-green-700 hover:bg-green-100 transition-all cursor-pointer hover:-translate-y-0.5 active:scale-95"
+                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#EBF7EE] border border-green-200 px-4 py-2 text-xs font-bold text-green-700 hover:bg-green-100 transition-all cursor-pointer"
                   >
                     <HeartHandshake
                       className="h-3.5 w-3.5"

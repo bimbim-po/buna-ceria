@@ -44,6 +44,7 @@ export function StageTracker({
 
   const stages = getStages();
   const activeStageId = progress?.activeStageId ?? 'materi';
+  const completedCount = progress?.completedStageIds.length ?? 0;
 
   const handleStageClick = (stageId: StageId, isLocked: boolean) => {
     if (previewLockedOnly) return;
@@ -64,11 +65,24 @@ export function StageTracker({
   };
 
   return (
-    <div className="w-full">
-      <div className="overflow-x-auto pb-2">
+    <div className="w-full rounded-[24px] border border-[#ECE7F2] bg-white p-5 sm:p-6 shadow-2xs">
+      {/* Header Bar Kecil di Atas Bulatan */}
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-[#F0ECF5] pb-3.5">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#C84B71]" />
+          <span className="text-xs font-bold uppercase tracking-wider text-[#2A2D22]">
+            Tahapan Pembelajaran Bertahap (4 Level)
+          </span>
+        </div>
+        <span className="rounded-full bg-[#F5F8EB] border border-[#E4EAC9] px-3 py-0.5 text-xs font-bold text-[#56632A]">
+          {completedCount} dari {stages.length} Level Selesai
+        </span>
+      </div>
+
+      <div className="overflow-x-auto pb-1">
         <ol
           aria-label="4 Level Tahapan Pembelajaran Buna Ceria"
-          className="mx-auto flex min-w-[320px] max-w-3xl items-start justify-between gap-2 px-2 pt-3 sm:gap-4"
+          className="mx-auto flex min-w-[340px] max-w-3xl items-start justify-between gap-2 px-2 py-2 sm:gap-4"
         >
           {stages.map((stage, idx) => {
             const status = previewLockedOnly
@@ -91,7 +105,7 @@ export function StageTracker({
                 {idx < stages.length - 1 && (
                   <div
                     aria-hidden="true"
-                    className="absolute top-7 left-[calc(50%+28px)] right-[calc(-50%+28px)] h-1.5 overflow-hidden rounded-full bg-[#EAE6EE]"
+                    className="absolute top-[25px] left-[calc(50%+30px)] right-[calc(-50%+30px)] h-1.5 overflow-hidden rounded-full bg-[#EAE6EE]"
                   >
                     <motion.div
                       initial={false}
@@ -136,7 +150,7 @@ export function StageTracker({
                     whileHover={
                       !isLocked && !previewLockedOnly
                         ? {
-                            scale: 1.08,
+                            scale: 1.07,
                             transition: {
                               type: 'spring',
                               stiffness: 450,
@@ -167,13 +181,13 @@ export function StageTracker({
                     }
                     className={`relative z-10 flex h-14 w-14 min-h-[56px] min-w-[56px] items-center justify-center rounded-full border-2 font-heading text-base font-extrabold transition-all duration-300 ${
                       isCompleted
-                        ? 'border-[#56632A] bg-[#A8B371] text-white shadow-sm cursor-pointer'
+                        ? 'border-[#56632A] bg-[#A8B371] text-white shadow-xs cursor-pointer'
                         : isOpen
-                        ? 'border-[#C84B71] bg-[#F5AFB9] text-[#2A2D22] shadow-sm cursor-pointer'
+                        ? 'border-[#C84B71] bg-[#F5AFB9] text-[#2A2D22] shadow-xs cursor-pointer'
                         : 'border-[#E0DCE6] bg-[#F5F3F7] text-[#9E9AA8] cursor-not-allowed'
                     } ${
                       isActive
-                        ? 'ring-4 ring-[#F5AFB9]/45 ring-offset-2 ring-offset-white scale-105'
+                        ? 'ring-4 ring-[#F5AFB9]/45 ring-offset-2 ring-offset-white'
                         : ''
                     }`}
                   >
@@ -225,11 +239,11 @@ export function StageTracker({
                 </div>
 
                 {/* Label Level & Nama Tahap */}
-                <span className="mt-2 text-[10px] font-extrabold uppercase tracking-wider text-[#8C8896]">
+                <span className="mt-2.5 text-[10px] font-extrabold uppercase tracking-wider text-[#8C8896]">
                   Level {stage.order}
                 </span>
                 <span
-                  className={`mt-0.5 px-1 font-heading text-xs sm:text-sm font-bold leading-tight ${
+                  className={`mt-0.5 px-1 font-heading text-xs sm:text-sm font-bold leading-snug ${
                     isActive
                       ? 'text-[#C84B71]'
                       : isCompleted
@@ -244,7 +258,7 @@ export function StageTracker({
 
                 {/* Status Badge */}
                 <span
-                  className={`mt-1 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
+                  className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
                     isCompleted
                       ? 'bg-[#EBF3D8] text-[#56632A]'
                       : isOpen
@@ -282,7 +296,7 @@ export function StageTracker({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22, ease: CUSTOM_EASE }}
-            className="mx-auto mt-3 flex max-w-md items-center justify-center gap-2 rounded-full border border-pink-200 bg-[#FDF2F5] px-5 py-2 text-center text-xs sm:text-sm font-bold text-[#C84B71] shadow-2xs"
+            className="mx-auto mt-4 flex max-w-md items-center justify-center gap-2 rounded-full border border-pink-200 bg-[#FDF2F5] px-5 py-2 text-center text-xs sm:text-sm font-bold text-[#C84B71] shadow-2xs"
           >
             <Sparkles className="h-4 w-4 shrink-0 text-[#C84B71]" />
             <span>{lockedNotice}</span>

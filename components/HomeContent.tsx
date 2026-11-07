@@ -547,12 +547,12 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
                           {/* Tile 1: Tahapan & Materi (4 Level) */}
                           <button
                             type="button"
                             onClick={() => handleSelectSection('materi')}
-                            className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-200 hover:shadow-[0_10px_24px_rgba(200,75,113,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
+                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-200 hover:shadow-[0_10px_24px_rgba(200,75,113,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
                               <div className="flex items-center gap-3">
@@ -567,7 +567,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 Ikuti 4 level pembelajaran bertahap, baca modul kehamilan, &amp; kerjakan kuis.
                               </p>
                             </div>
-                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
+                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
                               <span>{completedStages}/4 Level Selesai</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -577,7 +577,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           <button
                             type="button"
                             onClick={() => handleSelectSection('tips')}
-                            className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-green-200 hover:shadow-[0_10px_24px_rgba(80,110,50,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
+                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-green-200 hover:shadow-[0_10px_24px_rgba(80,110,50,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
                               <div className="flex items-center gap-3">
@@ -592,7 +592,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 Langkah kecil harian merawat tubuh, nutrisi, dan ketenangan pikiran.
                               </p>
                             </div>
-                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#56632A]">
+                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#56632A]">
                               <span>{savedTipIds.length} Tersimpan</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -602,7 +602,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           <button
                             type="button"
                             onClick={() => handleSelectSection('kontak-ahli')}
-                            className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-blue-200 hover:shadow-[0_10px_24px_rgba(50,80,160,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
+                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-blue-200 hover:shadow-[0_10px_24px_rgba(50,80,160,0.08)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
                               <div className="flex items-center gap-3">
@@ -617,7 +617,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 Konsultasi langsung via WhatsApp dengan bidan &amp; konselor ahli.
                               </p>
                             </div>
-                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-blue-600">
+                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-blue-600">
                               <span>4 Tenaga Ahli</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -627,7 +627,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           <button
                             type="button"
                             onClick={() => handleSelectSection('selfie')}
-                            className="group flex flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-300 hover:shadow-[0_10px_24px_rgba(200,75,113,0.1)] hover:-translate-y-0.5 transition-all cursor-pointer"
+                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#ECE7F2] bg-white p-5 text-left shadow-2xs hover:border-pink-300 hover:shadow-[0_10px_24px_rgba(200,75,113,0.1)] hover:-translate-y-0.5 transition-all cursor-pointer"
                           >
                             <div>
                               <div className="flex items-center gap-3">
@@ -642,7 +642,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 Foto bersama pasangan dengan siluet garis putus-putus, edit nama, &amp; unduh.
                               </p>
                             </div>
-                            <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
+                            <div className="mt-5 flex items-center justify-between pt-3 border-t border-[#F0ECF5] text-xs font-bold text-[#C84B71]">
                               <span>Buka Studio Foto</span>
                               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </div>
@@ -759,7 +759,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 overflow-visible pt-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 pt-1 items-stretch">
                           {UNIFIED_LEARNING_CARDS.map((card) => {
                             let isDone = false;
                             if (card.type === 'module' && card.moduleId) {
@@ -778,17 +778,17 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                               <div
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
-                                className={`group relative overflow-visible rounded-[22px] sm:rounded-[24px] p-5 sm:p-6 border ${card.cardBorder} ${card.cardGradient} shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer min-h-[210px] sm:min-h-[225px] flex flex-col justify-between`}
+                                className={`group relative overflow-hidden rounded-[24px] p-5 sm:p-6 border ${card.cardBorder} ${card.cardGradient} shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer min-h-[215px] sm:min-h-[225px] flex flex-col justify-between`}
                               >
                                 <div className="flex items-center justify-between gap-3 relative z-10">
-                                  <div className="inline-flex items-center gap-2">
+                                  <div className="inline-flex items-center gap-2 min-w-0">
                                     <span
-                                      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold ${card.badgeBg} ${card.badgeTextColor} shadow-2xs`}
+                                      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold ${card.badgeBg} ${card.badgeTextColor} shadow-2xs`}
                                     >
                                       <Sparkles className="h-3 w-3" />
                                       <span>{card.badgeText}</span>
                                     </span>
-                                    <span className="text-[11px] font-semibold text-[#767A6E]">
+                                    <span className="truncate text-[11px] font-semibold text-[#767A6E]">
                                       {card.category}
                                     </span>
                                   </div>
@@ -801,13 +801,13 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                     }}
                                     title={`Lihat ringkasan ${card.title}`}
                                     aria-label={`Informasi ${card.title}`}
-                                    className="flex h-7 w-7 sm:h-7.5 sm:w-7.5 items-center justify-center rounded-full bg-white/95 border border-[#ECE7F2] text-[#4A4D40] hover:bg-white hover:text-black hover:border-gray-300 text-xs font-black shadow-2xs hover:shadow-xs transition-all hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-xs"
+                                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/95 border border-[#ECE7F2] text-[#4A4D40] hover:bg-white hover:text-black hover:border-gray-300 text-xs font-black shadow-2xs transition-all hover:scale-105 active:scale-95 cursor-pointer"
                                   >
                                     ?
                                   </button>
                                 </div>
 
-                                <div className="mt-3.5 relative z-10 max-w-[62%] sm:max-w-[65%] space-y-1.5">
+                                <div className="mt-4 relative z-10 max-w-[64%] space-y-1.5">
                                   <h3 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug group-hover:text-[#C84B71] transition-colors">
                                     {card.title}
                                   </h3>
@@ -815,7 +815,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                     {card.description}
                                   </p>
 
-                                  <div className="pt-2 flex flex-wrap items-center gap-2">
+                                  <div className="pt-2.5 flex flex-wrap items-center gap-2">
                                     <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#767A6E]">
                                       <Clock className="h-3 w-3" />
                                       <span>{card.readingTime}</span>
@@ -841,13 +841,13 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                   </div>
                                 </div>
 
-                                <div className="absolute -bottom-2 -right-1.5 sm:-bottom-3 sm:-right-2.5 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 pointer-events-none transition-transform duration-300 group-hover:scale-108 group-hover:-translate-y-1.5 group-hover:translate-x-1 z-20">
+                                <div className="absolute bottom-1.5 right-1.5 w-28 h-28 sm:w-32 sm:h-32 pointer-events-none transition-transform duration-300 group-hover:scale-105 z-10">
                                   <Image
                                     src={card.imageSrc}
                                     alt={card.imageAlt}
                                     fill
-                                    sizes="(max-width: 640px) 140px, (max-width: 1024px) 170px, 190px"
-                                    className="object-contain drop-shadow-[0_16px_24px_rgba(0,0,0,0.12)]"
+                                    sizes="(max-width: 640px) 128px, 144px"
+                                    className="object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,0.12)]"
                                     priority={card.orderNumber === '01' || card.orderNumber === '02'}
                                   />
                                 </div>
@@ -1108,6 +1108,19 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
                             <div>
                               <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
+                                Nomor WhatsApp Aktif
+                              </label>
+                              <input
+                                type="tel"
+                                value={profilePhone}
+                                onChange={(e) => setProfilePhone(e.target.value)}
+                                placeholder="0857-xxxx-xxxx"
+                                className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm font-semibold text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
                                 Fase / Trimester Kehamilan
                               </label>
                               <select
@@ -1130,7 +1143,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                               </select>
                             </div>
 
-                            <div>
+                            <div className="sm:col-span-2">
                               <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
                                 Kata Sandi Baru (Opsional)
                               </label>
@@ -1138,7 +1151,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                                 type="password"
                                 value={profilePassword}
                                 onChange={(e) => setProfilePassword(e.target.value)}
-                                placeholder="Kosongkan bila tidak diubah"
+                                placeholder="Kosongkan bila tidak ingin mengubah kata sandi"
                                 className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
                               />
                             </div>

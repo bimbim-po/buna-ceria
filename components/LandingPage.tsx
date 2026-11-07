@@ -8,12 +8,10 @@ import {
   Award,
   BookOpen,
   Camera,
-  ChevronDown,
   ChevronUp,
   Clock,
   GraduationCap,
   Heart,
-  HeartHandshake,
   Menu,
   Search,
   ShieldCheck,
@@ -57,7 +55,10 @@ export function LandingPage() {
     if (headerSearch.trim().toLowerCase().includes('pustaka')) {
       setShowReferences(true);
       document.getElementById('daftar-pustaka')?.scrollIntoView({ behavior: 'smooth' });
-    } else if (headerSearch.trim().toLowerCase().includes('nifas') || headerSearch.trim().toLowerCase().includes('tips')) {
+    } else if (
+      headerSearch.trim().toLowerCase().includes('nifas') ||
+      headerSearch.trim().toLowerCase().includes('tips')
+    ) {
       document.getElementById('tips-nifas')?.scrollIntoView({ behavior: 'smooth' });
     } else {
       document.getElementById('fitur-webapp')?.scrollIntoView({ behavior: 'smooth' });
@@ -71,14 +72,14 @@ export function LandingPage() {
          ===================================================================== */}
       <div className="relative overflow-hidden bg-gradient-to-b from-[#FDF2F5] via-[#FDF2F5] to-[#FAF0F3]">
         {/* Item 9 & 10: Header berisi logo, nama webapp, navbar, dan tombol webapp */}
-        <header className="relative z-30 mx-auto max-w-6xl px-5 pt-5 pb-4 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between gap-4">
+        <header className="relative z-30 mx-auto max-w-6xl px-5 pt-5 pb-4 sm:px-8 lg:px-10">
+          <div className="flex items-center justify-between gap-4 rounded-full border border-pink-100/80 bg-white/85 px-4 py-2.5 shadow-2xs backdrop-blur-md sm:px-6">
             {/* Left: Logo + Nama Webapp */}
             <a
               href="#top"
               className="flex items-center gap-3 group shrink-0"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white border border-pink-100 p-1.5 shadow-2xs transition-transform group-hover:scale-105">
+              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FDF2F5] border border-pink-100 p-1.5 shadow-2xs transition-transform group-hover:scale-105">
                 <Image
                   src="/logo.png"
                   alt="Buna Ceria Teman Kasih"
@@ -91,7 +92,7 @@ export function LandingPage() {
                 <span className="block font-heading text-base font-extrabold tracking-tight text-[#2A2D22] leading-none">
                   BUNA CERIA
                 </span>
-                <span className="mt-0.5 block text-[9px] font-bold uppercase tracking-[0.18em] text-[#C84B71]">
+                <span className="mt-1 block text-[9px] font-bold uppercase tracking-[0.18em] text-[#C84B71] leading-none">
                   TEMAN KASIH
                 </span>
               </div>
@@ -100,7 +101,7 @@ export function LandingPage() {
             {/* Center: Navbar Links (Desktop) */}
             <nav
               aria-label="Navigasi utama website"
-              className="hidden lg:flex lg:items-center lg:gap-6"
+              className="hidden lg:flex lg:items-center lg:gap-7"
             >
               {navLinks.map((item) => (
                 <a
@@ -114,12 +115,12 @@ export function LandingPage() {
             </nav>
 
             {/* Right: Search + Masuk + Tombol Beralih ke Webapp */}
-            <div className="flex items-center justify-end gap-3">
+            <div className="flex items-center justify-end gap-2.5 sm:gap-3">
               <form
                 onSubmit={handleSearchSubmit}
-                className="hidden xl:flex items-center gap-2 rounded-full bg-white/90 border border-pink-100 px-3.5 py-1.5 shadow-2xs focus-within:border-[#C84B71]"
+                className="hidden xl:flex items-center gap-2 rounded-full bg-[#FAF8FC] border border-pink-100 px-3.5 py-1.5 focus-within:border-[#C84B71] focus-within:bg-white transition-colors"
               >
-                <Search className="h-3.5 w-3.5 text-[#8C8896]" />
+                <Search className="h-3.5 w-3.5 text-[#8C8896] shrink-0" />
                 <input
                   type="text"
                   value={headerSearch}
@@ -151,7 +152,7 @@ export function LandingPage() {
               <button
                 type="button"
                 onClick={() => enterWebApp('beranda')}
-                className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-full bg-[#C84B71] px-5 py-2 text-xs sm:text-[13px] font-bold text-white shadow-[0_8px_20px_rgba(200,75,113,0.25)] transition-all hover:bg-[#b23b60] hover:shadow-[0_10px_24px_rgba(200,75,113,0.34)] cursor-pointer"
+                className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-full bg-[#C84B71] px-5 py-2 text-xs sm:text-[13px] font-bold text-white shadow-[0_6px_18px_rgba(200,75,113,0.25)] transition-all hover:bg-[#b23b60] hover:shadow-[0_8px_22px_rgba(200,75,113,0.34)] cursor-pointer"
               >
                 <span>Buka WebApp</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -161,7 +162,7 @@ export function LandingPage() {
                 type="button"
                 onClick={() => setMobileNavOpen((prev) => !prev)}
                 aria-label="Menu navigasi"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-[#2A2D22] shadow-2xs lg:hidden cursor-pointer"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FAF8FC] border border-pink-100 text-[#2A2D22] lg:hidden cursor-pointer"
               >
                 {mobileNavOpen ? (
                   <X className="h-5 w-5" />
@@ -179,20 +180,20 @@ export function LandingPage() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-3 overflow-hidden rounded-[20px] bg-white p-4 shadow-lg lg:hidden"
+                className="mt-3 overflow-hidden rounded-[22px] border border-pink-100 bg-white p-4 shadow-lg lg:hidden"
               >
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-1.5">
                   {navLinks.map((item) => (
                     <a
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileNavOpen(false)}
-                      className="rounded-xl px-3 py-2 text-sm font-semibold text-[#2A2D22] hover:bg-[#FDF2F5]"
+                      className="rounded-xl px-3.5 py-2.5 text-sm font-semibold text-[#2A2D22] hover:bg-[#FDF2F5]"
                     >
                       {item.label}
                     </a>
                   ))}
-                  <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
+                  <div className="pt-3 mt-1 border-t border-gray-100 flex flex-col gap-2">
                     {!session && (
                       <button
                         type="button"
@@ -226,32 +227,32 @@ export function LandingPage() {
         <section
           id="top"
           aria-labelledby="hero-clean-heading"
-          className="relative z-20 mx-auto max-w-6xl px-5 pt-6 pb-12 sm:px-8 sm:pt-10 sm:pb-16 lg:px-12 lg:pt-12 lg:pb-20"
+          className="relative z-20 mx-auto max-w-6xl px-5 pt-6 pb-14 sm:px-8 sm:pt-10 sm:pb-16 lg:px-10 lg:pt-12 lg:pb-20"
         >
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
             {/* Left Column: Heading + Brief Intro + 2 Buttons (Items 7 & 8) */}
             <div className="lg:col-span-6">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 border border-pink-200 px-3.5 py-1 text-xs font-bold text-[#C84B71] shadow-2xs mb-4">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 border border-pink-200 px-3.5 py-1 text-xs font-bold text-[#C84B71] shadow-2xs mb-4">
                 <Sparkles className="h-3.5 w-3.5" />
                 <span>WebApp Edukasi Kehamilan Pertama • Buna Ceria</span>
               </span>
 
               <h1
                 id="hero-clean-heading"
-                className="font-sans text-[2.5rem] font-extrabold leading-[1.08] tracking-tight text-[#2A2D22] sm:text-[3.25rem] lg:text-[3.5rem]"
+                className="font-sans text-[2.5rem] font-extrabold leading-[1.1] tracking-tight text-[#2A2D22] sm:text-[3.2rem] lg:text-[3.45rem]"
               >
                 <span className="text-[#C84B71]">Pendamping</span> kehamilan
                 <br />
                 pertama
               </h1>
 
-              <p className="mt-5 max-w-md text-[14.5px] leading-relaxed text-[#5C585A]">
+              <p className="mt-5 max-w-lg text-[14.5px] leading-relaxed text-[#5C585A]">
                 Buna Ceria • Teman Kasih adalah webapp pembelajaran kehamilan yang dirancang
                 khusus untuk memandu Ibu melewati trimester pertama hingga masa nifas
                 secara bertahap, tenang, dan bebas dari rasa cemas.
               </p>
 
-              <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-[#5C585A]">
+              <p className="mt-3 max-w-lg text-[14.5px] leading-relaxed text-[#5C585A]">
                 Dilengkapi 4 level pembelajaran bertahap, kuis pemahaman, sapa perasaan harian,
                 studio foto <em>Take Selfie</em> bersama pasangan, serta kontak langsung ke bidan ahli.
               </p>
@@ -280,12 +281,12 @@ export function LandingPage() {
             <div className="relative flex justify-center lg:col-span-6 lg:justify-end">
               <div className="relative flex items-center justify-center">
                 {/* Floating Badge (Sesuai pdf_img_3.png) */}
-                <div className="absolute -top-2 right-0 sm:right-4 z-20 inline-flex items-center gap-2 rounded-full bg-white/95 border border-pink-100 px-4 py-2 text-xs font-bold text-[#2A2D22] shadow-md backdrop-blur-xs">
-                  <Heart className="h-3.5 w-3.5 fill-[#C84B71] text-[#C84B71]" />
+                <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20 inline-flex items-center gap-2 rounded-full bg-white/95 border border-pink-100 px-4 py-2 text-xs font-bold text-[#2A2D22] shadow-md backdrop-blur-xs">
+                  <Heart className="h-3.5 w-3.5 fill-[#C84B71] text-[#C84B71] shrink-0" />
                   <span>Sehatnya Ibu, Bahagianya Si Kecil</span>
                 </div>
 
-                <div className="relative z-10 w-[330px] sm:w-[420px] lg:w-[460px] xl:w-[490px]">
+                <div className="relative z-10 w-[320px] sm:w-[410px] lg:w-[450px] xl:w-[480px]">
                   <Image
                     src="/ibu-hamil-bunga.webp"
                     alt="Ibu hamil tersenyum tenang memegang perut dengan visualisasi janin sehat penuh kasih"
@@ -309,15 +310,15 @@ export function LandingPage() {
         aria-label="Keunggulan Utama Buna Ceria"
         className="relative z-20 bg-[#F5D0DC] border-y border-[#EBBBC9]"
       >
-        <div className="mx-auto max-w-6xl px-5 py-7 sm:px-8 sm:py-9 lg:px-12">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:divide-x md:divide-[#DFABB9]">
+        <div className="mx-auto max-w-6xl px-5 py-7 sm:px-8 sm:py-8 lg:px-10">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-0 md:divide-x md:divide-[#DFABB9]">
             {/* Poin 1: Informasi Terpercaya */}
-            <div className="flex items-start gap-4 md:pr-6">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/90 text-[#8E9B5E] shadow-2xs">
+            <div className="flex items-start gap-4 md:pr-6 lg:pr-8">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/95 text-[#8E9B5E] shadow-2xs">
                 <ShieldCheck className="h-6 w-6" strokeWidth={2} />
               </span>
               <div>
-                <h2 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22]">
+                <h2 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug">
                   Informasi Terpercaya
                 </h2>
                 <p className="mt-1 text-xs sm:text-[13px] leading-relaxed text-[#4A4547]">
@@ -327,12 +328,12 @@ export function LandingPage() {
             </div>
 
             {/* Poin 2: Mudah Diakses */}
-            <div className="flex items-start gap-4 md:px-6">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/90 text-[#8E9B5E] shadow-2xs">
+            <div className="flex items-start gap-4 md:px-6 lg:px-8">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/95 text-[#8E9B5E] shadow-2xs">
                 <Clock className="h-6 w-6" strokeWidth={2} />
               </span>
               <div>
-                <h2 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22]">
+                <h2 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug">
                   Mudah Diakses
                 </h2>
                 <p className="mt-1 text-xs sm:text-[13px] leading-relaxed text-[#4A4547]">
@@ -342,12 +343,12 @@ export function LandingPage() {
             </div>
 
             {/* Poin 3: Pendamping Setia */}
-            <div className="flex items-start gap-4 md:pl-6">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/90 text-[#C84B71] shadow-2xs">
+            <div className="flex items-start gap-4 md:pl-6 lg:pl-8">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/95 text-[#C84B71] shadow-2xs">
                 <Heart className="h-6 w-6 fill-[#C84B71]" strokeWidth={2} />
               </span>
               <div>
-                <h2 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22]">
+                <h2 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug">
                   Pendamping Setia
                 </h2>
                 <p className="mt-1 text-xs sm:text-[13px] leading-relaxed text-[#4A4547]">
@@ -360,9 +361,9 @@ export function LandingPage() {
       </section>
 
       {/* =====================================================================
-          MAIN CONTENT AREA
+          MAIN CONTENT AREA (Konsisten max-w-6xl & Vertical Rhythm Rapi)
          ===================================================================== */}
-      <main className="mx-auto max-w-6xl space-y-24 px-5 py-16 sm:space-y-28 sm:px-8 sm:py-24 lg:px-12">
+      <main className="mx-auto max-w-6xl space-y-20 px-5 py-16 sm:space-y-24 sm:px-8 sm:py-20 lg:px-10">
         {/* =====================================================================
             3. SECTION "3 TIPS PENTING UNTUK IBU NIFAS" (Item 3, pdf_img_1.png & pdf_img_3.png)
             Menggantikan bagian "Terdaftar & terkurasi" sesuai instruksi Client Brief!
@@ -371,96 +372,102 @@ export function LandingPage() {
           id="tips-nifas"
           aria-labelledby="tips-nifas-heading"
           {...sectionRevealProps}
-          className="scroll-mt-24 pt-2"
+          className="scroll-mt-24"
         >
           {/* Judul & Subjudul Sesuai Item 3 Client Brief */}
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E4EAC9] bg-[#F5F8EB] px-4 py-1 text-xs font-bold text-[#56632A]">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Edukasi Pascapersalinan &amp; Menyusui</span>
             </span>
             <h2
               id="tips-nifas-heading"
-              className="mt-3 font-heading text-3xl sm:text-4xl lg:text-[2.55rem] font-bold text-[#2A2D22] tracking-tight leading-snug"
+              className="mt-3.5 font-heading text-3xl sm:text-4xl lg:text-[2.5rem] font-bold text-[#2A2D22] tracking-tight leading-snug"
             >
               3 Tips Penting untuk Ibu Nifas
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-[#6E6A6C] max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-2.5 text-sm sm:text-base text-[#6E6A6C] max-w-2xl mx-auto leading-relaxed">
               Langkah sederhana untuk mendukung menyusui dan menjaga kesehatan Bunda
             </p>
           </div>
 
-          {/* 3 Kolom Ilustrasi (Sesuai pdf_img_1.png & pdf_img_3.png) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 text-center items-start">
+          {/* 3 Kolom Ilustrasi Equal-Height (Sesuai pdf_img_1.png & pdf_img_3.png) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 text-center items-stretch">
             {/* Tips Nifas 1 */}
-            <div className="flex flex-col items-center rounded-[24px] border border-[#F3E8EE] bg-[#FFFBFD] p-6 shadow-2xs">
-              <div className="relative aspect-square w-44 sm:w-52 overflow-hidden flex items-center justify-center">
-                <Image
-                  src="/feature-tips.webp"
-                  alt="Penuhi nutrisi dan cairan harian Bunda selama masa nifas"
-                  width={566}
-                  height={566}
-                  className="h-full w-full object-contain"
-                />
+            <div className="flex h-full flex-col items-center justify-between rounded-[24px] border border-[#F3E8EE] bg-[#FFFBFD] p-6 sm:p-7 shadow-2xs">
+              <div className="flex flex-col items-center">
+                <div className="relative aspect-square w-44 sm:w-48 overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/feature-tips.webp"
+                    alt="Penuhi nutrisi dan cairan harian Bunda selama masa nifas"
+                    width={566}
+                    height={566}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <span className="mt-4 rounded-full bg-[#FCE8EE] px-3.5 py-1 text-[11px] font-bold text-[#C84B71]">
+                  Tips Nifas 01
+                </span>
+                <h3 className="mt-3 font-sans text-lg font-bold text-[#2A2D22] leading-snug">
+                  Penuhi nutrisi &amp; cairan untuk kelancaran ASI
+                </h3>
+                <p className="mt-2 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
+                  Konsumsi makanan bergizi tinggi protein, sayur hijau, dan minum air putih hangat yang cukup setiap habis menyusui agar produksi ASI lancar dan pemulihan tubuh Bunda optimal.
+                </p>
               </div>
-              <span className="mt-3 rounded-full bg-[#FCE8EE] px-3 py-0.5 text-[11px] font-bold text-[#C84B71]">
-                Tips Nifas 01
-              </span>
-              <h3 className="mt-3 font-sans text-lg sm:text-xl font-bold text-[#2A2D22] leading-snug">
-                Penuhi nutrisi &amp; cairan untuk kelancaran ASI
-              </h3>
-              <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
-                Konsumsi makanan bergizi tinggi protein, sayur hijau, dan minum air putih hangat yang cukup setiap habis menyusui agar produksi ASI lancar dan pemulihan tubuh Bunda optimal.
-              </p>
             </div>
 
             {/* Tips Nifas 2 */}
-            <div className="flex flex-col items-center rounded-[24px] border border-[#EBF0D8] bg-[#FCFDF9] p-6 shadow-2xs">
-              <div className="relative aspect-square w-44 sm:w-52 overflow-hidden flex items-center justify-center">
-                <Image
-                  src="/feature-stages.webp"
-                  alt="Istirahat cukup dan rawat kebersihan pemulihan masa nifas"
-                  width={524}
-                  height={524}
-                  className="h-full w-full object-contain"
-                />
+            <div className="flex h-full flex-col items-center justify-between rounded-[24px] border border-[#EBF0D8] bg-[#FCFDF9] p-6 sm:p-7 shadow-2xs">
+              <div className="flex flex-col items-center">
+                <div className="relative aspect-square w-44 sm:w-48 overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/feature-stages.webp"
+                    alt="Istirahat cukup dan rawat kebersihan pemulihan masa nifas"
+                    width={524}
+                    height={524}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <span className="mt-4 rounded-full bg-[#F5F8EB] px-3.5 py-1 text-[11px] font-bold text-[#56632A]">
+                  Tips Nifas 02
+                </span>
+                <h3 className="mt-3 font-sans text-lg font-bold text-[#2A2D22] leading-snug">
+                  Istirahat selaras jadwal tidur Si Kecil
+                </h3>
+                <p className="mt-2 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
+                  Ikutlah beristirahat saat bayi tertidur, jaga kebersihan luka persalinan secara berkala, dan lakukan gerakan peregangan ringan bertahap agar tubuh Bunda kembali segar.
+                </p>
               </div>
-              <span className="mt-3 rounded-full bg-[#F5F8EB] px-3 py-0.5 text-[11px] font-bold text-[#56632A]">
-                Tips Nifas 02
-              </span>
-              <h3 className="mt-3 font-sans text-lg sm:text-xl font-bold text-[#2A2D22] leading-snug">
-                Istirahat selaras jadwal tidur Si Kecil
-              </h3>
-              <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
-                Ikutlah beristirahat saat bayi tertidur, jaga kebersihan luka persalinan secara berkala, dan lakukan gerakan peregangan ringan bertahap agar tubuh Bunda kembali segar.
-              </p>
             </div>
 
             {/* Tips Nifas 3 */}
-            <div className="flex flex-col items-center rounded-[24px] border border-[#F3E8EE] bg-[#FFFBFD] p-6 shadow-2xs">
-              <div className="relative aspect-square w-44 sm:w-52 overflow-hidden flex items-center justify-center">
-                <Image
-                  src="/feature-consult.webp"
-                  alt="Kenali perubahan emosi dan konsultasi langsung dengan bidan"
-                  width={636}
-                  height={636}
-                  className="h-full w-full object-contain"
-                />
+            <div className="flex h-full flex-col items-center justify-between rounded-[24px] border border-[#F3E8EE] bg-[#FFFBFD] p-6 sm:p-7 shadow-2xs">
+              <div className="flex flex-col items-center">
+                <div className="relative aspect-square w-44 sm:w-48 overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/feature-consult.webp"
+                    alt="Kenali perubahan emosi dan konsultasi langsung dengan bidan"
+                    width={636}
+                    height={636}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <span className="mt-4 rounded-full bg-[#FCE8EE] px-3.5 py-1 text-[11px] font-bold text-[#C84B71]">
+                  Tips Nifas 03
+                </span>
+                <h3 className="mt-3 font-sans text-lg font-bold text-[#2A2D22] leading-snug">
+                  Berbagi peran &amp; jangan ragu konsultasi ahli
+                </h3>
+                <p className="mt-2 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
+                  Libatkan pasangan dalam merawat bayi untuk mencegah kelelahan berlebih (<em>baby blues</em>), serta konsultasikan pelekatan menyusui bersama bidan pendamping kami.
+                </p>
               </div>
-              <span className="mt-3 rounded-full bg-[#FCE8EE] px-3 py-0.5 text-[11px] font-bold text-[#C84B71]">
-                Tips Nifas 03
-              </span>
-              <h3 className="mt-3 font-sans text-lg sm:text-xl font-bold text-[#2A2D22] leading-snug">
-                Berbagi peran &amp; jangan ragu konsultasi ahli
-              </h3>
-              <p className="mt-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
-                Libatkan pasangan dalam merawat bayi untuk mencegah kelelahan berlebih (<em>baby blues</em>), serta konsultasikan pelekatan menyusui bersama bidan pendamping kami.
-              </p>
             </div>
           </div>
 
           {/* Tombol CTA Tengah (Sesuai pdf_img_1.png & pdf_img_3.png) */}
-          <div className="mt-10 sm:mt-12 flex justify-center">
+          <div className="mt-10 flex justify-center">
             <button
               type="button"
               onClick={() => enterWebApp('beranda')}
@@ -481,29 +488,29 @@ export function LandingPage() {
           {...sectionRevealProps}
           className="scroll-mt-24"
         >
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-pink-200 bg-white px-4 py-1 text-xs font-bold text-[#C84B71] shadow-2xs">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Di Dalam WebApp Buna Ceria • Teman Kasih</span>
             </span>
             <h2
               id="fitur-webapp-heading"
-              className="mt-4 font-heading text-3xl sm:text-4xl lg:text-[2.65rem] font-bold text-[#2A2D22] tracking-tight leading-snug"
+              className="mt-3.5 font-heading text-3xl sm:text-4xl lg:text-[2.5rem] font-bold text-[#2A2D22] tracking-tight leading-snug"
             >
               Fitur Lengkap Pembelajaran
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-[#6E6A6C] max-w-xl mx-auto leading-relaxed">
+            <p className="mt-2.5 text-sm sm:text-base text-[#6E6A6C] max-w-xl mx-auto leading-relaxed">
               Dirancang dengan alur 4 level yang memandu langkah demi langkah agar Ibu
               tidak merasa lelah atau pusing dengan banjir informasi medis.
             </p>
           </div>
 
-          {/* 4 Showcase Feature Cards (Sesuai pdf_img_3.png) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* 4 Showcase Feature Cards Equal-Height (Sesuai pdf_img_3.png) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 items-stretch">
             {/* CARD 1: 4 Level Tahapan Belajar */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(86,99,42,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[245px]"
+              className="group relative flex h-full flex-col justify-between rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(86,99,42,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
             >
               <div>
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F5F8EB] text-[#56632A] border border-[#E4EAC9] transition-transform duration-300 group-hover:scale-105 shadow-2xs">
@@ -517,7 +524,7 @@ export function LandingPage() {
                 </p>
               </div>
 
-              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#56632A]">
+              <div className="mt-6 pt-3.5 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-bold text-[#56632A]">
                 <span>Buka Alur 4 Level</span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
@@ -526,7 +533,7 @@ export function LandingPage() {
             {/* CARD 2: Modul & Ruang Baca Fokus */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(200,75,113,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[245px]"
+              className="group relative flex h-full flex-col justify-between rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(200,75,113,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
             >
               <div>
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FDF2F5] text-[#C84B71] border border-pink-100 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
@@ -540,7 +547,7 @@ export function LandingPage() {
                 </p>
               </div>
 
-              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#C84B71]">
+              <div className="mt-6 pt-3.5 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-bold text-[#C84B71]">
                 <span>Mulai Membaca</span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
@@ -549,7 +556,7 @@ export function LandingPage() {
             {/* CARD 3: Kuis & Kuesioner Kecemasan */}
             <div
               onClick={() => enterWebApp('beranda')}
-              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(217,119,6,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[245px]"
+              className="group relative flex h-full flex-col justify-between rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(217,119,6,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
             >
               <div>
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFF8EB] text-[#C26100] border border-amber-100 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
@@ -563,7 +570,7 @@ export function LandingPage() {
                 </p>
               </div>
 
-              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#C26100]">
+              <div className="mt-6 pt-3.5 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-bold text-[#C26100]">
                 <span>Ikuti Kuis &amp; Sapa</span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
@@ -572,7 +579,7 @@ export function LandingPage() {
             {/* CARD 4: Take Selfie Pasangan & Kontak Ahli */}
             <div
               onClick={() => enterWebApp('selfie')}
-              className="group relative flex flex-col justify-between rounded-[22px] sm:rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(2,132,199,0.08)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer min-h-[245px]"
+              className="group relative flex h-full flex-col justify-between rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs hover:shadow-[0_12px_28px_rgba(2,132,199,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
             >
               <div>
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8FF] text-[#0284C7] border border-blue-100 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
@@ -586,7 +593,7 @@ export function LandingPage() {
                 </p>
               </div>
 
-              <div className="mt-5 pt-3 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-semibold text-[#0284C7]">
+              <div className="mt-6 pt-3.5 border-t border-[#F0ECF5] flex items-center justify-between text-xs font-bold text-[#0284C7]">
                 <span>Coba Take Selfie</span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
@@ -594,7 +601,7 @@ export function LandingPage() {
           </div>
 
           {/* Banner Ajakan Masuk WebApp (Sesuai pdf_img_3.png) */}
-          <div className="mt-12 rounded-[24px] border border-[#ECE7F2] bg-[#FAF6F8] p-6 sm:p-8 lg:p-10 shadow-[0_4px_24px_rgba(40,40,60,0.04)]">
+          <div className="mt-10 rounded-[24px] border border-[#ECE7F2] bg-[#FAF6F8] p-6 sm:p-8 shadow-[0_4px_24px_rgba(40,40,60,0.04)]">
             <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12">
               <div className="lg:col-span-8">
                 <span className="inline-flex items-center gap-2 rounded-full border border-pink-200/80 bg-white px-3.5 py-1 text-xs font-bold text-[#C84B71]">
@@ -639,8 +646,8 @@ export function LandingPage() {
           className="scroll-mt-24"
         >
           {/* Card 2 Kolom sesuai pdf_img_3.png: Gambar USG di kiri + Teks & Tombol "Lihat Daftar ->" di kanan */}
-          <div className="rounded-[28px] border border-[#ECE7F2] bg-white p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgba(40,40,60,0.04)]">
-            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
+          <div className="rounded-[26px] border border-[#ECE7F2] bg-white p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgba(40,40,60,0.04)]">
+            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
               {/* Left Image (/scan-1.jpg sesuai pdf_img_3.png) */}
               <div className="lg:col-span-5">
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[22px] border border-pink-100 bg-[#FAF8FC] shadow-xs">
@@ -705,11 +712,11 @@ export function LandingPage() {
                   className="overflow-hidden"
                 >
                   <div className="mt-8 pt-8 border-t border-[#ECE7F2]">
-                    <div className="mb-4 flex items-center justify-between">
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                       <h3 className="font-heading text-lg font-bold text-[#2A2D22]">
                         Poin Referensi &amp; Literatur Medis ({references.length} Sumber Resmi)
                       </h3>
-                      <span className="text-xs font-semibold text-[#56632A]">
+                      <span className="rounded-full bg-[#F5F8EB] px-3 py-1 text-xs font-bold text-[#56632A]">
                         Terverifikasi Klinis
                       </span>
                     </div>
