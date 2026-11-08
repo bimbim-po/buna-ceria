@@ -16,6 +16,7 @@ import {
   Globe,
   Heart,
   HeartHandshake,
+  Home,
   LogOut,
   Mail,
   MessageCircle,
@@ -323,7 +324,17 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
     }
   }, [initialMode, enterWebApp]);
 
+  // Proteksi halaman Admin: hanya akun berlisensi Admin (role === 'admin') yang boleh mengakses
+  useEffect(() => {
+    if (activeSection === 'admin' && session?.role !== 'admin') {
+      setActiveSection('beranda');
+    }
+  }, [activeSection, session?.role, setActiveSection]);
+
   const handleSelectSection = (sectionId: string) => {
+    if (sectionId === 'admin' && session?.role !== 'admin') {
+      return;
+    }
     setActiveSection(sectionId);
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
@@ -421,9 +432,9 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
             {/* Viewport Konten Scrollable */}
             <main
               ref={scrollContainerRef}
-              className="flex-1 overflow-y-auto px-5 py-6 sm:px-8 sm:py-8 lg:px-12 w-full bg-white"
+              className="flex-1 overflow-y-auto px-4 py-5 sm:px-8 sm:py-8 lg:px-12 w-full bg-white"
             >
-              <div className="mx-auto max-w-6xl space-y-8 pb-16">
+              <div className="mx-auto max-w-6xl space-y-7 sm:space-y-8 pb-24 lg:pb-16">
                 <AnimatePresence mode="wait">
                   {/* =========================================================
                       1. BERANDA WEBAPP (Item 12 & Alur User 4–5)
@@ -1179,10 +1190,12 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         <div className="lg:col-span-5 space-y-4">
                           <div className="rounded-[24px] border border-[#ECE7F2] bg-white p-6 shadow-2xs space-y-4">
                             <h2 className="font-heading text-lg font-bold text-[#2A2D22]">
-                              Kelola Sesi &amp; Peran Akun
+                              Kelola Sesi Akun
                             </h2>
                             <p className="text-xs leading-relaxed text-[#6E6A6C]">
-                              Ibu dapat berganti akun pengguna terdaftar, beralih ke akun Admin (untuk mengelola user &amp; modul), atau kembali ke halaman Website utama.
+                              {session?.role === 'admin'
+                                ? 'Akun Anda memiliki lisensi Admin. Anda dapat mengelola pengguna terdaftar dan materi pembelajaran, berganti akun, atau kembali ke halaman Website utama.'
+                                : 'Ibu dapat berganti akun pengguna terdaftar atau kembali ke halaman Website utama kapan saja.'}
                             </p>
 
                             <div className="space-y-2.5 pt-1">
@@ -1194,23 +1207,25 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                               >
                                 <span className="flex items-center gap-2.5">
                                   <RefreshCw className="h-4 w-4" />
-                                  <span>Ganti Akun (User / Google / Admin)</span>
+                                  <span>Ganti Akun Pengguna</span>
                                 </span>
                                 <ArrowRight className="h-4 w-4" />
                               </button>
 
-                              {/* Pintasan Panel Admin */}
-                              <button
-                                type="button"
-                                onClick={() => handleSelectSection('admin')}
-                                className="flex w-full items-center justify-between rounded-2xl border border-pink-200 bg-[#FDF2F5] px-4 py-3 text-left text-xs font-bold text-[#C84B71] hover:bg-[#FCE8EE] transition-colors cursor-pointer"
-                              >
-                                <span className="flex items-center gap-2.5">
-                                  <ShieldCheck className="h-4 w-4" />
-                                  <span>Buka Panel Admin (Kelola User &amp; Modul)</span>
-                                </span>
-                                <ArrowRight className="h-4 w-4" />
-                              </button>
+                              {/* Pintasan Panel Admin: HANYA MUNCUL JIKA MEMILIKI LISENSI ADMIN */}
+                              {session?.role === 'admin' && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleSelectSection('admin')}
+                                  className="flex w-full items-center justify-between rounded-2xl border border-pink-200 bg-[#FDF2F5] px-4 py-3 text-left text-xs font-bold text-[#C84B71] hover:bg-[#FCE8EE] transition-colors cursor-pointer"
+                                >
+                                  <span className="flex items-center gap-2.5">
+                                    <ShieldCheck className="h-4 w-4" />
+                                    <span>Buka Panel Admin (Kelola User &amp; Modul)</span>
+                                  </span>
+                                  <ArrowRight className="h-4 w-4" />
+                                </button>
+                              )}
 
                               {/* Item 22: Tombol Kembali ke Website */}
                               <button
@@ -1250,10 +1265,9 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   )}
 
                   {/* =========================================================
-                      7. HALAMAN KHUSUS: PANEL ADMIN (Role #3 Admin)
-                         Mengelola pengguna terdaftar dan mengedit/menambah modul pembelajaran
+                      7. HALAMAN KHUSUS: PANEL ADMIN (Hanya untuk akun berlisensi Admin)
                      ========================================================= */}
-                  {activeSection === 'admin' && (
+                  {activeSection === 'admin' && session?.role === 'admin' && (
                     <motion.div
                       key="view-admin"
                       {...viewTransitionProps}
@@ -1264,6 +1278,42 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                 </AnimatePresence>
               </div>
             </main>
+
+            {/* Bottom Navigation Bar untuk Mobile Phone (< 1024px) */}
+            <nav
+              aria-label="Navigasi Bawah Mobile"
+              className="lg:hidden shrink-0 border-t border-[#F0ECF5] bg-white/95 backdrop-blur-md px-2 py-1.5 shadow-[0_-4px_20px_rgba(40,30,35,0.05)] z-30"
+            >
+              <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
+                {[
+                  { id: 'beranda', label: 'Beranda', icon: Home },
+                  { id: 'materi', label: 'Materi', icon: BookOpen },
+                  { id: 'tips', label: 'Tips', icon: Sun },
+                  { id: 'kontak-ahli', label: 'Bidan', icon: HeartHandshake },
+                  { id: 'selfie', label: 'Selfie', icon: Camera },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  const active = activeSection === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => handleSelectSection(item.id)}
+                      className={`flex flex-col items-center justify-center rounded-xl py-1.5 transition-colors cursor-pointer ${
+                        active
+                          ? 'bg-[#FDF2F5] text-[#C84B71] font-bold'
+                          : 'text-[#767A6E] hover:text-[#2A2D22] font-medium'
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={active ? 2.2 : 1.8} />
+                      <span className="mt-0.5 text-[10px] leading-tight truncate">
+                        {item.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>
           </div>
         </div>
       )}

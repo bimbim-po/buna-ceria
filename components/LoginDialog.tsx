@@ -12,7 +12,7 @@ import {
   UserPlus,
   X,
 } from 'lucide-react';
-import { getDemoAccounts } from '@/lib/api';
+import { getAllUsers, getDemoAccounts } from '@/lib/api';
 import { useApp } from '@/context/AppContext';
 import { useFocusTrap } from '@/lib/useFocusTrap';
 
@@ -50,6 +50,21 @@ export function LoginDialog() {
   const onSubmitLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+
+    const normalized = identifier.trim().toLowerCase();
+    const matchedUser = getAllUsers().find(
+      (u) =>
+        u.email.toLowerCase() === normalized ||
+        u.phone.replace(/[\s-]/g, '') === normalized.replace(/[\s-]/g, '')
+    );
+
+    if (mode === 'admin' && matchedUser && matchedUser.role !== 'admin') {
+      setErrorMsg(
+        'Akun ini tidak memiliki lisensi Admin. Hanya akun berlisensi Admin resmi yang dapat mengakses Panel Admin.'
+      );
+      return;
+    }
+
     setIsLoading(true);
 
     window.setTimeout(() => {
@@ -58,8 +73,10 @@ export function LoginDialog() {
       if (!result.success) {
         setErrorMsg(result.error ?? 'Gagal masuk. Silakan periksa kembali.');
       } else {
-        if (mode === 'admin' || identifier.toLowerCase().includes('admin')) {
+        if (matchedUser?.role === 'admin') {
           setActiveSection('admin');
+        } else {
+          setActiveSection('beranda');
         }
         setIdentifier('');
         setPassword('');
@@ -264,8 +281,8 @@ export function LoginDialog() {
                 type="button"
                 onClick={() => {
                   setMode('admin');
-                  setIdentifier('admin@bunaceria.id');
-                  setPassword('admin123');
+                  setIdentifier('');
+                  setPassword('');
                   setErrorMsg(null);
                 }}
                 className={`rounded-xl py-2 text-xs font-bold transition-all cursor-pointer ${
@@ -501,34 +518,38 @@ export function LoginDialog() {
               </div>
 
               <div className="mt-2.5 space-y-1.5 max-h-40 overflow-y-auto pr-1">
-                {demoAccounts.map((acc) => (
-                  <button
-                    key={acc.email}
-                    type="button"
-                    onClick={() =>
-                      handleSelectDemoAccount(acc.email, acc.password, acc.role)
-                    }
-                    className="flex w-full items-center justify-between gap-2 rounded-xl border border-[#ECE7F2] bg-white px-3 py-2 text-left hover:border-pink-200 transition-colors cursor-pointer"
-                  >
-                    <div className="min-w-0">
-                      <span className="block truncate text-xs font-bold text-[#2A2D22]">
-                        {acc.name}
-                      </span>
-                      <span className="block truncate text-[11px] text-[#767A6E]">
-                        {acc.email}
-                      </span>
-                    </div>
-                    <span
-                      className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                        acc.role === 'admin'
-                          ? 'bg-[#56632A] text-white'
-                          : 'bg-[#FDF2F5] text-[#C84B71]'
-                      }`}
+                {demoAccounts
+                  .filter((acc) =>
+                    mode === 'admin' ? acc.role === 'admin' : acc.role !== 'admin'
+                  )
+                  .map((acc) => (
+                    <button
+                      key={acc.email}
+                      type="button"
+                      onClick={() =>
+                        handleSelectDemoAccount(acc.email, acc.password, acc.role)
+                      }
+                      className="flex w-full items-center justify-between gap-2 rounded-xl border border-[#ECE7F2] bg-white px-3 py-2 text-left hover:border-pink-200 transition-colors cursor-pointer"
                     >
-                      {acc.role === 'admin' ? 'Admin' : `Sandi: ${acc.password}`}
-                    </span>
-                  </button>
-                ))}
+                      <div className="min-w-0">
+                        <span className="block truncate text-xs font-bold text-[#2A2D22]">
+                          {acc.name}
+                        </span>
+                        <span className="block truncate text-[11px] text-[#767A6E]">
+                          {acc.email}
+                        </span>
+                      </div>
+                      <span
+                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                          acc.role === 'admin'
+                            ? 'bg-[#56632A] text-white'
+                            : 'bg-[#FDF2F5] text-[#C84B71]'
+                        }`}
+                      >
+                        {acc.role === 'admin' ? 'Lisensi Admin' : `Sandi: ${acc.password}`}
+                      </span>
+                    </button>
+                  ))}
               </div>
             </div>
           </motion.div>

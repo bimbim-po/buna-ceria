@@ -79,10 +79,10 @@ export function StageTracker({
         </span>
       </div>
 
-      <div className="overflow-x-auto pb-1">
+      <div className="pb-1">
         <ol
           aria-label="4 Level Tahapan Pembelajaran Buna Ceria"
-          className="mx-auto flex min-w-[340px] max-w-3xl items-start justify-between gap-2 px-2 py-2 sm:gap-4"
+          className="mx-auto flex w-full max-w-3xl items-start justify-between gap-1 px-1 py-2 sm:gap-4 sm:px-2"
         >
           {stages.map((stage, idx) => {
             const status = previewLockedOnly
@@ -105,7 +105,7 @@ export function StageTracker({
                 {idx < stages.length - 1 && (
                   <div
                     aria-hidden="true"
-                    className="absolute top-[25px] left-[calc(50%+30px)] right-[calc(-50%+30px)] h-1.5 overflow-hidden rounded-full bg-[#EAE6EE]"
+                    className="absolute top-[20px] sm:top-[25px] left-[calc(50%+24px)] right-[calc(-50%+24px)] sm:left-[calc(50%+30px)] sm:right-[calc(-50%+30px)] h-1.5 overflow-hidden rounded-full bg-[#EAE6EE]"
                   >
                     <motion.div
                       initial={false}
@@ -179,7 +179,7 @@ export function StageTracker({
                               : 'Terkunci'
                           }`
                     }
-                    className={`relative z-10 flex h-14 w-14 min-h-[56px] min-w-[56px] items-center justify-center rounded-full border-2 font-heading text-base font-extrabold transition-all duration-300 ${
+                    className={`relative z-10 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 font-heading text-sm sm:text-base font-extrabold transition-all duration-300 ${
                       isCompleted
                         ? 'border-[#56632A] bg-[#A8B371] text-white shadow-xs cursor-pointer'
                         : isOpen

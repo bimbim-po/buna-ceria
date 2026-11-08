@@ -27,7 +27,7 @@ import { useApp } from '@/context/AppContext';
 import { MockUser, ModuleItem } from '@/types';
 
 export function AdminDashboard() {
-  const { refreshData } = useApp();
+  const { session, setActiveSection, refreshData } = useApp();
 
   const [activeTab, setActiveTab] = useState<'users' | 'modules'>('users');
   const [users, setUsers] = useState<MockUser[]>(() => getAllUsers());
@@ -47,6 +47,29 @@ export function AdminDashboard() {
     summary: string;
     bodyText: string;
   } | null>(null);
+
+  if (session?.role !== 'admin') {
+    return (
+      <div className="rounded-[24px] border border-pink-200 bg-white p-8 text-center shadow-2xs">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FDF2F5] text-[#C84B71]">
+          <ShieldCheck className="h-6 w-6" />
+        </div>
+        <h2 className="mt-4 font-heading text-xl font-bold text-[#2A2D22]">
+          Akses Terbatas Khusus Lisensi Admin
+        </h2>
+        <p className="mt-1.5 max-w-md mx-auto text-xs sm:text-sm text-[#6E6A6C]">
+          Halaman ini hanya dapat dilihat oleh akun yang memiliki lisensi resmi sebagai Admin Buna Ceria.
+        </p>
+        <button
+          type="button"
+          onClick={() => setActiveSection('beranda')}
+          className="mt-5 inline-flex min-h-[40px] items-center justify-center rounded-full bg-[#C84B71] px-6 py-2 text-xs font-bold text-white cursor-pointer"
+        >
+          Kembali ke Beranda
+        </button>
+      </div>
+    );
+  }
 
   const notify = (msg: string) => {
     setStatusMessage(msg);
