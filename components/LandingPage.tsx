@@ -61,37 +61,26 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#2A2D22] selection:bg-[#FCE8EE] selection:text-[#C84B71]">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFF4F7] via-[#FFF7FA] to-[#FFF5F8] text-[#2A2D22] selection:bg-[#FCE8EE] selection:text-[#C84B71]">
       {/* =====================================================================
-          1. HEADER & HERO SECTION (Sesuai Referensi Hero & Navbar 1 Baris)
+          1. STICKY TOP NAVBAR (Selalu Muncul Saat Scroll ke Bawah maupun ke Atas)
          ===================================================================== */}
-      <div className="relative overflow-hidden">
-        {/* Soft Organic Editorial Blobs */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-24 right-0 h-[520px] w-[520px] rounded-full bg-[#FCECEF]/50 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-40 -left-24 h-[380px] w-[380px] rounded-full bg-[#EFF3E4]/70 blur-3xl"
-        />
-
-        {/* Top Navbar: Semua Teks 1 Baris Sejajar (whitespace-nowrap) */}
-        <header className="relative z-30 mx-auto max-w-6xl px-4 pt-6 pb-3 sm:px-8 lg:px-10">
+      <header className="sticky top-0 z-50 w-full border-b border-[#F5DCE4]/80 bg-[#FFF5F8]/92 backdrop-blur-md shadow-[0_4px_20px_rgba(200,75,113,0.05)]">
+        <div className="mx-auto w-full max-w-[1480px] 2xl:max-w-[1680px] px-5 py-3.5 sm:px-8 lg:px-12 xl:px-16">
           <div className="flex items-center justify-between gap-3 xl:gap-6 whitespace-nowrap">
             {/* Left: Logo + Brand */}
             <a
               href="#top"
-              className="flex items-center gap-2.5 shrink-0 group whitespace-nowrap"
+              className="flex items-center gap-2.5 shrink-0 group whitespace-nowrap transition-transform duration-300 hover:-translate-y-0.5 active:scale-95"
             >
               <Image
                 src="/logo.png"
-                alt="Buna Ceria Teman Kasih"
-                width={36}
-                height={36}
+                alt="Buna Ceria"
+                width={38}
+                height={38}
                 className="h-9 w-9 shrink-0 object-contain transition-transform group-hover:scale-105"
               />
-              <div className="whitespace-nowrap">
+              <div className="whitespace-nowrap text-left">
                 <span className="block font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-tight">
                   Buna Ceria
                 </span>
@@ -104,13 +93,13 @@ export function LandingPage() {
             {/* Center: Navigation Links (Satu Baris Lurus, Tidak Pernah 2 Baris) */}
             <nav
               aria-label="Navigasi utama"
-              className="hidden lg:flex lg:items-center lg:gap-5 xl:gap-7 shrink-0 whitespace-nowrap"
+              className="hidden lg:flex lg:items-center lg:gap-6 xl:gap-8 shrink-0 whitespace-nowrap"
             >
               {navLinks.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className={`relative py-1 text-[13px] whitespace-nowrap transition-colors hover:text-[#DF6B8D] ${
+                  className={`relative py-1 text-[13.5px] whitespace-nowrap transition-all duration-200 hover:-translate-y-0.5 hover:text-[#DF6B8D] ${
                     item.active
                       ? 'font-semibold text-[#2A2D22]'
                       : 'font-medium text-[#5C585A]'
@@ -128,7 +117,7 @@ export function LandingPage() {
             <div className="flex items-center gap-2.5 shrink-0 whitespace-nowrap">
               <form
                 onSubmit={handleSearchSubmit}
-                className="hidden md:flex items-center gap-2 rounded-full bg-[#F2ECEB] px-3.5 py-2 transition-colors focus-within:bg-white focus-within:ring-1 focus-within:ring-[#DF6B8D] shrink-0"
+                className="hidden md:flex items-center gap-2 rounded-full border border-[#F5DCE4] bg-white/90 px-3.5 py-2 shadow-2xs transition-all duration-300 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#DF6B8D]/40 hover:shadow-sm shrink-0"
               >
                 <Search className="h-3.5 w-3.5 text-[#7A7577] shrink-0" />
                 <input
@@ -136,14 +125,14 @@ export function LandingPage() {
                   value={headerSearch}
                   onChange={(e) => setHeaderSearch(e.target.value)}
                   placeholder="Cari informasi..."
-                  className="w-28 xl:w-36 bg-transparent text-xs text-[#2A2D22] placeholder:text-[#9E989A] outline-none"
+                  className="w-28 xl:w-40 bg-transparent text-xs text-[#2A2D22] placeholder:text-[#9E989A] outline-none"
                 />
               </form>
 
               <button
                 type="button"
                 onClick={() => enterWebApp('beranda')}
-                className="inline-flex min-h-[38px] shrink-0 whitespace-nowrap items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#E46C8E] to-[#F08BA8] px-4 sm:px-5 py-2 text-xs font-semibold text-white shadow-[0_6px_18px_rgba(228,108,142,0.28)] transition-all hover:opacity-95 cursor-pointer"
+                className="inline-flex min-h-[38px] shrink-0 whitespace-nowrap items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#E46C8E] to-[#F08BA8] px-4 sm:px-5 py-2 text-xs font-semibold text-white shadow-[0_6px_18px_rgba(228,108,142,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(228,108,142,0.38)] active:scale-95 cursor-pointer"
               >
                 <span>{session ? 'Ruang Belajar' : 'Buka WebApp'}</span>
                 <ArrowRight className="h-3.5 w-3.5 shrink-0" />
@@ -153,7 +142,7 @@ export function LandingPage() {
                 type="button"
                 onClick={() => setMobileNavOpen((prev) => !prev)}
                 aria-label="Menu navigasi"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#2A2D22] shadow-2xs lg:hidden cursor-pointer"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#F5DCE4] bg-white text-[#2A2D22] shadow-2xs transition-all duration-200 active:scale-95 lg:hidden cursor-pointer"
               >
                 {mobileNavOpen ? (
                   <X className="h-5 w-5" />
@@ -171,20 +160,20 @@ export function LandingPage() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-3 overflow-hidden rounded-[20px] border border-[#ECE7E4] bg-white p-4 shadow-md lg:hidden"
+                className="mt-3 overflow-hidden rounded-[20px] border border-[#F5DCE4] bg-white p-4 shadow-[0_12px_32px_rgba(200,75,113,0.12)] lg:hidden"
               >
-                <div className="flex flex-col space-y-1">
+                <div className="flex flex-col items-center text-center space-y-1">
                   {navLinks.map((item) => (
                     <a
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileNavOpen(false)}
-                      className="rounded-xl px-3 py-2 text-sm font-medium text-[#2A2D22] hover:bg-[#FAF6F5]"
+                      className="w-full rounded-xl px-3 py-2 text-sm font-medium text-[#2A2D22] hover:bg-[#FFF5F8]"
                     >
                       {item.label}
                     </a>
                   ))}
-                  <div className="pt-2 mt-1 border-t border-gray-100 flex flex-col gap-2">
+                  <div className="pt-2 mt-1 w-full border-t border-pink-100 flex flex-col gap-2">
                     {!session && (
                       <button
                         type="button"
@@ -192,7 +181,7 @@ export function LandingPage() {
                           setMobileNavOpen(false);
                           openLoginDialog();
                         }}
-                        className="w-full rounded-full border border-[#E46C8E]/40 py-2 text-xs font-semibold text-[#2A2D22] cursor-pointer"
+                        className="w-full rounded-full border border-[#E46C8E]/40 py-2 text-xs font-semibold text-[#2A2D22] transition-all active:scale-95 cursor-pointer"
                       >
                         Masuk / Daftar Akun
                       </button>
@@ -203,7 +192,7 @@ export function LandingPage() {
                         setMobileNavOpen(false);
                         enterWebApp('beranda');
                       }}
-                      className="w-full rounded-full bg-[#E46C8E] py-2 text-xs font-semibold text-white cursor-pointer"
+                      className="w-full rounded-full bg-[#E46C8E] py-2 text-xs font-semibold text-white shadow-sm transition-all active:scale-95 cursor-pointer"
                     >
                       Buka WebApp
                     </button>
@@ -212,20 +201,32 @@ export function LandingPage() {
               </motion.div>
             )}
           </AnimatePresence>
-        </header>
+        </div>
+      </header>
 
-        {/* Hero Banner: Persis Referensi (Tipografi Editorial + Foto Ibu Hamil di Sofa + Bola Pastel) */}
+      <div className="relative overflow-hidden">
+        {/* Soft Organic Editorial Blobs */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-24 right-0 h-[560px] w-[560px] rounded-full bg-[#FCDCE6]/55 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-40 -left-24 h-[420px] w-[420px] rounded-full bg-[#EFF4E3]/65 blur-3xl"
+        />
+
+        {/* Hero Banner: Full-Width Responsif, Ilustrasi Transparan, & Tombol Mobile Bersebelahan */}
         <section
           id="top"
           aria-labelledby="hero-clean-heading"
-          className="relative z-20 mx-auto max-w-6xl px-5 pt-4 pb-6 sm:px-8 sm:pt-8 lg:px-10 lg:pt-10 lg:pb-8"
+          className="relative z-20 mx-auto w-full max-w-[1480px] 2xl:max-w-[1680px] px-5 pt-4 pb-6 sm:px-8 sm:pt-8 lg:px-12 xl:px-16 lg:pt-10 lg:pb-8"
         >
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-4">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-8">
             {/* Left Column: Editorial Serif Title + Copy + 2 Pill Buttons */}
-            <div className="lg:col-span-5 relative z-20">
+            <div className="lg:col-span-5 relative z-20 flex flex-col items-center text-center sm:items-start sm:text-left">
               <h1
                 id="hero-clean-heading"
-                className="font-heading text-[2.75rem] font-normal leading-[1.08] tracking-[-0.02em] text-[#2A2D22] sm:text-[3.5rem] lg:text-[4rem]"
+                className="font-heading text-[2.65rem] font-normal leading-[1.08] tracking-[-0.02em] text-[#2A2D22] sm:text-[3.5rem] lg:text-[4.15rem] xl:text-[4.5rem]"
               >
                 Pendamping
                 <br />
@@ -234,44 +235,44 @@ export function LandingPage() {
                 pertama
               </h1>
 
-              <p className="mt-5 max-w-md text-xs sm:text-[14px] leading-[1.7] text-[#6E6A6C]">
+              <p className="mt-5 max-w-md lg:max-w-lg text-xs sm:text-[14.5px] leading-[1.75] text-[#6E6A6C]">
                 <strong className="font-semibold text-[#2A2D22]">
-                  Buna Ceria • Teman Kasih
+                  Buna Ceria
                 </strong>{' '}
                 adalah webapp pembelajaran kehamilan yang dirancang khusus untuk
                 memandu ibu melewati trimester pertama hingga persalinan dengan
                 lebih percaya diri.
               </p>
 
-              {/* 2 Action Buttons (Sesuai Referensi) */}
-              <div className="mt-7 flex flex-wrap items-center gap-3">
+              {/* 2 Action Buttons: Selalu Bersebelahan 1 Baris di Mobile & Desktop */}
+              <div className="mt-7 flex flex-row flex-nowrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3.5 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() => enterWebApp('beranda')}
-                  className="inline-flex min-h-[42px] whitespace-nowrap items-center gap-2 rounded-full bg-gradient-to-r from-[#E46C8E] to-[#F08BA8] px-6 py-2.5 text-xs sm:text-[13px] font-semibold text-white shadow-[0_8px_20px_rgba(228,108,142,0.3)] transition-all hover:opacity-95 cursor-pointer"
+                  className="inline-flex min-h-[42px] whitespace-nowrap items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-gradient-to-r from-[#E46C8E] to-[#F08BA8] px-4 sm:px-6 py-2.5 text-xs sm:text-[13.5px] font-semibold text-white shadow-[0_8px_20px_rgba(228,108,142,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(228,108,142,0.4)] active:scale-95 cursor-pointer"
                 >
                   <span>Buka WebApp</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0" />
                 </button>
 
                 <a
                   href="#fitur-webapp"
-                  className="inline-flex min-h-[42px] whitespace-nowrap items-center gap-2.5 rounded-full border border-[#B8C294] bg-white px-5 py-2 text-xs sm:text-[13px] font-semibold text-[#2A2D22] transition-colors hover:bg-[#F6F8F0]"
+                  className="inline-flex min-h-[42px] whitespace-nowrap items-center justify-center gap-2 rounded-full border border-[#B8C294] bg-white px-4 sm:px-5 py-2 text-xs sm:text-[13.5px] font-semibold text-[#2A2D22] shadow-2xs transition-all duration-300 hover:-translate-y-1 hover:bg-[#F6F8F0] hover:shadow-[0_10px_24px_rgba(142,155,94,0.18)] active:scale-95"
                 >
                   <span>Pelajari Lebih Lanjut</span>
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#8E9B5E] text-white">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#8E9B5E] text-white">
                     <Play className="h-2.5 w-2.5 fill-current ml-0.5" />
                   </span>
                 </a>
               </div>
             </div>
 
-            {/* Right Column: Foto Ibu Hamil di Sofa dalam Siluet Awan + Kartu Frosted */}
+            {/* Right Column: Foto Ibu Hamil di Sofa (Latar Transparan Menyatu dengan Pastel Pink) */}
             <div className="relative flex justify-center lg:col-span-7 lg:justify-end">
-              <div className="relative w-full max-w-[540px] lg:max-w-[600px]">
-                {/* Floating Frosted Card (Persis Referensi) */}
-                <div className="absolute right-2 sm:right-5 top-[28%] z-20 rounded-[20px] border border-white/85 bg-white/80 px-4 py-3.5 shadow-[0_10px_30px_rgba(40,30,35,0.06)] backdrop-blur-md">
-                  <div className="flex items-start gap-2.5">
+              <div className="relative w-full max-w-[560px] lg:max-w-[680px] xl:max-w-[740px] transition-transform duration-500 hover:scale-[1.01]">
+                {/* Floating Frosted Card */}
+                <div className="absolute right-2 sm:right-6 top-[26%] z-20 rounded-[20px] border border-white/90 bg-white/85 px-4 py-3.5 shadow-[0_12px_32px_rgba(200,75,113,0.12)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(200,75,113,0.18)]">
+                  <div className="flex items-start gap-2.5 text-left">
                     <Heart
                       className="mt-0.5 h-4 w-4 text-[#E46C8E] shrink-0"
                       strokeWidth={2}
@@ -291,11 +292,11 @@ export function LandingPage() {
 
                 <Image
                   src="/hero-landing-reference.webp"
-                  alt="Ibu hamil tersenyum tenang memegang perut di sofa"
+                  alt="Ibu hamil Buna Ceria tersenyum tenang memegang perut di sofa"
                   width={1200}
                   height={896}
                   priority
-                  className="h-auto w-full object-contain"
+                  className="h-auto w-full object-contain drop-shadow-[0_14px_32px_rgba(228,108,142,0.08)]"
                 />
               </div>
             </div>
@@ -303,14 +304,14 @@ export function LandingPage() {
         </section>
 
         {/* ===================================================================
-            2. FLOATING 3-COLUMN CARD UNDER HERO (Sesuai Referensi)
+            2. FLOATING 3-COLUMN CARD UNDER HERO
            =================================================================== */}
-        <div className="relative z-30 mx-auto -mt-2 sm:-mt-5 max-w-6xl px-5 pb-6 sm:px-8 lg:px-10">
-          <div className="rounded-[26px] border border-[#F0EAE8] bg-white/95 p-6 sm:p-7 shadow-[0_12px_36px_rgba(40,30,35,0.04)] backdrop-blur-xs">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-0 md:divide-x md:divide-[#EFEAE8]">
+        <div className="relative z-30 mx-auto -mt-2 sm:-mt-5 w-full max-w-[1480px] 2xl:max-w-[1680px] px-5 pb-6 sm:px-8 lg:px-12 xl:px-16">
+          <div className="rounded-[26px] border border-[#F5DCE4] bg-white/95 p-6 sm:p-7 shadow-[0_12px_36px_rgba(200,75,113,0.06)] backdrop-blur-xs transition-all duration-300 hover:shadow-[0_16px_42px_rgba(200,75,113,0.11)]">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-0 md:divide-x md:divide-[#F5E4EA]">
               {/* Col 1 */}
-              <div className="flex items-center gap-4 md:pr-6 lg:pr-8">
-                <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
+              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3.5 sm:gap-4 md:pr-6 lg:pr-8 transition-transform duration-300 hover:-translate-y-0.5">
+                <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E] shadow-2xs">
                   <BookOpen className="h-5 w-5" strokeWidth={1.8} />
                 </span>
                 <div>
@@ -324,8 +325,8 @@ export function LandingPage() {
               </div>
 
               {/* Col 2 */}
-              <div className="flex items-center gap-4 md:px-6 lg:px-8">
-                <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-[#F2F5E8] text-[#8E9B5E]">
+              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3.5 sm:gap-4 md:px-6 lg:px-8 transition-transform duration-300 hover:-translate-y-0.5">
+                <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-[#F2F5E8] text-[#8E9B5E] shadow-2xs">
                   <Heart className="h-5 w-5" strokeWidth={1.8} />
                 </span>
                 <div>
@@ -339,8 +340,8 @@ export function LandingPage() {
               </div>
 
               {/* Col 3 */}
-              <div className="flex items-center gap-4 md:pl-6 lg:pl-8">
-                <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
+              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3.5 sm:gap-4 md:pl-6 lg:pl-8 transition-transform duration-300 hover:-translate-y-0.5">
+                <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E] shadow-2xs">
                   <Users className="h-5 w-5" strokeWidth={1.8} />
                 </span>
                 <div>
@@ -360,11 +361,9 @@ export function LandingPage() {
       {/* =====================================================================
           MAIN CONTENT AREA
          ===================================================================== */}
-      <main className="mx-auto max-w-6xl space-y-20 px-5 py-14 sm:space-y-24 sm:px-8 sm:py-16 lg:px-10">
+      <main className="mx-auto w-full max-w-[1480px] 2xl:max-w-[1680px] space-y-20 px-5 py-14 sm:space-y-24 sm:px-8 sm:py-16 lg:px-12 xl:px-16">
         {/* =====================================================================
             3. SECTION "3 TIPS PENTING UNTUK IBU NIFAS"
-            Tampilan Split Kiri-Kanan sesuai Referensi Screenshot 5,
-            dengan isi 3 Tips Penting untuk Ibu Nifas!
            ===================================================================== */}
         <motion.section
           id="tips-nifas"
@@ -373,9 +372,9 @@ export function LandingPage() {
           className="scroll-mt-24"
         >
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
-            {/* Sisi Kiri (5 Kolom): Overline Olive, Judul Serif 2 Warna (Hitam & Pink), Deskripsi, & Tombol Pill Outline */}
-            <div className="lg:col-span-5">
-              <div className="flex items-center gap-2.5">
+            {/* Sisi Kiri (5 Kolom): Rata Tengah di Mobile, Rata Kiri di Tablet/Desktop */}
+            <div className="lg:col-span-5 flex flex-col items-center text-center sm:items-start sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start gap-2.5">
                 <span className="h-[1px] w-5 bg-[#8E9B5E]" />
                 <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#8E9B5E]">
                   PANDUAN MASA NIFAS &amp; MENYUSUI
@@ -401,7 +400,7 @@ export function LandingPage() {
                 <button
                   type="button"
                   onClick={() => enterWebApp('tips')}
-                  className="inline-flex min-h-[38px] items-center justify-center gap-2 rounded-full border border-[#F0B8C8] bg-white px-5 py-1.5 text-xs font-semibold text-[#E46C8E] shadow-2xs transition-colors hover:bg-[#FCEBEF]/50 cursor-pointer"
+                  className="inline-flex min-h-[38px] items-center justify-center gap-2 rounded-full border border-[#F0B8C8] bg-white px-5 py-1.5 text-xs font-semibold text-[#E46C8E] shadow-2xs transition-all duration-300 hover:-translate-y-1 hover:bg-[#FCEBEF]/60 hover:shadow-[0_10px_24px_rgba(228,108,142,0.16)] active:scale-95 cursor-pointer"
                 >
                   <span>Mulai Belajar</span>
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -409,10 +408,13 @@ export function LandingPage() {
               </div>
             </div>
 
-            {/* Sisi Kanan (7 Kolom): Kartu Putih Bersih Berisi 3 Tips Penting untuk Ibu Nifas */}
+            {/* Sisi Kanan (7 Kolom): 3 Kartu Putih dengan Animasi Hover & Sentuh */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
               {/* Kartu Tip Nifas 1 */}
-              <div className="flex flex-col items-center text-center rounded-[20px] border border-[#F2ECE9] bg-white p-5 shadow-[0_6px_24px_rgba(40,30,35,0.035)]">
+              <div
+                onClick={() => enterWebApp('tips')}
+                className="flex flex-col items-center text-center rounded-[22px] border border-[#F5DCE4] bg-white p-5 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#F0B8C8] hover:shadow-[0_14px_32px_rgba(228,108,142,0.15)] active:scale-[0.98] cursor-pointer"
+              >
                 <div className="relative h-20 w-20 shrink-0">
                   <Image
                     src="/feature-tips.webp"
@@ -432,7 +434,10 @@ export function LandingPage() {
               </div>
 
               {/* Kartu Tip Nifas 2 */}
-              <div className="flex flex-col items-center text-center rounded-[20px] border border-[#F2ECE9] bg-white p-5 shadow-[0_6px_24px_rgba(40,30,35,0.035)]">
+              <div
+                onClick={() => enterWebApp('tips')}
+                className="flex flex-col items-center text-center rounded-[22px] border border-[#F5DCE4] bg-white p-5 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#F0B8C8] hover:shadow-[0_14px_32px_rgba(228,108,142,0.15)] active:scale-[0.98] cursor-pointer"
+              >
                 <div className="relative h-20 w-20 shrink-0">
                   <Image
                     src="/feature-stages.webp"
@@ -452,7 +457,10 @@ export function LandingPage() {
               </div>
 
               {/* Kartu Tip Nifas 3 */}
-              <div className="flex flex-col items-center text-center rounded-[20px] border border-[#F2ECE9] bg-white p-5 shadow-[0_6px_24px_rgba(40,30,35,0.035)]">
+              <div
+                onClick={() => enterWebApp('kontak')}
+                className="flex flex-col items-center text-center rounded-[22px] border border-[#F5DCE4] bg-white p-5 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#F0B8C8] hover:shadow-[0_14px_32px_rgba(228,108,142,0.15)] active:scale-[0.98] cursor-pointer"
+              >
                 <div className="relative h-20 w-20 shrink-0">
                   <Image
                     src="/feature-consult.webp"
@@ -475,8 +483,7 @@ export function LandingPage() {
         </motion.section>
 
         {/* =====================================================================
-            4. FITUR LENGKAP PEMBELAJARAN (Persis Desain pdf_img_3.png)
-            Judul rata kiri dengan garis horizontal + 4 Kartu Putih Minimalis
+            4. FITUR LENGKAP PEMBELAJARAN
            ===================================================================== */}
         <motion.section
           id="fitur-webapp"
@@ -484,10 +491,10 @@ export function LandingPage() {
           {...sectionRevealProps}
           className="scroll-mt-24"
         >
-          {/* Left-aligned Editorial Heading with Olive Line */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3">
-              <span className="h-[1.5px] w-6 bg-[#8E9B5E]" />
+          {/* Editorial Heading: Rata Tengah di Mobile, Rata Kiri di Desktop */}
+          <div className="mb-8 flex flex-col items-center text-center sm:items-start sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-3">
+              <span className="hidden sm:inline-block h-[1.5px] w-6 bg-[#8E9B5E]" />
               <h2
                 id="fitur-webapp-heading"
                 className="font-heading text-2xl sm:text-3xl font-bold text-[#2A2D22]"
@@ -495,7 +502,7 @@ export function LandingPage() {
                 Fitur Lengkap Pembelajaran
               </h2>
             </div>
-            <p className="mt-1.5 pl-9 text-xs sm:text-sm text-[#767A6E]">
+            <p className="mt-1.5 sm:pl-9 text-xs sm:text-sm text-[#767A6E]">
               Belajar dengan mudah, lengkap, dan interaktif.
             </p>
           </div>
@@ -505,7 +512,7 @@ export function LandingPage() {
             {/* Card 1 */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group rounded-[24px] border border-[#F0EAE8] bg-white p-6 shadow-[0_8px_26px_rgba(40,30,35,0.03)] hover:shadow-[0_12px_32px_rgba(40,30,35,0.07)] hover:-translate-y-0.5 transition-all cursor-pointer"
+              className="group flex flex-col items-center text-center sm:items-start sm:text-left rounded-[24px] border border-[#F5DCE4] bg-white p-6 shadow-[0_8px_26px_rgba(200,75,113,0.05)] hover:border-[#F0B8C8] hover:shadow-[0_14px_34px_rgba(228,108,142,0.16)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
                 <BookOpen className="h-5 w-5" strokeWidth={1.8} />
@@ -521,7 +528,7 @@ export function LandingPage() {
             {/* Card 2 */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group rounded-[24px] border border-[#F0EAE8] bg-white p-6 shadow-[0_8px_26px_rgba(40,30,35,0.03)] hover:shadow-[0_12px_32px_rgba(40,30,35,0.07)] hover:-translate-y-0.5 transition-all cursor-pointer"
+              className="group flex flex-col items-center text-center sm:items-start sm:text-left rounded-[24px] border border-[#F5DCE4] bg-white p-6 shadow-[0_8px_26px_rgba(200,75,113,0.05)] hover:border-[#F0B8C8] hover:shadow-[0_14px_34px_rgba(228,108,142,0.16)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
                 <FileText className="h-5 w-5" strokeWidth={1.8} />
@@ -537,7 +544,7 @@ export function LandingPage() {
             {/* Card 3 */}
             <div
               onClick={() => enterWebApp('materi')}
-              className="group rounded-[24px] border border-[#F0EAE8] bg-white p-6 shadow-[0_8px_26px_rgba(40,30,35,0.03)] hover:shadow-[0_12px_32px_rgba(40,30,35,0.07)] hover:-translate-y-0.5 transition-all cursor-pointer"
+              className="group flex flex-col items-center text-center sm:items-start sm:text-left rounded-[24px] border border-[#F5DCE4] bg-white p-6 shadow-[0_8px_26px_rgba(200,75,113,0.05)] hover:border-[#B8C294] hover:shadow-[0_14px_34px_rgba(142,155,94,0.16)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F2F5E8] text-[#8E9B5E]">
                 <CheckCircle2 className="h-5 w-5" strokeWidth={1.8} />
@@ -553,7 +560,7 @@ export function LandingPage() {
             {/* Card 4 */}
             <div
               onClick={() => enterWebApp('selfie')}
-              className="group rounded-[24px] border border-[#F0EAE8] bg-white p-6 shadow-[0_8px_26px_rgba(40,30,35,0.03)] hover:shadow-[0_12px_32px_rgba(40,30,35,0.07)] hover:-translate-y-0.5 transition-all cursor-pointer"
+              className="group flex flex-col items-center text-center sm:items-start sm:text-left rounded-[24px] border border-[#F5DCE4] bg-white p-6 shadow-[0_8px_26px_rgba(200,75,113,0.05)] hover:border-[#F0B8C8] hover:shadow-[0_14px_34px_rgba(228,108,142,0.16)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
                 <Heart className="h-5 w-5" strokeWidth={1.8} />
@@ -569,8 +576,7 @@ export function LandingPage() {
         </motion.section>
 
         {/* =====================================================================
-            5. DAFTAR PUSTAKA (Persis Desain pdf_img_3.png & Item 5)
-            "Daftar pustaka menggunakan poin, tapi poin muncul setelah pencet 'lihat daftar'"
+            5. DAFTAR PUSTAKA
            ===================================================================== */}
         <motion.section
           id="daftar-pustaka"
@@ -578,7 +584,7 @@ export function LandingPage() {
           {...sectionRevealProps}
           className="scroll-mt-24"
         >
-          <div className="rounded-[28px] border border-[#F0EAE8] bg-white p-6 sm:p-8 lg:p-10 shadow-[0_10px_36px_rgba(40,30,35,0.04)]">
+          <div className="rounded-[28px] border border-[#F5DCE4] bg-white p-6 sm:p-8 lg:p-10 shadow-[0_10px_36px_rgba(200,75,113,0.05)] transition-all duration-300 hover:shadow-[0_16px_42px_rgba(200,75,113,0.1)]">
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
               {/* Left Column: USG Photo */}
               <div className="lg:col-span-5">
@@ -588,13 +594,13 @@ export function LandingPage() {
                     alt="Pemeriksaan USG Kehamilan"
                     fill
                     sizes="(max-width: 1024px) 100vw, 42vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
               </div>
 
               {/* Right Column: Title, Subtitle, Outlined Button "Lihat Daftar ->", & Collapsible Points */}
-              <div className="lg:col-span-7 space-y-4">
+              <div className="lg:col-span-7 space-y-4 flex flex-col items-center text-center sm:items-start sm:text-left">
                 <div>
                   <h2
                     id="pustaka-heading"
@@ -612,7 +618,7 @@ export function LandingPage() {
                     type="button"
                     onClick={() => setShowReferences((prev) => !prev)}
                     aria-expanded={showReferences}
-                    className="inline-flex min-h-[38px] items-center justify-center gap-2 rounded-full border border-[#F0B8C8] bg-white px-5 py-1.5 text-xs font-semibold text-[#E46C8E] transition-colors hover:bg-[#FCEBEF]/50 cursor-pointer"
+                    className="inline-flex min-h-[38px] items-center justify-center gap-2 rounded-full border border-[#F0B8C8] bg-white px-5 py-1.5 text-xs font-semibold text-[#E46C8E] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FCEBEF]/50 hover:shadow-[0_8px_20px_rgba(228,108,142,0.15)] active:scale-95 cursor-pointer"
                   >
                     <span>{showReferences ? 'Sembunyikan Daftar' : 'Lihat Daftar'}</span>
                     {showReferences ? (
@@ -631,7 +637,7 @@ export function LandingPage() {
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3, ease: CUSTOM_EASE }}
-                      className="overflow-hidden pt-2"
+                      className="overflow-hidden pt-2 w-full text-left"
                     >
                       <ReferenceList references={references} />
                     </motion.div>

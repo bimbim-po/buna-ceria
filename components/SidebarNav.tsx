@@ -67,8 +67,8 @@ export function SidebarNav({
 
   return (
     <aside
-      aria-label="Navigasi WebApp Buna Ceria Teman Kasih"
-      className={`flex h-full flex-col justify-between rounded-[24px] bg-white border border-[#ECE7F2] shadow-[0_4px_24px_rgba(40,40,60,0.04)] text-[#2A2D22] select-none transition-all duration-300 ${
+      aria-label="Navigasi WebApp Buna Ceria"
+      className={`flex h-full flex-col justify-between rounded-[24px] bg-white border border-[#F5DCE4] shadow-[0_6px_26px_rgba(200,75,113,0.06)] text-[#2A2D22] select-none transition-all duration-300 ${
         isCollapsed ? 'p-2.5 items-center' : 'p-3.5'
       }`}
     >
@@ -90,12 +90,12 @@ export function SidebarNav({
             className={`flex items-center gap-3 text-left cursor-pointer group ${
               isCollapsed ? 'justify-center' : 'min-w-0'
             }`}
-            title="Buna Ceria • Teman Kasih - Beranda"
+            title="Buna Ceria - Beranda"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#FDF2F5] border border-pink-100 p-1.5 transition-transform group-hover:scale-105 shadow-2xs">
               <Image
                 src="/logo.png"
-                alt="Buna Ceria Teman Kasih"
+                alt="Buna Ceria"
                 width={32}
                 height={32}
                 className="h-7 w-7 object-contain"
@@ -108,7 +108,7 @@ export function SidebarNav({
                   Buna Ceria
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#C84B71] truncate block">
-                  Teman Kasih App
+                  Buna Ceria App
                 </span>
               </div>
             )}

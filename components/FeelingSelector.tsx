@@ -268,7 +268,7 @@ export function FeelingSelector() {
       className="space-y-3.5"
     >
       {/* Kepala Bagian */}
-      <div className="max-w-2xl">
+      <div className="max-w-2xl text-center sm:text-left mx-auto sm:mx-0">
         <h2
           id="feelings-heading"
           className="font-heading text-lg font-bold tracking-tight text-[#2A2D22] sm:text-xl"
@@ -281,13 +281,13 @@ export function FeelingSelector() {
       </div>
 
       {/* Kontainer: Menu Perasaan di Kiri & Kanvas Putih di Kanan */}
-      <div className="overflow-hidden rounded-[24px] border border-[#ECE7F2] bg-white p-3 sm:p-4 shadow-2xs">
+      <div className="overflow-hidden rounded-[24px] border border-[#F5DCE4] bg-white p-3 sm:p-4 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:shadow-[0_12px_32px_rgba(200,75,113,0.1)]">
         <div className="flex flex-col md:flex-row gap-4 items-stretch">
           {/* Kolom Kiri: Daftar Pilihan Perasaan dengan Pill Tab yang Rapi */}
           <div
             role="tablist"
             aria-label="Pilih perasaan yang sedang Ibu hadapi"
-            className="grid grid-cols-2 gap-1.5 md:flex md:w-60 md:shrink-0 md:flex-col md:justify-between md:gap-1.5 p-2 bg-[#FAF9FB] rounded-[18px] border border-[#F0ECF5]"
+            className="grid grid-cols-2 gap-1.5 md:flex md:w-60 md:shrink-0 md:flex-col md:justify-between md:gap-1.5 p-2 bg-[#FFF5F8] rounded-[18px] border border-[#F5DCE4]"
           >
             {topics.map((topic) => {
               const isSelected = topic.id === activeTopic.id;
@@ -301,9 +301,9 @@ export function FeelingSelector() {
                   aria-controls={`feeling-panel-${topic.id}`}
                   id={`feeling-tab-${topic.id}`}
                   onClick={() => setSelectedId(topic.id)}
-                  className={`group relative flex min-h-[42px] items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all duration-200 cursor-pointer ${
+                  className={`group relative flex min-h-[42px] items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all duration-200 hover:-translate-y-0.5 active:scale-95 cursor-pointer ${
                     isSelected
-                      ? 'bg-white font-bold text-[#2A2D22] shadow-2xs border border-pink-200/80'
+                      ? 'bg-white font-bold text-[#2A2D22] shadow-xs border border-pink-200/80'
                       : 'font-medium text-[#6E6A6C] hover:bg-white/80 hover:text-[#2A2D22]'
                   }`}
                 >
@@ -332,11 +332,11 @@ export function FeelingSelector() {
               role="tabpanel"
               id={`feeling-panel-${activeTopic.id}`}
               aria-labelledby={`feeling-tab-${activeTopic.id}`}
-              className="flex flex-1 flex-col justify-between rounded-[18px] bg-white p-5 sm:p-6 border border-[#F0ECF5]"
+              className="flex flex-1 flex-col justify-between rounded-[18px] bg-white p-5 sm:p-6 border border-[#F5DCE4]"
             >
               {/* Bagian Atas: Ilustrasi + Judul + Saran Bidan */}
-              <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-pink-100 bg-[#FDF9FA] p-2 shadow-2xs">
+              <div className="flex flex-col items-center text-center gap-4 sm:flex-row sm:items-center sm:text-left">
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-pink-100 bg-[#FFF5F8] p-2 shadow-2xs">
                   <FeelingIllustration id={activeTopic.id} />
                 </div>
 
@@ -352,13 +352,13 @@ export function FeelingSelector() {
               </div>
 
               {/* Bagian Bawah: Baris Tombol Aksi yang Rapi & Proporsional */}
-              <div className="mt-6 flex flex-col gap-3 border-t border-[#F0ECF5] pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+              <div className="mt-6 flex flex-col gap-3 border-t border-[#F8E8EE] pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                 <button
                   type="button"
                   onClick={() =>
                     openModuleReader(activeTopic.recommendedModuleId)
                   }
-                  className="inline-flex min-h-[40px] items-center justify-center gap-2 rounded-full border border-[#ECE7F2] bg-[#FAF8FC] px-4 py-2 text-xs font-bold text-[#2A2D22] hover:bg-white hover:border-pink-200 hover:text-[#C84B71] transition-all cursor-pointer shadow-2xs"
+                  className="inline-flex min-h-[40px] items-center justify-center gap-2 rounded-full border border-[#F5DCE4] bg-[#FFF5F8] px-4 py-2 text-xs font-bold text-[#2A2D22] hover:bg-white hover:border-pink-300 hover:text-[#C84B71] hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer shadow-2xs"
                 >
                   <BookOpen
                     className="h-3.5 w-3.5 text-[#C84B71]"
@@ -373,11 +373,11 @@ export function FeelingSelector() {
                   />
                 </button>
 
-                <div className="flex flex-wrap items-center gap-2.5">
+                <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5">
                   <button
                     type="button"
                     onClick={handleOpenAnxietyCheck}
-                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#C84B71] px-4 py-2 text-xs font-bold text-white shadow-2xs hover:bg-[#b23b60] transition-all cursor-pointer"
+                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#C84B71] to-[#E46C8E] px-4 py-2 text-xs font-bold text-white shadow-[0_6px_18px_rgba(200,75,113,0.25)] hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(200,75,113,0.35)] active:scale-95 transition-all cursor-pointer"
                   >
                     <ClipboardCheck
                       className="h-3.5 w-3.5"
@@ -390,7 +390,7 @@ export function FeelingSelector() {
                   <button
                     type="button"
                     onClick={handleContactExpert}
-                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#EBF7EE] border border-green-200 px-4 py-2 text-xs font-bold text-green-700 hover:bg-green-100 transition-all cursor-pointer"
+                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#EBF7EE] border border-green-200 px-4 py-2 text-xs font-bold text-green-700 hover:bg-green-100 hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer"
                   >
                     <HeartHandshake
                       className="h-3.5 w-3.5"

@@ -187,7 +187,7 @@ export function LoginDialog() {
               <X className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
             </button>
 
-            {/* Layar Loading Animasi Logo Buna Ceria • Teman Kasih */}
+            {/* Layar Loading Animasi Logo Buna Ceria */}
             {isLoading && (
               <div className="absolute inset-0 z-30 flex flex-col items-center justify-center rounded-[28px] bg-white/95 backdrop-blur-xs p-6 text-center">
                 <motion.div
@@ -204,14 +204,14 @@ export function LoginDialog() {
                 >
                   <Image
                     src="/logo.png"
-                    alt="Logo Buna Ceria Teman Kasih"
+                    alt="Logo Buna Ceria"
                     width={56}
                     height={56}
                     className="h-12 w-12 object-contain"
                   />
                 </motion.div>
                 <p className="mt-4 font-heading text-lg font-bold text-[#2A2D22]">
-                  Buna Ceria • Teman Kasih
+                  Buna Ceria
                 </p>
                 <p className="mt-1 text-xs text-[#6E6A6C]">
                   Menyiapkan ruang belajar kehamilan Bunda...
@@ -242,7 +242,7 @@ export function LoginDialog() {
                     : 'Masuk ke Buna Ceria'}
                 </h2>
                 <p id="login-dialog-desc" className="text-xs text-[#6E6A6C]">
-                  WebApp Edukasi Kehamilan Buna Ceria • Teman Kasih
+                  WebApp Edukasi Kehamilan Buna Ceria
                 </p>
               </div>
             </div>

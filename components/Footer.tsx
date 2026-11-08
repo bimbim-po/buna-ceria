@@ -8,34 +8,34 @@ import { getFooterContact } from '@/lib/api';
 export function Footer() {
   const contact = getFooterContact();
   const whatsappUrl = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(
-    'Halo Kak Faiza (Tim Buna Ceria • Teman Kasih), saya ingin berkonsultasi mengenai program edukasi kehamilan ini.'
+    'Halo Kak Faiza (Tim Buna Ceria), saya ingin berkonsultasi mengenai program edukasi kehamilan ini.'
   )}`;
 
   return (
     <footer
       id="narahubung"
-      className="mx-auto max-w-6xl px-5 pb-8 pt-6 sm:px-8 lg:px-10 text-[#2A2D22]"
+      className="mx-auto w-full max-w-[1480px] 2xl:max-w-[1680px] px-5 pb-8 pt-6 sm:px-8 lg:px-12 xl:px-16 text-[#2A2D22]"
     >
-      <div className="overflow-hidden rounded-[28px] border border-[#EFEAE6] shadow-[0_12px_36px_rgba(40,30,35,0.04)]">
+      <div className="overflow-hidden rounded-[28px] border border-[#F5DCE4] shadow-[0_12px_36px_rgba(200,75,113,0.06)] transition-all duration-300 hover:shadow-[0_16px_42px_rgba(200,75,113,0.1)]">
         {/* Top Unified Editorial Surface (Sesuai Referensi pdf_img_3.png) */}
-        <div className="bg-gradient-to-r from-[#F2F4E8] via-[#FAF7F2] to-[#FCEBEF] px-7 py-9 sm:px-10 sm:py-11">
+        <div className="bg-gradient-to-r from-[#F5F7EC] via-[#FFF6F9] to-[#FCEBEF] px-7 py-9 sm:px-10 sm:py-11">
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12">
             {/* Left Column: Brand & Kalimat Penutup */}
-            <div className="md:col-span-5 space-y-3.5">
+            <div className="md:col-span-5 space-y-3.5 flex flex-col items-center text-center sm:items-start sm:text-left">
               <div className="flex items-center gap-3">
                 <Image
                   src="/logo.png"
-                  alt="Buna Ceria Teman Kasih"
+                  alt="Buna Ceria"
                   width={38}
                   height={38}
                   className="h-9 w-9 object-contain"
                 />
-                <div>
+                <div className="text-left">
                   <span className="block font-heading text-xl font-bold text-[#2A2D22] leading-tight">
                     Buna Ceria
                   </span>
                   <span className="block text-xs text-[#6E6A6C]">
-                    Teman Kasih • Edukasi Kehamilan
+                    Buna Ceria • Edukasi Kehamilan
                   </span>
                 </div>
               </div>
@@ -85,13 +85,13 @@ export function Footer() {
             </div>
 
             {/* Right Column: Narahubung Program */}
-            <div className="md:col-span-6 space-y-3">
+            <div className="md:col-span-6 space-y-3 flex flex-col items-center text-center sm:items-start sm:text-left">
               <h2 className="font-sans text-sm font-bold text-[#2A2D22]">
                 Narahubung Program Buna Ceria
               </h2>
 
-              <div className="space-y-2.5 text-xs sm:text-[13px] text-[#4A4748]">
-                <div className="flex items-start gap-3">
+              <div className="space-y-2.5 text-xs sm:text-[13px] text-[#4A4748] flex flex-col items-center sm:items-start">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-1.5 sm:gap-3">
                   <User className="mt-0.5 h-4 w-4 shrink-0 text-[#DF6B8D]" />
                   <div>
                     <span className="block font-bold text-[#2A2D22]">

@@ -112,7 +112,7 @@ export const mockQuizQuestions: QuizQuestion[] = [
     id: 'quiz-8',
     order: 8,
     question:
-      'Manakah pernyataan yang paling menggambarkan semangat belajar di Teman Kasih?',
+      'Manakah pernyataan yang paling menggambarkan semangat belajar di Buna Ceria?',
     options: [
       'Belajar dengan tenang, bertahap, dan penuh kasih sayang terhadap diri sendiri',
       'Berlomba menyelesaikan materi paling cepat tanpa membaca isi',
@@ -121,6 +121,6 @@ export const mockQuizQuestions: QuizQuestion[] = [
     ],
     correctIndex: 0,
     explanation:
-      'Teman Kasih hadir untuk menemani Ibu belajar secara bertahap dengan hati yang tenang dan nyaman.',
+      'Buna Ceria hadir untuk menemani Ibu belajar secara bertahap dengan hati yang tenang dan nyaman.',
   },
 ];

@@ -90,7 +90,7 @@ export function Header({
 
   return (
     <>
-      <header className="sticky top-0 z-30 w-full shrink-0 border-b border-[#F0ECF5] bg-white/95 backdrop-blur-xs px-5 py-3.5 sm:px-8">
+      <header className="sticky top-0 z-40 w-full shrink-0 border-b border-[#F5DCE4] bg-white/95 backdrop-blur-md px-5 py-3.5 sm:px-8 shadow-[0_4px_20px_rgba(200,75,113,0.05)]">
         <div className="flex items-center justify-between gap-4">
           {/* Sisi Kiri Mobile: Menu Drawer Button + Logo */}
           <div className="flex items-center gap-2.5 lg:hidden">
@@ -98,7 +98,7 @@ export function Header({
               type="button"
               onClick={() => setMobileDrawerOpen(true)}
               aria-label="Buka menu navigasi"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-[#F9F8FA] text-[#2A2D22] cursor-pointer"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#F5DCE4] bg-[#FFF5F8] text-[#2A2D22] transition-all active:scale-95 cursor-pointer"
             >
               <Menu className="h-5 w-5" strokeWidth={1.8} />
             </button>
@@ -110,7 +110,7 @@ export function Header({
             >
               <Image
                 src="/logo.png"
-                alt="Buna Ceria Teman Kasih"
+                alt="Buna Ceria"
                 width={28}
                 height={28}
                 className="h-6 w-6 object-contain"

@@ -14,7 +14,7 @@ export const mockModules: ModuleItem[] = [
     content: [
       {
         type: 'paragraph',
-        text: 'Selamat datang di ruang belajar Teman Kasih. Setiap perjalanan kehamilan memiliki cerita yang unik, sehingga wajar apabila Ibu merasakan beragam emosi sekaligus di masa awal ini.',
+        text: 'Selamat datang di ruang belajar Buna Ceria. Setiap perjalanan kehamilan memiliki cerita yang unik, sehingga wajar apabila Ibu merasakan beragam emosi sekaligus di masa awal ini.',
       },
       {
         type: 'subheading',
@@ -125,7 +125,7 @@ export const mockModules: ModuleItem[] = [
     content: [
       {
         type: 'paragraph',
-        text: 'Selamat, Ibu telah mencapai materi keempat dalam rangkaian pembelajaran Teman Kasih. Bagian ini merangkum langkah-langkah reflektif untuk menumbuhkan rasa percaya diri.',
+        text: 'Selamat, Ibu telah mencapai materi keempat dalam rangkaian pembelajaran Buna Ceria. Bagian ini merangkum langkah-langkah reflektif untuk menumbuhkan rasa percaya diri.',
       },
       {
         type: 'subheading',

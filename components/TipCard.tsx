@@ -98,7 +98,7 @@ export function TipCard({ tip, isSaved, onToggleSave, orderNumber }: TipCardProp
   return (
     <article
       aria-label={`Tips: ${tip.title}`}
-      className="group relative flex h-full flex-col rounded-[22px] border border-[#ECE7F2] bg-white p-5 shadow-2xs hover:shadow-[0_12px_28px_rgba(40,40,60,0.06)] hover:-translate-y-0.5 transition-all duration-300"
+      className="group relative flex h-full flex-col rounded-[22px] border border-[#F5DCE4] bg-white p-5 shadow-[0_6px_22px_rgba(200,75,113,0.05)] hover:border-pink-300 hover:shadow-[0_14px_32px_rgba(200,75,113,0.15)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300"
     >
       {/* ===================================================================
           1. TOP ROW: Numbered Title (1 Line Fixed Height) + Bookmark & Actions

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   DESIGN TOKENS — TEMAN KASIH (Cherry Blossom & Matcha Green)
+   DESIGN TOKENS — BUNA CERIA (Cherry Blossom & Matcha Green)
    Seluruh warna, tipografi, sudut membulat, jarak, dan bayangan didefinisikan
    di satu tempat sesuai spesifikasi.
    ========================================================================== */
@@ -24,8 +24,8 @@
   --ink: #2a2d22;
   --ink-muted: #666b58;
 
-  /* Latar Halaman & Kartu */
-  --page: #fff9f7;
+  /* Latar Halaman & Kartu — Soft Pastel Pink */
+  --page: #fff5f8;
   --surface: #ffffff;
 
   /* Status Terkunci (Abu Hangat Turunan Ink) */

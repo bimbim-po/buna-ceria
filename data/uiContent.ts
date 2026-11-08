@@ -2,8 +2,8 @@
 
 export const uiContent = {
   brand: {
-    name: 'Buna Ceria • Teman Kasih',
-    shortName: 'Teman Kasih',
+    name: 'Buna Ceria',
+    shortName: 'Buna Ceria',
     subBrand: 'Team Buna Ceria',
     loadingText: 'Menyiapkan ruang belajar Buna Ceria...',
   },

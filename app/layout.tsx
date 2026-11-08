@@ -17,7 +17,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Teman Kasih — Ruang Belajar Kehamilan',
+  title: 'Buna Ceria — Ruang Belajar Kehamilan',
   description:
     'Ruang belajar kehamilan berbahasa Indonesia untuk ibu hamil dan calon ibu. Baca materi bertahap, kenali perasaan, dan terhubung dengan bidan pendamping.',
 };
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#FFF9F7',
+  themeColor: '#FFF5F8',
 };
 
 export default function RootLayout({

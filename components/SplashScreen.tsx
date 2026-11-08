@@ -44,11 +44,11 @@ export function SplashScreen() {
           key="splash"
           role="status"
           aria-live="polite"
-          aria-label="Memuat Buna Ceria Teman Kasih"
+          aria-label="Memuat Buna Ceria"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.38 }}
-          className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-[#FFFAF0]"
+          className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-[#FFF5F8]"
         >
           <div className="relative flex h-32 w-32 items-center justify-center">
             {!reduceMotion && (
@@ -65,7 +65,7 @@ export function SplashScreen() {
             )}
             <motion.img
               src="/logo.png"
-              alt="Logo Buna Ceria Teman Kasih"
+              alt="Logo Buna Ceria"
               className="relative h-20 w-20 select-none object-contain"
               animate={
                 reduceMotion
@@ -81,7 +81,7 @@ export function SplashScreen() {
           </div>
 
           <p className="mt-4 font-heading text-xl font-bold text-[#2A2D22]">
-            Buna Ceria • Teman Kasih
+            Buna Ceria
           </p>
           <p className="mt-1 text-xs font-medium text-[#767A6E]">
             WebApp Edukasi Kehamilan &amp; Pendamping Ibu

@@ -142,7 +142,7 @@ export function ModuleReader({
 
           <div className="min-w-0">
             <span className="hidden md:block text-[10px] font-bold uppercase tracking-wider text-[#C84B71]">
-              Teman Kasih • Modul {module.order} dari {totalModules}
+              Buna Ceria • Modul {module.order} dari {totalModules}
             </span>
             <h1 className="font-heading text-sm sm:text-base font-bold text-[#2A2D22] truncate max-w-xs sm:max-w-md lg:max-w-xl">
               {module.title}
