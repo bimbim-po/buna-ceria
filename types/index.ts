@@ -78,7 +78,7 @@ export interface QuizQuestion {
 }
 
 export interface AnxietyOption {
-  label: 'Tidak pernah' | 'Kadang-kadang' | 'Sering' | 'Hampir selalu';
+  label: 'Tidak pernah' | 'Kadang-Kadang' | 'Sering' | 'Selalu';
   value: 0 | 1 | 2 | 3;
 }
 
@@ -88,18 +88,83 @@ export interface AnxietyQuestion {
   statement: string;
 }
 
+export type AnxietySeverityLevel =
+  | 'minimal'
+  | 'ringan-sedang-bawah'
+  | 'ringan-sedang-atas'
+  | 'berat'
+  | 'rendah'
+  | 'sedang'
+  | 'tinggi';
+
 export interface AnxietySubmission {
   userId: string;
   answers: Record<string, 0 | 1 | 2 | 3>;
   totalScore: number;
   maxScore: number;
-  level: 'rendah' | 'sedang' | 'tinggi';
+  level: AnxietySeverityLevel;
+  categoryLabel?: string;
+  phase?: 'pretest' | 'posttest';
+  attemptNumber?: number;
   completedAt: string;
 }
 
-// 4 Level Tahapan Pembelajaran sesuai Client Brief:
-// Level 1: Materi -> Level 2: Quiz -> Level 3: Tahap 3 (Refleksi & Evaluasi) -> Level 4: Hasil Saya
-export type StageId = 'materi' | 'quiz' | 'tahap-3' | 'hasil-saya';
+export type TestAttemptCategory =
+  | 'pretest-materi'
+  | 'pretest-kecemasan'
+  | 'kuis-materi'
+  | 'posttest-kecemasan';
+
+export interface TestAttemptRecord {
+  id: string;
+  category: TestAttemptCategory;
+  title: string;
+  score: number;
+  maxScore: number;
+  percentage: number;
+  level?: AnxietySeverityLevel;
+  categoryLabel?: string;
+  attemptNumber: number;
+  completedAt: string;
+}
+
+export type DailyMoodType =
+  | 'happy'
+  | 'antusias'
+  | 'soso'
+  | 'khawatir'
+  | 'sedih'
+  | 'menangis'
+  | 'marah'
+  | 'sebel';
+
+export interface DailyMoodEntry {
+  dateKey: string; // YYYY-MM-DD
+  mood: DailyMoodType;
+  emoji: string;
+  label: string;
+  note?: string;
+  updatedAt: string;
+}
+
+export interface PomegranateActivityLog {
+  activityId: 'video' | 'audio' | 'game';
+  title: string;
+  pointsEarned: number;
+  completedAt: string;
+  dayNumber: number;
+}
+
+export interface PomegranateGardenState {
+  points: number;
+  completedActivities: Record<string, boolean>; // e.g., 'video': true, 'audio': true, 'game': true
+  activityLogs: PomegranateActivityLog[];
+  lastUpdatedAt: string;
+}
+
+// 3 Level Tahapan Pembelajaran sesuai pembaruan terbaru:
+// Level 1: Materi -> Level 2: Refleksi Diri & Tips ('tahap-3') -> Level 3: Bunga Delima ('bunga-delima')
+export type StageId = 'materi' | 'tahap-3' | 'bunga-delima';
 
 export interface StageDefinition {
   id: StageId;
@@ -185,8 +250,40 @@ export interface UserProgress {
   bestQuizScore: number | null; // Persentase 0-100
   bestQuizCorrectCount: number | null; // Jumlah benar dari total soal
   quizAttempts: number;
+  firstLoginAt?: string;
+  initialPretestQuiz?: {
+    score: number;
+    maxScore: number;
+    percentage: number;
+    completedAt: string;
+  };
+  posttestQuiz?: {
+    score: number;
+    maxScore: number;
+    percentage: number;
+    completedAt: string;
+  };
+  initialPretestAnxiety?: {
+    totalScore: number;
+    maxScore: number;
+    level: AnxietySeverityLevel;
+    categoryLabel?: string;
+    completedAt: string;
+  };
+  posttestAnxiety?: {
+    totalScore: number;
+    maxScore: number;
+    level: AnxietySeverityLevel;
+    categoryLabel?: string;
+    completedAt: string;
+  };
+  testHistory?: TestAttemptRecord[];
+  dailyMoods?: Record<string, DailyMoodEntry>;
+  pomegranateGarden?: PomegranateGardenState;
+  simulatedDayOffset?: number; // Hari offset simulasi: 0 (default/Hari 1), 2 (Hari 3), 4 (Hari 5), 6 (Hari 7)
   reflectionNote?: string;
   reflectionSelectedItems?: string[];
   evaluationCheckedItems?: string[];
+  reflectionStartTimeChoice?: string;
   updatedAt: string;
 }

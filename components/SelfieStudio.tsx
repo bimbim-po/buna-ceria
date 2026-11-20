@@ -8,7 +8,6 @@ import {
   Download,
   FlipHorizontal,
   Heart,
-  Image as ImageIcon,
   Monitor,
   RefreshCw,
   Smartphone,
@@ -22,7 +21,7 @@ import { useApp } from '@/context/AppContext';
 export type FrameOrientation = 'portrait' | 'landscape';
 
 interface PoseGuide {
-  id: 'couple-side' | 'couple-belly' | 'couple-heart' | 'single-bunda';
+  id: 'couple-side' | 'none';
   label: string;
   shortLabel: string;
   instructionPortrait: string;
@@ -40,196 +39,107 @@ const POSE_GUIDES: PoseGuide[] = [
       'Mode Landscape (Full Layar): Posisikan Ayah dan Bunda berdampingan hangat di tengah bingkai mengikuti garis siluet putus-putus pink.',
   },
   {
-    id: 'couple-heart',
-    label: 'Gaya 2: Senyum Dekat Berdua + Hati',
-    shortLabel: 'Senyum Berdua',
+    id: 'none',
+    label: 'Tanpa Petunjuk Gaya (Kamera Bersih)',
+    shortLabel: 'Tanpa Siluet',
     instructionPortrait:
-      'Mode Portrait (HP): Dekatkan kepala Bunda & Pasangan mengikuti siluet garis putus-putus pink di bawah ikon hati.',
+      'Kamera tampil bersih tanpa garis siluet. Bunda dan pasangan bebas menentukan gaya foto sendiri.',
     instructionLandscape:
-      'Mode Landscape (Full Layar): Dekatkan kepala Bunda & Pasangan di tengah bingkai lebar mengikuti siluet garis putus-putus pink.',
-  },
-  {
-    id: 'couple-belly',
-    label: 'Gaya 3: Kasih Sayang untuk Si Kecil',
-    shortLabel: 'Sayang Si Kecil',
-    instructionPortrait:
-      'Mode Portrait (HP): Bunda di sisi kiri dan Pasangan di sisi kanan merangkul hangat mengikuti siluet garis putus-putus pink.',
-    instructionLandscape:
-      'Mode Landscape (Full Layar): Bunda di sisi kiri dan Pasangan di sisi kanan saling bersandar hangat mengikuti siluet putus-putus.',
-  },
-  {
-    id: 'single-bunda',
-    label: 'Gaya 4: Siluet Bunda Ceria',
-    shortLabel: 'Bunda Sendiri',
-    instructionPortrait:
-      'Mode Portrait (HP): Posisikan kepala, rambut, dan bahu Bunda tepat di tengah bingkai mengikuti garis putus-putus pink.',
-    instructionLandscape:
-      'Mode Landscape (Full Layar): Posisikan kepala dan bahu Bunda tepat di tengah bingkai landscape yang lega.',
+      'Kamera tampil bersih tanpa garis siluet. Bunda dan pasangan bebas menentukan gaya foto sendiri.',
   },
 ];
 
-interface FramePreset {
-  id: 'cherry-blossom' | 'matcha-green' | 'floral-white' | 'sweet-harmony';
-  name: string;
-  borderHex: string;
-  accentHex: string;
-  bgBadgeHex: string;
-  textHex: string;
-  previewClass: string;
+// Koordinat jendela foto di dalam bingkai Portrait (816x1021) & Landscape (1200x900)
+const FRAME_GEOMETRY = {
+  portrait: {
+    canvasW: 816,
+    canvasH: 1021,
+    photoX: 82,
+    photoY: 208,
+    photoW: 652,
+    photoH: 711,
+    frameSrc: '/frame-portrait.png',
+    frameWebp: '/frame-portrait.webp',
+    // Persentase posisi jendela foto terhadap ukuran penuh bingkai
+    windowStyle: {
+      left: '10.05%',
+      top: '20.37%',
+      width: '79.90%',
+      height: '69.64%',
+    },
+  },
+  landscape: {
+    canvasW: 1200,
+    canvasH: 900,
+    photoX: 128,
+    photoY: 158,
+    photoW: 946,
+    photoH: 635,
+    frameSrc: '/frame-landscape.png',
+    frameWebp: '/frame-landscape.webp',
+    windowStyle: {
+      left: '10.67%',
+      top: '17.56%',
+      width: '78.83%',
+      height: '70.56%',
+    },
+  },
+} as const;
+
+function getSilhouetteDrawBox(
+  canvasW: number,
+  canvasH: number,
+  silW: number,
+  silH: number,
+  orientation: FrameOrientation
+) {
+  const silAspect = silW / silH;
+  if (orientation === 'portrait') {
+    const drawH = canvasH * 0.84;
+    const drawW = drawH * silAspect;
+    const drawX = (canvasW - drawW) / 2;
+    const drawY = canvasH - drawH;
+    return { drawX, drawY, drawW, drawH };
+  }
+  const drawH = canvasH * 0.88;
+  const drawW = drawH * silAspect;
+  const drawX = (canvasW - drawW) / 2;
+  const drawY = canvasH - drawH;
+  return { drawX, drawY, drawW, drawH };
 }
 
-const FRAME_PRESETS: FramePreset[] = [
-  {
-    id: 'cherry-blossom',
-    name: 'Cherry Blossom Pink',
-    borderHex: '#F5AFB9',
-    accentHex: '#C84B71',
-    bgBadgeHex: '#FFF5F7',
-    textHex: '#2A2D22',
-    previewClass: 'border-[#F5AFB9] bg-[#FFF5F7]',
-  },
-  {
-    id: 'matcha-green',
-    name: 'Matcha Green',
-    borderHex: '#A8B371',
-    accentHex: '#56632A',
-    bgBadgeHex: '#F7F9EE',
-    textHex: '#2A2D22',
-    previewClass: 'border-[#A8B371] bg-[#F7F9EE]',
-  },
-  {
-    id: 'floral-white',
-    name: 'Floral White Elegance',
-    borderHex: '#E6DEC8',
-    accentHex: '#9C6B30',
-    bgBadgeHex: '#FFFAF0',
-    textHex: '#2A2D22',
-    previewClass: 'border-[#E6DEC8] bg-[#FFFAF0]',
-  },
-  {
-    id: 'sweet-harmony',
-    name: 'Sakura & Matcha',
-    borderHex: '#C84B71',
-    accentHex: '#56632A',
-    bgBadgeHex: '#FFF9FB',
-    textHex: '#2A2D22',
-    previewClass: 'border-[#C84B71] bg-[#FFF9FB]',
-  },
-];
-
-function PinkDashedPath({
-  d,
-  dash = '12 9',
-}: {
-  d: string;
-  dash?: string;
-}) {
-  return (
-    <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path
-        d={d}
-        stroke="rgba(156, 48, 86, 0.55)"
-        strokeWidth="7.5"
-        strokeDasharray={dash}
-      />
-      <path
-        d={d}
-        stroke="#F9A8CC"
-        strokeWidth="4.2"
-        strokeDasharray={dash}
-      />
-    </g>
-  );
-}
-
-// Komponen Overlay Siluet Garis Putus-Putus Pink sesuai Referensi Client
 function DashedSilhouetteOverlay({
   poseId,
   orientation,
-  visible,
 }: {
   poseId: PoseGuide['id'];
   orientation: FrameOrientation;
-  visible: boolean;
 }) {
-  if (!visible) return null;
+  if (poseId === 'none') return null;
 
   const isPortrait = orientation === 'portrait';
 
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-between pt-3 px-3 pb-0"
+      className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center overflow-hidden"
     >
-      {/* Badge Mode Orientasi di Pojok Atas Viewfinder */}
-      <div className="self-center rounded-full bg-black/50 px-3.5 py-1 text-[10px] sm:text-[11px] font-semibold text-pink-100 backdrop-blur-xs border border-pink-300/30">
-        {isPortrait
-          ? 'Panduan Siluet Portrait (HP)'
-          : 'Panduan Siluet Landscape (Full Layar)'}
-      </div>
-
-      {/* Area Siluet Utama Menempel Rapi di Bagian Bawah Bingkai */}
-      <div className="relative flex-1 w-full flex items-end justify-center min-h-0 overflow-hidden">
-        {poseId === 'single-bunda' ? (
-          /* Gaya 4: Siluet Detail Bunda Sendiri (Rambut Bergelombang, Telinga, Rahang, Kerah, & Bahu) */
-          <svg
-            viewBox="0 0 500 460"
-            className={`w-full object-contain object-bottom ${
-              isPortrait ? 'h-[86%] max-w-[380px]' : 'h-[90%] max-w-[520px]'
-            }`}
-            fill="none"
-          >
-            {/* Kontur Atas Rambut Bergelombang & Belahan Tengah */}
-            <PinkDashedPath d="M 178 142 C 174 96, 206 62, 248 64 C 254 56, 266 58, 272 65 C 314 66, 342 100, 336 148" />
-            {/* Helaian Rambut Kiri Mengalir ke Bahu */}
-            <PinkDashedPath d="M 178 142 C 164 176, 154 226, 144 276 C 136 312, 148 342, 162 365" />
-            <PinkDashedPath d="M 192 178 C 182 214, 174 252, 176 294" />
-            {/* Helaian Rambut Kanan Mengalir ke Bahu */}
-            <PinkDashedPath d="M 336 148 C 352 182, 362 230, 370 280 C 376 314, 364 344, 348 368" />
-            <PinkDashedPath d="M 320 180 C 330 216, 338 254, 334 296" />
-            {/* Wajah, Telinga, Pipi & Dagu Bunda */}
-            <PinkDashedPath d="M 196 154 C 186 158, 186 180, 198 184 C 204 218, 224 242, 256 244 C 288 242, 308 218, 314 184 C 326 180, 326 158, 316 154" />
-            {/* Leher & Kerah Baju Crew-Neck */}
-            <PinkDashedPath d="M 226 238 L 222 276 C 238 294, 274 294, 290 276 L 286 238" />
-            <PinkDashedPath d="M 210 282 C 234 308, 278 308, 302 282" />
-            {/* Bahu & Lengan Kiri-Kanan */}
-            <PinkDashedPath d="M 144 290 C 102 306, 74 346, 62 456" />
-            <PinkDashedPath d="M 368 290 C 410 306, 438 346, 450 456" />
-          </svg>
-        ) : (
-          /* Gaya 1, 2, 3: Siluet Garis Putus-Putus Pink Persis Referensi Client (silhouette-bunda-dashed.webp) */
-          <div className="relative flex h-full w-full items-end justify-center">
-            {poseId === 'couple-heart' && (
-              <svg
-                viewBox="0 0 120 100"
-                className="absolute top-2 left-1/2 -translate-x-1/2 h-14 w-16 sm:h-16 sm:w-20 z-10"
-                fill="none"
-              >
-                <PinkDashedPath
-                  d="M 60 86 C 60 86, 18 56, 18 32 C 18 16, 32 6, 46 6 C 54 6, 60 12, 60 18 C 60 12, 66 6, 74 6 C 88 6, 102 16, 102 32 C 102 56, 60 86, 60 86 Z"
-                  dash="9 7"
-                />
-              </svg>
-            )}
-
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/silhouette-bunda-dashed.webp"
-              alt="Panduan siluet garis putus-putus pink"
-              className={`w-full select-none object-contain object-bottom transition-transform duration-300 ${
-                isPortrait
-                  ? 'max-h-[85%] max-w-[95%]'
-                  : 'max-h-[92%] max-w-[78%]'
-              } ${poseId === 'couple-belly' ? 'scale-x-[-1]' : ''}`}
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Pill Instruksi Singkat di Bawah Viewfinder */}
-      <div className="mb-3 max-w-full rounded-full bg-black/55 px-4 py-1 text-center text-[10px] sm:text-[11px] font-semibold text-pink-100 backdrop-blur-xs border border-pink-300/30 truncate">
-        Posisikan Bunda &amp; Pasangan mengikuti garis siluet putus-putus pink
-      </div>
+      <svg
+        viewBox={isPortrait ? '85 0 717 671' : '0 0 887 671'}
+        preserveAspectRatio="xMidYMax meet"
+        className={
+          isPortrait
+            ? 'h-[86%] w-full object-contain object-bottom'
+            : 'h-[88%] w-[82%] object-contain object-bottom'
+        }
+      >
+        <image
+          href="/silhouette-bunda-dashed.webp"
+          width="887"
+          height="671"
+          preserveAspectRatio="xMidYMax meet"
+        />
+      </svg>
     </div>
   );
 }
@@ -248,12 +158,10 @@ export function SelfieStudio() {
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [countdown, setCountdown] = useState<number | null>(null);
 
-  // Dropdown aktif: 'pose' | 'frame' | 'text' | null (agar tidak memenuhi layar)
-  const [openDropdown, setOpenDropdown] = useState<
-    'pose' | 'frame' | 'text' | null
-  >(null);
+  const [openDropdown, setOpenDropdown] = useState<'pose' | 'text' | null>(
+    null
+  );
 
-  // Orientasi Bingkai: otomatis Portrait di HP (<768px) & Landscape di Laptop (>=768px), namun bebas diubah user
   const [frameOrientation, setFrameOrientation] =
     useState<FrameOrientation>('landscape');
 
@@ -267,7 +175,6 @@ export function SelfieStudio() {
     }
   }, []);
 
-  // Tutup dropdown saat klik di luar toolbar
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -283,20 +190,15 @@ export function SelfieStudio() {
 
   const [capturedDataUrl, setCapturedDataUrl] = useState<string | null>(null);
   const [selectedPose, setSelectedPose] = useState<PoseGuide>(POSE_GUIDES[0]);
-  const [showGuideOnPreview, setShowGuideOnPreview] = useState(true);
   const [includeGuideInDownload, setIncludeGuideInDownload] = useState(false);
-  const [selectedFrame, setSelectedFrame] = useState<FramePreset>(
-    FRAME_PRESETS[0]
-  );
 
-  // Edit Nama user di bingkai foto
   const [customUserName, setCustomUserName] = useState<string>(
     session?.name ? `${session.name} & Pasangan` : 'Bunda & Ayah'
   );
   const [customCaption, setCustomCaption] = useState<string>(
     session?.trimesterLabel
-      ? `Bahagia Menanti Buah Hati • ${session.trimesterLabel}`
-      : 'Bahagia Menanti Buah Hati Tercinta'
+      ? `Momen Bahagia Lahirnya Si Buah Hati • ${session.trimesterLabel}`
+      : 'Momen Bahagia Lahirnya Si Buah Hati'
   );
   const [customDate, setCustomDate] = useState<string>(() =>
     new Date().toLocaleDateString('id-ID', {
@@ -305,6 +207,7 @@ export function SelfieStudio() {
       year: 'numeric',
     })
   );
+  const [showCustomFooterText, setShowCustomFooterText] = useState<boolean>(true);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
   useEffect(() => {
@@ -312,7 +215,9 @@ export function SelfieStudio() {
       setCustomUserName(`${session.name} & Pasangan`);
     }
     if (session?.trimesterLabel) {
-      setCustomCaption(`Bahagia Menanti Buah Hati • ${session.trimesterLabel}`);
+      setCustomCaption(
+        `Momen Bahagia Lahirnya Si Buah Hati • ${session.trimesterLabel}`
+      );
     }
   }, [session?.name, session?.trimesterLabel]);
 
@@ -330,7 +235,6 @@ export function SelfieStudio() {
     };
   }, [stopCamera]);
 
-  // Attach stream to video element safely whenever camera becomes active
   useEffect(() => {
     if (isCameraActive && videoRef.current && streamRef.current) {
       const videoEl = videoRef.current;
@@ -351,8 +255,6 @@ export function SelfieStudio() {
         throw new Error('Browser tidak mendukung akses kamera langsung.');
       }
 
-      // Gunakan resolusi standar kelipatan 16 (1280x720) agar decoder hardware YUV420
-      // di kamera HP Android tidak mengalami glitch layar separuh hijau (stride mismatch)
       let stream: MediaStream;
       try {
         stream = await navigator.mediaDevices.getUserMedia({
@@ -375,7 +277,7 @@ export function SelfieStudio() {
       setIsCameraActive(true);
     } catch {
       setCameraError(
-        'Kamera tidak ditemukan atau izin kamera belum diberikan. Bunda tetap dapat mengunggah foto dari galeri atau mencoba contoh foto.'
+        'Kamera tidak ditemukan atau izin kamera belum diberikan. Bunda tetap dapat mengunggah foto dari galeri perangkat.'
       );
     }
   };
@@ -384,9 +286,9 @@ export function SelfieStudio() {
     const video = videoRef.current;
     if (!video) return;
 
-    const isPortrait = frameOrientation === 'portrait';
-    const targetW = isPortrait ? 900 : 1440;
-    const targetH = isPortrait ? 1200 : 900;
+    const geom = FRAME_GEOMETRY[frameOrientation];
+    const targetW = geom.photoW * 2;
+    const targetH = geom.photoH * 2;
     const targetAspect = targetW / targetH;
 
     const canvas = document.createElement('canvas');
@@ -454,101 +356,13 @@ export function SelfieStudio() {
     reader.readAsDataURL(file);
   };
 
-  // Buat foto simulasi hangat Bunda & Pasangan sesuai orientasi (Portrait / Landscape)
-  const generateSampleCouplePhoto = (
-    targetOrientation: FrameOrientation = frameOrientation
-  ) => {
-    stopCamera();
-    const isPortrait = targetOrientation === 'portrait';
-    const W = isPortrait ? 900 : 1440;
-    const H = isPortrait ? 1200 : 900;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = W;
-    canvas.height = H;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const grad = ctx.createLinearGradient(0, 0, W, H);
-    grad.addColorStop(0, '#FFF4F8');
-    grad.addColorStop(0.55, '#FFFAF4');
-    grad.addColorStop(1, '#F2F6E6');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, W, H);
-
-    ctx.fillStyle = 'rgba(245, 175, 185, 0.25)';
-    ctx.beginPath();
-    ctx.arc(W * 0.2, H * 0.22, 130, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = 'rgba(168, 179, 113, 0.22)';
-    ctx.beginPath();
-    ctx.arc(W * 0.82, H * 0.25, 150, 0, Math.PI * 2);
-    ctx.fill();
-
-    const cxLeft = isPortrait ? W * 0.38 : W * 0.4;
-    const cxRight = isPortrait ? W * 0.62 : W * 0.6;
-    const headYLeft = isPortrait ? H * 0.42 : H * 0.41;
-    const headYRight = isPortrait ? H * 0.48 : H * 0.47;
-    const bodyY = isPortrait ? H * 0.84 : H * 0.86;
-
-    // Ayah (Kiri)
-    ctx.fillStyle = '#A8B371';
-    ctx.beginPath();
-    ctx.arc(cxLeft, bodyY, 200, Math.PI, 0, false);
-    ctx.fill();
-
-    ctx.fillStyle = '#FFE8DC';
-    ctx.beginPath();
-    ctx.arc(cxLeft, headYLeft, 88, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = '#2A2D22';
-    ctx.beginPath();
-    ctx.arc(cxLeft, headYLeft - 18, 90, Math.PI, 0, false);
-    ctx.fill();
-
-    ctx.strokeStyle = '#2A2D22';
-    ctx.lineWidth = 5;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.arc(cxLeft, headYLeft + 14, 26, 0.15 * Math.PI, 0.85 * Math.PI);
-    ctx.stroke();
-
-    // Bunda (Kanan bersandar)
-    ctx.fillStyle = '#F5AFB9';
-    ctx.beginPath();
-    ctx.arc(cxRight, bodyY + 15, 190, Math.PI, 0, false);
-    ctx.fill();
-
-    ctx.fillStyle = '#C84B71';
-    ctx.beginPath();
-    ctx.arc(cxRight, headYRight, 96, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = '#FFF0E8';
-    ctx.beginPath();
-    ctx.arc(cxRight, headYRight, 76, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.strokeStyle = '#2A2D22';
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.arc(cxRight, headYRight + 12, 22, 0.15 * Math.PI, 0.85 * Math.PI);
-    ctx.stroke();
-
-    setCapturedDataUrl(canvas.toDataURL('image/png'));
-  };
-
-  // Download hasil foto beserta bingkai & nama sesuai orientasi (Portrait / Landscape)
+  // Download hasil foto beserta bingkai resmi Portrait / Landscape
   const handleDownloadFramedPhoto = async () => {
     const isPortrait = frameOrientation === 'portrait';
-    const W = isPortrait ? 1080 : 1480;
-    const H = isPortrait ? 1520 : 1220;
-    const photoX = 90;
-    const photoY = 165;
-    const photoW = W - 180;
-    const photoH = isPortrait ? 1120 : 810;
+    const geom = FRAME_GEOMETRY[frameOrientation];
+    const W = geom.canvasW;
+    const H = geom.canvasH;
+    const { photoX, photoY, photoW, photoH, frameSrc } = geom;
 
     const canvas = document.createElement('canvas');
     canvas.width = W;
@@ -556,29 +370,14 @@ export function SelfieStudio() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // 1. Background Bingkai Utama
-    ctx.fillStyle = selectedFrame.bgBadgeHex;
+    // 1. Background Dasar
+    ctx.fillStyle = '#FFF9FB';
     ctx.fillRect(0, 0, W, H);
 
-    // 2. Border Dekoratif Luar
-    ctx.strokeStyle = selectedFrame.borderHex;
-    ctx.lineWidth = 28;
-    ctx.strokeRect(24, 24, W - 48, H - 48);
-
-    // 3. Header Bingkai Atas (BUNA CERIA)
-    ctx.fillStyle = selectedFrame.accentHex;
-    ctx.font = 'bold 30px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('BUNA CERIA', W / 2, 92);
-
-    ctx.fillStyle = '#6E6A6C';
-    ctx.font = '22px sans-serif';
-    ctx.fillText('Momen Bahagia Kehamilan Pertama', W / 2, 128);
-
-    // 4. Area Foto Utama (Sesuai Portrait / Landscape)
+    // 2. Gambar Foto Pengguna di Area Jendela Dalam
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect(photoX, photoY, photoW, photoH, 32);
+    ctx.rect(photoX, photoY, photoW, photoH);
     ctx.clip();
 
     if (capturedDataUrl) {
@@ -612,7 +411,7 @@ export function SelfieStudio() {
       ctx.fillRect(photoX, photoY, photoW, photoH);
     }
 
-    if (includeGuideInDownload) {
+    if (includeGuideInDownload && selectedPose.id !== 'none') {
       const silImg = new window.Image();
       silImg.crossOrigin = 'anonymous';
       await new Promise<void>((resolve) => {
@@ -621,45 +420,86 @@ export function SelfieStudio() {
         silImg.src = '/silhouette-bunda-dashed.webp';
       });
       if (silImg.width > 0) {
-        const silAspect = silImg.width / silImg.height;
-        const drawH = photoH * 0.85;
-        const drawW = drawH * silAspect;
-        const drawX = photoX + (photoW - drawW) / 2;
-        const drawY = photoY + photoH - drawH;
-        ctx.drawImage(silImg, drawX, drawY, drawW, drawH);
+        const { drawX, drawY, drawW, drawH } = getSilhouetteDrawBox(
+          photoW,
+          photoH,
+          isPortrait ? 717 : silImg.width,
+          silImg.height,
+          frameOrientation
+        );
+        if (isPortrait) {
+          ctx.drawImage(
+            silImg,
+            85,
+            0,
+            717,
+            silImg.height,
+            photoX + drawX,
+            photoY + drawY,
+            drawW,
+            drawH
+          );
+        } else {
+          ctx.drawImage(
+            silImg,
+            0,
+            0,
+            silImg.width,
+            silImg.height,
+            photoX + drawX,
+            photoY + drawY,
+            drawW,
+            drawH
+          );
+        }
       }
     }
     ctx.restore();
 
-    ctx.strokeStyle = selectedFrame.borderHex;
-    ctx.lineWidth = 8;
-    ctx.beginPath();
-    ctx.roundRect(photoX, photoY, photoW, photoH, 32);
-    ctx.stroke();
+    // 3. Gambar Overlay Bingkai Bunga & Renda Resmi di Atas Foto
+    const frameImg = new window.Image();
+    frameImg.crossOrigin = 'anonymous';
+    await new Promise<void>((resolve) => {
+      frameImg.onload = () => resolve();
+      frameImg.onerror = () => resolve();
+      frameImg.src = frameSrc;
+    });
+    if (frameImg.width > 0) {
+      ctx.drawImage(frameImg, 0, 0, W, H);
+    }
 
-    // 5. Area Bawah Bingkai: Nama User & Pasangan + Caption + Tanggal
-    ctx.fillStyle = selectedFrame.textHex;
-    ctx.font = 'bold 44px serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(
-      customUserName.trim() || 'Bunda & Pasangan',
-      W / 2,
-      photoY + photoH + 78
-    );
+    // 4. Gambar Nama Bunda & Pasangan + Tanggal di Bagian Bawah Tengah (Antara Rangkaian Bunga)
+    if (showCustomFooterText && (customUserName.trim() || customDate.trim())) {
+      const badgeW = isPortrait ? 330 : 440;
+      const badgeH = isPortrait ? 64 : 66;
+      const badgeX = (W - badgeW) / 2;
+      const badgeY = isPortrait ? H - 82 : H - 84;
 
-    ctx.fillStyle = selectedFrame.accentHex;
-    ctx.font = 'bold 26px sans-serif';
-    ctx.fillText(
-      customCaption.trim() || 'Bahagia Menanti Buah Hati',
-      W / 2,
-      photoY + photoH + 124
-    );
+      ctx.save();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+      ctx.strokeStyle = 'rgba(200, 75, 113, 0.35)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 32);
+      ctx.fill();
+      ctx.stroke();
 
-    ctx.fillStyle = '#767A6E';
-    ctx.font = '21px sans-serif';
-    ctx.fillText(customDate, W / 2, photoY + photoH + 166);
+      ctx.fillStyle = '#2A2D22';
+      ctx.font = isPortrait ? 'bold 20px serif' : 'bold 22px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        customUserName.trim() || 'Bunda & Pasangan',
+        W / 2,
+        badgeY + 28
+      );
 
-    // 6. Trigger Download File PNG
+      ctx.fillStyle = '#C84B71';
+      ctx.font = isPortrait ? 'bold 13px sans-serif' : 'bold 14px sans-serif';
+      ctx.fillText(customDate.trim(), W / 2, badgeY + 49);
+      ctx.restore();
+    }
+
+    // 5. Trigger Download File PNG
     const finalUrl = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     const safeFileName = (customUserName || 'buna-ceria')
@@ -680,29 +520,34 @@ export function SelfieStudio() {
       ? selectedPose.instructionPortrait
       : selectedPose.instructionLandscape;
 
+  const activeGeom = FRAME_GEOMETRY[frameOrientation];
+
   return (
     <div className="space-y-5 sm:space-y-6 w-full">
       {/* Header Banner Fitur Take Selfie */}
       <div className="rounded-[24px] border border-[#F5DCE4] bg-white p-5 sm:p-7 shadow-[0_8px_28px_rgba(200,75,113,0.06)] transition-all duration-300 hover:shadow-[0_12px_34px_rgba(200,75,113,0.1)]">
-        <div className="flex flex-col items-center text-center sm:items-start sm:text-left gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:justify-between lg:text-left gap-4">
           <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FCE8EE] px-3 py-0.5 text-[11px] font-bold text-[#C84B71] mb-1.5">
+              <span>Dukungan Suami &bull; Take Selfie</span>
+            </span>
             <h1 className="font-heading text-xl sm:text-3xl font-bold text-[#2A2D22]">
-              Abadikan Momen Kehamilan Bunda &amp; Pasangan
+              Abadikan Momen Nifas Bersama Pasangan
             </h1>
             <p className="mt-1.5 max-w-2xl text-xs sm:text-sm leading-relaxed text-[#6E6A6C]">
               Pilih orientasi bingkai <strong>Portrait (HP)</strong> atau{' '}
-              <strong>Landscape (Full Layar)</strong>, atur gaya siluet, tema
-              bingkai, serta nama melalui menu dropdown di bawah, lalu unduh
-              fotonya.
+              <strong>Landscape (Full Layar)</strong> dengan bingkai khusus{' '}
+              <em>BUNA CERIA — Momen Bahagia Lahirnya Si Buah Hati</em>, atur
+              petunjuk gaya siluet serta nama, lalu unduh fotonya.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 shrink-0">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 w-full max-w-sm lg:w-auto lg:max-w-none shrink-0">
             {!isCameraActive ? (
               <button
                 type="button"
                 onClick={() => startCamera()}
-                className="inline-flex min-h-[42px] items-center gap-2 rounded-full bg-gradient-to-r from-[#C84B71] to-[#E46C8E] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-[0_6px_18px_rgba(200,75,113,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(200,75,113,0.38)] active:scale-95 cursor-pointer"
+                className="inline-flex min-h-[42px] w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C84B71] to-[#E46C8E] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-[0_6px_18px_rgba(200,75,113,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(200,75,113,0.38)] active:scale-95 cursor-pointer"
               >
                 <Camera className="h-4 w-4" />
                 <span>Buka Kamera Selfie</span>
@@ -711,7 +556,7 @@ export function SelfieStudio() {
               <button
                 type="button"
                 onClick={stopCamera}
-                className="inline-flex min-h-[42px] items-center gap-2 rounded-full border border-pink-200 bg-white px-5 py-2 text-xs sm:text-sm font-bold text-[#C84B71] hover:bg-pink-50 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                className="inline-flex min-h-[42px] w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-pink-200 bg-white px-5 py-2 text-xs sm:text-sm font-bold text-[#C84B71] hover:bg-pink-50 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
               >
                 <span>Matikan Kamera</span>
               </button>
@@ -720,7 +565,7 @@ export function SelfieStudio() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex min-h-[42px] items-center gap-2 rounded-full border border-[#F5DCE4] bg-white px-4 py-2 text-xs sm:text-sm font-bold text-[#2A2D22] hover:bg-[#FFF5F8] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm active:scale-95 cursor-pointer"
+              className="inline-flex min-h-[42px] w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-[#F5DCE4] bg-white px-5 py-2 text-xs sm:text-sm font-bold text-[#2A2D22] hover:bg-[#FFF5F8] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm active:scale-95 cursor-pointer"
             >
               <Upload className="h-4 w-4 text-[#56632A]" />
               <span>Unggah Foto</span>
@@ -737,97 +582,76 @@ export function SelfieStudio() {
       </div>
 
       {cameraError && (
-        <div className="rounded-[20px] border border-amber-200 bg-amber-50/90 p-4 text-xs sm:text-sm text-amber-900 flex flex-col sm:flex-row items-center text-center sm:text-left justify-between gap-3">
+        <div className="rounded-[20px] border border-amber-200 bg-amber-50/90 p-4 text-xs sm:text-sm text-amber-900 text-center">
           <span>{cameraError}</span>
-          <button
-            type="button"
-            onClick={() => generateSampleCouplePhoto()}
-            className="shrink-0 rounded-full bg-[#56632A] px-4 py-2 text-xs font-bold text-white hover:bg-[#434e20] transition-all active:scale-95 cursor-pointer"
-          >
-            Gunakan Contoh Foto Pasangan
-          </button>
         </div>
       )}
 
-      {/* =====================================================================
-          TOP DROPDOWN CONTROL BAR (Menghemat Tempat agar Frame Landscape Full 1 Layar)
-         ===================================================================== */}
+      {/* TOP DROPDOWN CONTROL BAR */}
       <div
         ref={toolbarRef}
-        className="relative z-30 rounded-[22px] border border-[#F5DCE4] bg-white p-3.5 sm:p-4 shadow-[0_6px_24px_rgba(200,75,113,0.06)]"
+        className="relative z-40 rounded-[22px] border border-[#F5DCE4] bg-white p-3 sm:p-3.5 shadow-[0_6px_24px_rgba(200,75,113,0.06)]"
       >
-        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-2.5">
-          {/* Switcher Orientasi: Portrait vs Landscape (Full Layar) */}
-          <div className="inline-flex items-center rounded-full border border-[#F5DCE4] bg-[#FFF5F8] p-1">
+        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-2.5 sm:gap-3 w-full">
+          {/* 1. Switcher Orientasi: Portrait (HP) vs Landscape (Full Layar) */}
+          <div className="grid grid-cols-2 w-full sm:w-auto inline-flex items-center rounded-full border border-[#F5DCE4] bg-[#FFF5F8] p-1 shrink-0">
             <button
               type="button"
               onClick={() => setFrameOrientation('portrait')}
-              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition-all cursor-pointer ${
                 frameOrientation === 'portrait'
                   ? 'bg-[#C84B71] text-white shadow-2xs'
                   : 'text-[#6E6A6C] hover:text-[#2A2D22]'
               }`}
             >
-              <Smartphone className="h-3.5 w-3.5" />
-              <span>Portrait (HP)</span>
+              <Smartphone className="h-3.5 w-3.5 shrink-0" />
+              <span>Bingkai Portrait (HP)</span>
             </button>
             <button
               type="button"
               onClick={() => setFrameOrientation('landscape')}
-              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition-all cursor-pointer ${
                 frameOrientation === 'landscape'
                   ? 'bg-[#56632A] text-white shadow-2xs'
                   : 'text-[#6E6A6C] hover:text-[#2A2D22]'
               }`}
             >
-              <Monitor className="h-3.5 w-3.5" />
-              <span>Landscape (Full Layar)</span>
+              <Monitor className="h-3.5 w-3.5 shrink-0" />
+              <span>Bingkai Landscape (Full Layar)</span>
             </button>
           </div>
 
-          {/* 3 Dropdown Pengaturan: Petunjuk Gaya, Tema Bingkai Foto, Edit Nama di Bingkai Foto */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
-            {/* DROPDOWN 1: PETUNJUK GAYA */}
-            <div className="relative">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 w-full sm:w-auto">
+            {/* 2. DROPDOWN PETUNJUK GAYA */}
+            <div className="relative w-full sm:w-[245px] shrink-0">
               <button
                 type="button"
                 onClick={() =>
                   setOpenDropdown((prev) => (prev === 'pose' ? null : 'pose'))
                 }
                 aria-expanded={openDropdown === 'pose'}
-                className={`inline-flex min-h-[40px] items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer ${
+                className={`inline-flex min-h-[42px] w-full items-center justify-center gap-1.5 sm:gap-2 rounded-full border px-3.5 py-2 text-xs font-bold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer ${
                   openDropdown === 'pose'
                     ? 'border-[#C84B71] bg-[#FDF2F5] text-[#C84B71] shadow-sm'
                     : 'border-[#F5DCE4] bg-[#FFF9FB] text-[#2A2D22] hover:border-pink-300'
                 }`}
               >
-                <Sparkles className="h-3.5 w-3.5 text-[#C84B71]" />
-                <span>Petunjuk Gaya: {selectedPose.shortLabel}</span>
+                <Sparkles className="h-3.5 w-3.5 text-[#C84B71] shrink-0" />
+                <span className="truncate">
+                  Petunjuk Gaya: {selectedPose.shortLabel}
+                </span>
                 <ChevronDown
-                  className={`h-3.5 w-3.5 transition-transform ${
+                  className={`h-3.5 w-3.5 shrink-0 transition-transform ${
                     openDropdown === 'pose' ? 'rotate-180' : ''
                   }`}
                 />
               </button>
 
               {openDropdown === 'pose' && (
-                <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-[310px] sm:w-[350px] rounded-[22px] border border-[#F5DCE4] bg-white p-4 shadow-[0_18px_42px_rgba(200,75,113,0.18)] z-50 space-y-3 text-left">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-heading text-sm font-bold text-[#2A2D22]">
-                      Pilih Petunjuk Gaya Siluet
-                    </span>
-                    <label className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#56632A] cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={showGuideOnPreview}
-                        onChange={(e) =>
-                          setShowGuideOnPreview(e.target.checked)
-                        }
-                        className="rounded accent-[#C84B71]"
-                      />
-                      <span>Tampilkan Siluet</span>
-                    </label>
-                  </div>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0 mt-2 w-[calc(100vw-2.5rem)] sm:w-[320px] rounded-[22px] border border-[#F5DCE4] bg-white p-4 shadow-[0_18px_42px_rgba(200,75,113,0.22)] z-50 space-y-3 text-left">
+                  <span className="block font-heading text-sm font-bold text-[#2A2D22]">
+                    Pilih Petunjuk Gaya Siluet
+                  </span>
 
                   <p className="rounded-xl border border-pink-100 bg-[#FFF5F8] p-2.5 text-[11px] leading-relaxed text-[#4A4D40]">
                     {activePoseInstruction}
@@ -842,10 +666,9 @@ export function SelfieStudio() {
                           type="button"
                           onClick={() => {
                             setSelectedPose(pose);
-                            setShowGuideOnPreview(true);
                             setOpenDropdown(null);
                           }}
-                          className={`flex w-full items-center justify-between rounded-xl border px-3 py-2 text-left text-xs font-semibold transition-all cursor-pointer ${
+                          className={`flex w-full items-center justify-between rounded-xl border px-3.5 py-2.5 text-left text-xs font-semibold transition-all cursor-pointer ${
                             active
                               ? 'border-[#C84B71] bg-[#FDF2F5] text-[#C84B71] font-bold'
                               : 'border-[#F5DCE4] bg-white text-[#2A2D22] hover:bg-[#FFF5F8]'
@@ -861,108 +684,34 @@ export function SelfieStudio() {
               )}
             </div>
 
-            {/* DROPDOWN 2: TEMA BINGKAI FOTO */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() =>
-                  setOpenDropdown((prev) => (prev === 'frame' ? null : 'frame'))
-                }
-                aria-expanded={openDropdown === 'frame'}
-                className={`inline-flex min-h-[40px] items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer ${
-                  openDropdown === 'frame'
-                    ? 'border-[#C84B71] bg-[#FDF2F5] text-[#C84B71] shadow-sm'
-                    : 'border-[#F5DCE4] bg-[#FFF9FB] text-[#2A2D22] hover:border-pink-300'
-                }`}
-              >
-                <span
-                  className="h-3.5 w-3.5 rounded-full border shrink-0"
-                  style={{
-                    backgroundColor: selectedFrame.borderHex,
-                    borderColor: selectedFrame.accentHex,
-                  }}
-                />
-                <span>Tema Bingkai: {selectedFrame.name}</span>
-                <ChevronDown
-                  className={`h-3.5 w-3.5 transition-transform ${
-                    openDropdown === 'frame' ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-
-              {openDropdown === 'frame' && (
-                <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-[290px] sm:w-[320px] rounded-[22px] border border-[#F5DCE4] bg-white p-4 shadow-[0_18px_42px_rgba(200,75,113,0.18)] z-50 space-y-3 text-left">
-                  <div className="flex items-center gap-2">
-                    <ImageIcon className="h-4 w-4 text-[#56632A]" />
-                    <span className="font-heading text-sm font-bold text-[#2A2D22]">
-                      Pilih Tema Bingkai Foto
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-2">
-                    {FRAME_PRESETS.map((frame) => {
-                      const active = selectedFrame.id === frame.id;
-                      return (
-                        <button
-                          key={frame.id}
-                          type="button"
-                          onClick={() => {
-                            setSelectedFrame(frame);
-                            setOpenDropdown(null);
-                          }}
-                          className={`flex items-center justify-between rounded-xl border p-2.5 text-left text-xs font-semibold transition-all cursor-pointer ${
-                            active
-                              ? 'border-[#C84B71] bg-[#FDF2F5] text-[#C84B71] font-bold'
-                              : 'border-[#F5DCE4] bg-white hover:bg-[#FFF5F8]'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2.5">
-                            <span
-                              className="h-5 w-5 shrink-0 rounded-full border"
-                              style={{
-                                backgroundColor: frame.borderHex,
-                                borderColor: frame.accentHex,
-                              }}
-                            />
-                            <span>{frame.name}</span>
-                          </div>
-                          {active && <Check className="h-4 w-4 shrink-0" />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* DROPDOWN 3: EDIT NAMA DI BINGKAI FOTO */}
-            <div className="relative">
+            {/* 3. DROPDOWN EDIT NAMA DI BINGKAI FOTO */}
+            <div className="relative w-full sm:w-[235px] shrink-0">
               <button
                 type="button"
                 onClick={() =>
                   setOpenDropdown((prev) => (prev === 'text' ? null : 'text'))
                 }
                 aria-expanded={openDropdown === 'text'}
-                className={`inline-flex min-h-[40px] items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer ${
+                className={`inline-flex min-h-[42px] w-full items-center justify-center gap-1.5 sm:gap-2 rounded-full border px-3.5 py-2 text-xs font-bold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer ${
                   openDropdown === 'text'
                     ? 'border-[#C84B71] bg-[#FDF2F5] text-[#C84B71] shadow-sm'
                     : 'border-[#F5DCE4] bg-[#FFF9FB] text-[#2A2D22] hover:border-pink-300'
                 }`}
               >
-                <Type className="h-3.5 w-3.5 text-[#C84B71]" />
-                <span>Edit Nama di Bingkai Foto</span>
+                <Type className="h-3.5 w-3.5 text-[#C84B71] shrink-0" />
+                <span className="truncate">Edit Nama di Bingkai Foto</span>
                 <ChevronDown
-                  className={`h-3.5 w-3.5 transition-transform ${
+                  className={`h-3.5 w-3.5 shrink-0 transition-transform ${
                     openDropdown === 'text' ? 'rotate-180' : ''
                   }`}
                 />
               </button>
 
               {openDropdown === 'text' && (
-                <div className="absolute right-0 mt-2 w-[300px] sm:w-[340px] rounded-[22px] border border-[#F5DCE4] bg-white p-4 shadow-[0_18px_42px_rgba(200,75,113,0.18)] z-50 space-y-3 text-left">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 sm:right-0 sm:left-auto sm:translate-x-0 mt-2 w-[calc(100vw-2.5rem)] sm:w-[340px] rounded-[22px] border border-[#F5DCE4] bg-white p-4 shadow-[0_18px_42px_rgba(200,75,113,0.22)] z-50 space-y-3 text-left">
                   <div className="flex items-center justify-between">
                     <span className="font-heading text-sm font-bold text-[#2A2D22]">
-                      Edit Nama &amp; Pesan di Bingkai
+                      Edit Nama &amp; Tanggal di Bingkai
                     </span>
                     <button
                       type="button"
@@ -972,6 +721,18 @@ export function SelfieStudio() {
                       Selesai
                     </button>
                   </div>
+
+                  <label className="flex items-center gap-2 text-xs font-semibold text-[#2A2D22] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showCustomFooterText}
+                      onChange={(e) =>
+                        setShowCustomFooterText(e.target.checked)
+                      }
+                      className="rounded accent-[#C84B71]"
+                    />
+                    <span>Tampilkan nama &amp; tanggal di bagian bawah bingkai</span>
+                  </label>
 
                   <div>
                     <label
@@ -987,23 +748,6 @@ export function SelfieStudio() {
                       onChange={(e) => setCustomUserName(e.target.value)}
                       placeholder="Contoh: Bunda Nadia & Ayah Reza"
                       className="mt-1 w-full rounded-xl border border-[#F5DCE4] bg-[#FFF5F8] px-3 py-2 text-xs font-semibold text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="selfie-caption"
-                      className="block text-xs font-bold text-[#2A2D22]"
-                    >
-                      Pesan / Usia Kehamilan
-                    </label>
-                    <input
-                      id="selfie-caption"
-                      type="text"
-                      value={customCaption}
-                      onChange={(e) => setCustomCaption(e.target.value)}
-                      placeholder="Contoh: Bahagia Menanti Buah Hati • Trimester 2"
-                      className="mt-1 w-full rounded-xl border border-[#F5DCE4] bg-[#FFF5F8] px-3 py-2 text-xs text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
                     />
                   </div>
 
@@ -1030,38 +774,20 @@ export function SelfieStudio() {
       </div>
 
       {/* =====================================================================
-          KARTU POLAROID BINGKAI FOTO:
-          - Mode Landscape: FULL SATU LAYAR (w-full max-w-none)
-          - Mode Portrait: Proporsional Vertikal di Tengah (max-w-[440px])
+          PRATINJAU BINGKAI FOTO PORTRAIT & LANDSCAPE SESUAI DESAIN BUNGA & RENDA
          ===================================================================== */}
-      <div className="flex flex-col items-center w-full">
+      <div className="relative z-10 flex flex-col items-center w-full">
         <div
-          className={`w-full rounded-[30px] border-4 p-4 sm:p-7 shadow-[0_14px_40px_rgba(200,75,113,0.1)] transition-all duration-300 ${
+          className={`relative w-full overflow-hidden rounded-[26px] border border-[#F5DCE4] bg-[#FFF9FB] shadow-[0_14px_40px_rgba(200,75,113,0.12)] transition-all duration-300 ${
             frameOrientation === 'portrait'
-              ? 'max-w-[400px] sm:max-w-[440px] mx-auto'
-              : 'max-w-none'
-          } ${selectedFrame.previewClass}`}
+              ? 'max-w-[440px] sm:max-w-[480px] aspect-[816/1021] mx-auto'
+              : 'max-w-[920px] aspect-[4/3] mx-auto'
+          }`}
         >
-          {/* Header Bingkai */}
-          <div className="text-center pb-3.5">
-            <span
-              className="block text-xs sm:text-sm font-extrabold uppercase tracking-[0.22em]"
-              style={{ color: selectedFrame.accentHex }}
-            >
-              BUNA CERIA
-            </span>
-            <span className="text-[11px] sm:text-xs text-[#6E6A6C]">
-              Momen Bahagia Kehamilan Pertama
-            </span>
-          </div>
-
-          {/* Area Viewfinder / Foto (Portrait 3:4 atau Landscape Full 16:10 / 16:9) */}
+          {/* LAYER 1: Jendela Kamera / Foto di Dalam Bingkai */}
           <div
-            className={`relative w-full overflow-hidden rounded-[22px] border-2 border-white bg-[#1F1B1D] shadow-inner flex items-center justify-center transition-all duration-300 ${
-              frameOrientation === 'portrait'
-                ? 'aspect-[3/4]'
-                : 'aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9]'
-            }`}
+            style={activeGeom.windowStyle}
+            className="absolute z-10 overflow-hidden bg-[#181517] flex items-center justify-center"
           >
             {isCameraActive ? (
               <div
@@ -1087,50 +813,25 @@ export function SelfieStudio() {
                 className="h-full w-full object-cover"
               />
             ) : (
-              /* IDLE STATE: Menampilkan Siluet Garis Putus-Putus Pink Seperti Contoh Client + Tombol Mulai */
-              <div className="relative h-full w-full flex flex-col items-center justify-between p-4 sm:p-6 text-center bg-[#181517]">
-                <div className="z-30 mt-1 flex flex-col items-center">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur-md border border-pink-300/30 px-3.5 py-1 text-[11px] font-bold text-pink-200 mb-2">
-                    <Users className="h-3.5 w-3.5 text-pink-300" />
-                    <span>
-                      {frameOrientation === 'portrait'
-                        ? 'Bingkai Portrait (HP)'
-                        : 'Bingkai Landscape (Full Satu Layar)'}
-                    </span>
-                  </span>
-                  <p className="font-heading text-sm sm:text-lg font-bold text-white drop-shadow-xs">
-                    Ikuti Garis Putus-Putus Pink untuk Posisi Foto Terbaik
-                  </p>
-                </div>
-
-                {/* Tombol Mulai Kamera / Contoh Foto di Tengah Atas */}
-                <div className="z-30 my-auto flex flex-wrap justify-center gap-2.5 bg-black/45 backdrop-blur-md p-3 rounded-2xl border border-white/15">
+              /* IDLE STATE: Tombol Nyalakan Kamera di Tengah */
+              <div className="relative z-20 flex flex-col items-center justify-center p-4 text-center">
+                <div className="flex items-center justify-center bg-black/50 backdrop-blur-md p-3.5 rounded-2xl border border-white/15 shadow-lg">
                   <button
                     type="button"
                     onClick={() => startCamera()}
-                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#C84B71] to-[#E46C8E] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C84B71] to-[#E46C8E] px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 cursor-pointer"
                   >
                     <Camera className="h-4 w-4" />
                     <span>Nyalakan Kamera</span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => generateSampleCouplePhoto()}
-                    className="inline-flex items-center gap-2 rounded-full border border-pink-200/80 bg-white/95 px-4 py-2.5 text-xs sm:text-sm font-bold text-[#2A2D22] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-95 cursor-pointer"
-                  >
-                    <span>Coba Contoh Foto</span>
-                  </button>
                 </div>
-
-                <div className="h-4" />
               </div>
             )}
 
-            {/* OVERLAY GARIS PUTUS-PUTUS PINK: Tampil di Kamera, Preview, maupun Idle Viewfinder */}
+            {/* OVERLAY GARIS PUTUS-PUTUS PINK */}
             <DashedSilhouetteOverlay
               poseId={selectedPose.id}
               orientation={frameOrientation}
-              visible={showGuideOnPreview}
             />
 
             {/* Hitung Mundur Kamera */}
@@ -1143,25 +844,41 @@ export function SelfieStudio() {
             )}
           </div>
 
-          {/* Footer Bingkai: Nama Bunda & Pasangan */}
-          <div className="pt-4 sm:pt-5 text-center space-y-1">
-            <h3 className="font-heading text-lg sm:text-2xl font-bold text-[#2A2D22] break-words leading-snug">
-              {customUserName || 'Bunda & Pasangan'}
-            </h3>
-            <p
-              className="text-xs sm:text-sm font-bold"
-              style={{ color: selectedFrame.accentHex }}
-            >
-              {customCaption || 'Bahagia Menanti Buah Hati'}
-            </p>
-            <p className="text-[11px] text-[#767A6E]">{customDate}</p>
-          </div>
+          {/* LAYER 2: Overlay Bingkai Bunga, Pita Hijau & Renda Resmi (Portrait / Landscape) */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={activeGeom.frameWebp}
+            alt={`Bingkai foto ${frameOrientation} Buna Ceria`}
+            className="pointer-events-none absolute inset-0 z-20 h-full w-full object-fill select-none"
+          />
+
+          {/* LAYER 3: Badge Nama Bunda & Pasangan di Bagian Bawah Bingkai */}
+          {showCustomFooterText &&
+            (customUserName.trim() || customDate.trim()) && (
+              <div className="pointer-events-none absolute bottom-[1.5%] left-1/2 -translate-x-1/2 z-30 flex flex-col items-center justify-center rounded-full border border-pink-300/70 bg-white/90 backdrop-blur-xs px-4 sm:px-6 py-1 sm:py-1.5 shadow-sm text-center max-w-[68%]">
+                <span className="font-heading text-xs sm:text-sm font-bold text-[#2A2D22] truncate w-full">
+                  {customUserName || 'Bunda & Pasangan'}
+                </span>
+                <span className="text-[9px] sm:text-[11px] font-bold text-[#C84B71] truncate w-full">
+                  {customDate}
+                </span>
+              </div>
+            )}
         </div>
 
-        {/* =====================================================================
-            BAR TOMBOL AKSI KAMERA & UNDUH FOTO DI BAWAH BINGKAI
-           ===================================================================== */}
-        <div className="mt-5 w-full rounded-[24px] border border-[#F5DCE4] bg-white p-4 sm:p-5 shadow-[0_8px_28px_rgba(200,75,113,0.06)] flex flex-col lg:flex-row items-center justify-between gap-4">
+        {/* Keterangan Panduan di Bawah Bingkai */}
+        {selectedPose.id !== 'none' && (
+          <p className="mt-3 text-center text-[11px] sm:text-xs font-semibold text-[#6E6A6C] flex items-center justify-center gap-1.5">
+            <Users className="h-3.5 w-3.5 text-[#C84B71]" />
+            <span>
+              Posisikan Bunda &amp; Pasangan mengikuti garis siluet putus-putus
+              pink di dalam bingkai
+            </span>
+          </p>
+        )}
+
+        {/* BAR TOMBOL AKSI KAMERA & UNDUH FOTO DI BAWAH BINGKAI */}
+        <div className="mt-4 w-full rounded-[24px] border border-[#F5DCE4] bg-white p-4 sm:p-5 shadow-[0_8px_28px_rgba(200,75,113,0.06)] flex flex-col lg:flex-row items-center justify-between gap-4">
           {/* Kiri: Tombol Kontrol Kamera */}
           <div className="flex flex-wrap items-center justify-center gap-2.5">
             {isCameraActive ? (
@@ -1218,17 +935,19 @@ export function SelfieStudio() {
                     {capturedDataUrl ? 'Foto Ulang Kamera' : 'Nyalakan Kamera'}
                   </span>
                 </button>
-                <label className="inline-flex items-center gap-2 text-xs font-medium text-[#6E6A6C] cursor-pointer px-2">
-                  <input
-                    type="checkbox"
-                    checked={includeGuideInDownload}
-                    onChange={(e) =>
-                      setIncludeGuideInDownload(e.target.checked)
-                    }
-                    className="rounded accent-[#C84B71]"
-                  />
-                  <span>Sertakan siluet putus-putus saat unduh</span>
-                </label>
+                {selectedPose.id !== 'none' && (
+                  <label className="inline-flex items-center gap-2 text-xs font-medium text-[#6E6A6C] cursor-pointer px-2">
+                    <input
+                      type="checkbox"
+                      checked={includeGuideInDownload}
+                      onChange={(e) =>
+                        setIncludeGuideInDownload(e.target.checked)
+                      }
+                      className="rounded accent-[#C84B71]"
+                    />
+                    <span>Sertakan siluet putus-putus saat unduh</span>
+                  </label>
+                )}
               </div>
             )}
           </div>

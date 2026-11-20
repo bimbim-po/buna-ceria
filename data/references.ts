@@ -1,50 +1,52 @@
 import { ReferenceItem } from '@/types';
 
-// TODO: Verifikasi daftar pustaka akhir bersama tim medis
 export const mockReferences: ReferenceItem[] = [
   {
     id: 'ref-1',
-    author: 'Kementerian Kesehatan Republik Indonesia',
-    year: '2023',
-    title: 'Buku Kesehatan Ibu dan Anak (KIA)',
-    source: 'Kementerian Kesehatan RI, Jakarta',
-    summaryNote:
-      'Pedoman resmi pemantauan kesehatan ibu hamil, pola nutrisi seimbang, dan tanda bahaya kehamilan.',
+    author: 'Fitrayeni F, Tilana DD, Lisa UF.',
+    year: '2024',
+    title:
+      'Relationship between Husband’s Support, Family Support and Adjustment to the New Role as a Mother with Events Postpartum Blues in the Andalas Health Center Working Area',
+    source:
+      'Journal of Midwifery. 30 Juni 2024;9(1):88–106. doi:10.25077/JOM.9.1.88-106.2024',
+    summaryNote: 'Tingkat kecemasan Ibu Nifas',
   },
   {
     id: 'ref-2',
-    author: 'Rahmawati, D., & Lestari, P.',
-    year: '2022',
-    title: 'Pendampingan Ketenangan Emosional pada Ibu Hamil melalui Edukasi Bertahap',
-    source: 'Jurnal Kebidanan & Kesejahteraan Keluarga Indonesia, Vol. 8(2), 45–54',
-    summaryNote:
-      'Studi yang mendasari alur belajar bertahap dan refleksi diri secara tenang bagi calon ibu.',
+    author: 'Okinarum G, Zakiyah Z.',
+    year: '2019',
+    title: 'Pemanfaatan Herbal dalam Kebidanan. Kesehatan Masyarakat [Internet]. 1 ed.',
+    source:
+      'Yogyakarta: Pustaka Panasea; 2019 [dikutip 16 Oktober 2026]. 252 hlm. Tersedia pada: https://kbk13515b5.perpustakaandigital.com/detail/pemanfaatan-herbal-dalam-kebidanan/5001',
+    summaryNote: 'Gangguan Kecemasan',
   },
   {
     id: 'ref-3',
-    author: 'Suryani, A., & Pratama, H.',
-    year: '2023',
-    title: 'Peran Dukungan Pasangan dan Komunikasi Hangat selama Masa Kehamilan',
-    source: 'Pustaka Kesehatan Ibu Nusantara, Bandung',
-    summaryNote:
-      'Rujukan komunikasi suportif bersama pasangan dan keluarga dalam mendampingi kehamilan.',
+    author: 'Savitri NPH, Anggraeni W, Wulan R.',
+    year: '2022',
+    title:
+      'Analisis Faktor yang Mempengaruhi Produksi ASI pada Ibu Bekerja di Desa Tondomulyo Kecamatan Jakenan Kabupaten Pati',
+    source:
+      'Jurnal Ilmiah Kebidanan (Scientific Journal of Midwifery). 14 Desember 2022;8(3):193–201. doi:10.33023/jikeb.v8i3.1366',
+    summaryNote: 'Tentang tanda kecukupan ASI',
   },
   {
     id: 'ref-4',
-    author: 'World Health Organization (WHO)',
-    year: '2022',
-    title: 'Guide for Integration of Perinatal Mental Health in Maternal and Child Health Services',
-    source: 'World Health Organization, Geneva',
-    summaryNote:
-      'Pedoman integrasi kesehatan emosional dan mental maternal dalam pelayanan antenatal primer.',
+    author:
+      'Batubara NS, Batubara RA, Antoni A, Pohan RA, Heriansyah R, Lubis TEF, dkk.',
+    year: '2025',
+    title:
+      'Hubungan Tingkat Kecemasan Ibu Postpartum dengan Produksi ASI di Wilayah Kerja Puskesmas Pintu Langit Kota Padangsidimpuan Tahun 2025',
+    source:
+      'Jurnal Kesehatan Ilmiah Indonesia (Indonesian Health Scientific Journal). Desember 2025;10(2). doi:10.51933/health.v10i2.2452',
+    summaryNote: 'Hubungan Kecemasan dengan ASI',
   },
   {
     id: 'ref-5',
-    author: 'Widyastuti, M., dkk.',
+    author: 'Kemenkes RI.',
     year: '2024',
-    title: 'Panduan Praktis Relaksasi dan Pengelolaan Istirahat Sehari-hari bagi Calon Ibu',
-    source: 'Jurnal Edukasi Kesehatan Maternal, Vol. 11(1), 12–21',
-    summaryNote:
-      'Panduan manajemen stres ringan, relaksasi pernapasan, dan pola istirahat berkualitas.',
+    title: 'Buku KIA',
+    source: 'Kemenkes RI.',
+    summaryNote: 'Tips Menyusui dan Mengatasi',
   },
 ];

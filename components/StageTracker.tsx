@@ -71,7 +71,7 @@ export function StageTracker({
         <div className="flex items-center gap-2">
           <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#C84B71]" />
           <span className="text-xs font-bold uppercase tracking-wider text-[#2A2D22]">
-            Tahapan Pembelajaran Bertahap (4 Level)
+            Tahapan Pembelajaran Bertahap (3 Level)
           </span>
         </div>
         <span className="rounded-full bg-[#F5F8EB] border border-[#E4EAC9] px-3 py-0.5 text-xs font-bold text-[#56632A]">
@@ -81,8 +81,8 @@ export function StageTracker({
 
       <div className="pb-1">
         <ol
-          aria-label="4 Level Tahapan Pembelajaran Buna Ceria"
-          className="mx-auto flex w-full max-w-3xl items-start justify-between gap-1 px-1 py-2 sm:gap-4 sm:px-2"
+          aria-label="3 Level Tahapan Pembelajaran Buna Ceria"
+          className="flex w-full items-start justify-between px-1 py-2 sm:px-4 md:px-6 lg:px-8"
         >
           {stages.map((stage, idx) => {
             const status = previewLockedOnly
@@ -105,7 +105,7 @@ export function StageTracker({
                 {idx < stages.length - 1 && (
                   <div
                     aria-hidden="true"
-                    className="absolute top-[20px] sm:top-[25px] left-[calc(50%+24px)] right-[calc(-50%+24px)] sm:left-[calc(50%+30px)] sm:right-[calc(-50%+30px)] h-1.5 overflow-hidden rounded-full bg-[#EAE6EE]"
+                    className="absolute top-[22px] sm:top-[27px] md:top-[29px] left-[calc(50%+26px)] right-[calc(-50%+26px)] sm:left-[calc(50%+33px)] sm:right-[calc(-50%+33px)] md:left-[calc(50%+36px)] md:right-[calc(-50%+36px)] h-1.5 sm:h-2 overflow-hidden rounded-full bg-[#EAE6EE]"
                   >
                     <motion.div
                       initial={false}
@@ -179,7 +179,7 @@ export function StageTracker({
                               : 'Terkunci'
                           }`
                     }
-                    className={`relative z-10 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 font-heading text-sm sm:text-base font-extrabold transition-all duration-300 ${
+                    className={`relative z-10 flex h-12 w-12 sm:h-15 sm:w-15 md:h-16 md:w-16 items-center justify-center rounded-full border-2 font-heading text-sm sm:text-base md:text-lg font-extrabold transition-all duration-300 ${
                       isCompleted
                         ? 'border-[#56632A] bg-[#A8B371] text-white shadow-xs cursor-pointer'
                         : isOpen
@@ -204,7 +204,7 @@ export function StageTracker({
                           exit={{ opacity: 0 }}
                         >
                           <Check
-                            className="h-6 w-6 text-white"
+                            className="h-6 w-6 sm:h-7 sm:w-7 text-white"
                             strokeWidth={2.5}
                             aria-hidden="true"
                           />
@@ -218,7 +218,7 @@ export function StageTracker({
                           className="flex flex-col items-center"
                         >
                           <Lock
-                            className="h-4 w-4 text-[#9E9AA8]"
+                            className="h-4 w-4 sm:h-5 sm:w-5 text-[#9E9AA8]"
                             strokeWidth={2}
                             aria-hidden="true"
                           />
@@ -229,7 +229,7 @@ export function StageTracker({
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0 }}
-                          className="font-heading text-lg font-extrabold text-[#2A2D22]"
+                          className="font-heading text-lg sm:text-xl font-extrabold text-[#2A2D22]"
                         >
                           {stage.order}
                         </motion.span>
@@ -239,11 +239,11 @@ export function StageTracker({
                 </div>
 
                 {/* Label Level & Nama Tahap */}
-                <span className="mt-2.5 text-[10px] font-extrabold uppercase tracking-wider text-[#8C8896]">
+                <span className="mt-3 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider text-[#8C8896]">
                   Level {stage.order}
                 </span>
                 <span
-                  className={`mt-0.5 px-1 font-heading text-xs sm:text-sm font-bold leading-snug ${
+                  className={`mt-0.5 px-1 font-heading text-xs sm:text-base md:text-lg font-bold leading-snug ${
                     isActive
                       ? 'text-[#C84B71]'
                       : isCompleted
@@ -258,7 +258,7 @@ export function StageTracker({
 
                 {/* Status Badge */}
                 <span
-                  className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
+                  className={`mt-2 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-bold ${
                     isCompleted
                       ? 'bg-[#EBF3D8] text-[#56632A]'
                       : isOpen
@@ -268,14 +268,14 @@ export function StageTracker({
                 >
                   {isCompleted ? (
                     <>
-                      <Check className="h-3 w-3" strokeWidth={2.2} />
+                      <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5" strokeWidth={2.2} />
                       <span>Selesai</span>
                     </>
                   ) : isOpen ? (
                     <span>Terbuka</span>
                   ) : (
                     <>
-                      <Lock className="h-3 w-3" strokeWidth={2} />
+                      <Lock className="h-3 w-3 sm:h-3.5 sm:w-3.5" strokeWidth={2} />
                       <span>Terkunci</span>
                     </>
                   )}

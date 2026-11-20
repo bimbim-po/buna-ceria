@@ -35,7 +35,7 @@ export function Footer() {
                     Buna Ceria
                   </span>
                   <span className="block text-xs text-[#6E6A6C]">
-                    Buna Ceria • Edukasi Kehamilan
+                    Buna Ceria • Edukasi Masa Nifas
                   </span>
                 </div>
               </div>

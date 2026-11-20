@@ -1,56 +1,60 @@
 import { StageDefinition } from '@/types';
 
-// Definisi 4 Level Tahapan Pembelajaran di Buna Ceria (Teman Kasih)
-// Sesuai Client Brief No. 13, 14, dan User Flow No. 6:
-// Level 1: Materi -> Level 2: Quiz -> Level 3: Tahap 3 -> Level 4: Hasil Saya
+// Definisi 3 Level Tahapan Pembelajaran di Buna Ceria (Masa Nifas)
+// Level 1: Materi (4 Materi)
+// Level 2: Refleksi Diri dan Tips
+// Level 3: Bunga Delima (Jika ditekan langsung menuju menu Kebun Bunga Delima)
 export const mockStages: StageDefinition[] = [
   {
     id: 'materi',
     order: 1,
-    title: 'Level 1: Materi Kehamilan',
+    title: 'Level 1: Materi Masa Nifas',
     shortTitle: 'Materi',
-    subtitle: '4 modul bacaan bertahap yang menenangkan',
+    subtitle: '4 modul bacaan masa nifas & kecukupan ASI',
     description:
-      'Pelajari keempat modul kehamilan secara berurutan hingga selesai untuk membuka Level 2 (Quiz).',
-  },
-  {
-    id: 'quiz',
-    order: 2,
-    title: 'Level 2: Quiz Pemahaman',
-    shortTitle: 'Quiz',
-    subtitle: '8 soal pilihan ganda dengan ulasan lembut',
-    description:
-      'Ukur pemahaman Bunda dari materi yang telah dipelajari melalui 8 pertanyaan interaktif. Bunda dapat mengulang kapan saja.',
+      'Pelajari keempat modul masa nifas secara berurutan hingga selesai untuk membuka Level 2 (Refleksi Diri dan Tips).',
   },
   {
     id: 'tahap-3',
-    order: 3,
-    title: 'Level 3: Tahap 3 (Refleksi & Rencana)',
-    shortTitle: 'Tahap 3',
-    subtitle: 'Refleksi perasaan & rencana sederhana Bunda',
+    order: 2,
+    title: 'Level 2: Refleksi Diri dan Tips',
+    shortTitle: 'Refleksi & Tips',
+    subtitle: 'Refleksi diri dan tips menghadapi kecemasan',
     description:
-      'Luangkan waktu sejenak untuk memilih poin refleksi diri dan langkah kecil yang ingin Bunda jalankan setelah membaca materi serta mengerjakan quiz.',
+      'Yuk, kenali perasaanmu! Centang checklist usaha Bunda, pilih rencana langkah kecil ke depan, serta pelajari teknik relaksasi dan tips menghadapi kecemasan.',
     prompts: [
-      'Saya bersyukur telah meluangkan waktu untuk belajar dan merawat ketenangan diri hari ini.',
-      'Saya memahami bahwa setiap perubahan perasaan di masa kehamilan adalah hal yang wajar.',
-      'Saya siap berkomunikasi lebih hangat dan terbuka dengan pasangan atau keluarga.',
-      'Saya tahu bahwa saya selalu bisa menghubungi pendamping ahli ketika membutuhkan teman bicara.',
+      'Berusaha menerima perubahan fisik dan emosional setelah melahirkan.',
+      'Mencoba menenangkan diri ketika mulai merasa cemas.',
+      'Mengatur pernapasan ketika merasa khawatir atau gelisah.',
+      'Meluangkan waktu untuk beristirahat di sela-sela merawat bayi.',
+      'Menceritakan perasaan kepada suami atau keluarga.',
+      'Mencari informasi mengenai cara tanda-tanda kecukupan ASI.',
+      'Berkonsultasi dengan bidan/tenaga ahli ketika memiliki kekhawatiran mengenai kondisi diri atau bayi.',
+      'Berusaha tidak membandingkan kemampuan diri dengan ibu lainnya.',
+      'Memberikan apresiasi kepada diri sendiri atas usaha yang sudah dilakukan.',
+      'Meminta bantuan orang lain saat merasa kewalahan.',
     ],
     evaluationPrompts: [
-      'Menyediakan jeda bernapas tenang selama 5 menit setiap pagi.',
-      'Menata waktu istirahat malam dengan mengurangi layar gawai sebelum tidur.',
-      'Membagi rencana persiapan kehamilan menjadi langkah-langkah kecil mingguan.',
-      'Menyimpan nomor Kontak Ahli untuk berdiskusi bila diperlukan.',
+      'Saya akan berusaha lebih menerima dan memahami perasaan sendiri.',
+      'Saya akan mencoba latihan pernapasan ketika merasa cemas.',
+      'Saya akan mengatur waktu istirahat dengan lebih baik.',
+      'Saya akan meminta bantuan suami atau keluarga ketika merasa kewalahan.',
+      'Saya akan lebih terbuka dalam menyampaikan kebutuhan dan perasaan.',
+      'Saya akan mempelajari tanda-tanda kecukupan ASI agar tidak mudah khawatir.',
+      'Saya akan meluangkan waktu untuk melakukan kegiatan yang saya sukai.',
+      'Saya akan mengurangi kebiasaan membandingkan diri dengan ibu lainnya.',
+      'Saya akan lebih menghargai setiap usaha kecil yang sudah saya lakukan.',
+      'Saya akan meminta bantuan tenaga kesehatan jika kecemasan terus berlanjut atau mengganggu aktivitas.',
     ],
-    actionLabel: 'Simpan Tahap 3 & Buka Hasil Saya',
+    actionLabel: 'Simpan Refleksi & Buka Bunga Delima (Level 3)',
   },
   {
-    id: 'hasil-saya',
-    order: 4,
-    title: 'Level 4: Hasil Saya',
-    shortTitle: 'Hasil Saya',
-    subtitle: 'Ringkasan perjalanan belajar Bunda',
+    id: 'bunga-delima',
+    order: 3,
+    title: 'Level 3: Bunga Delima',
+    shortTitle: 'Bunga Delima',
+    subtitle: 'Kebun edukasi interaktif video, audio & game ASI',
     description:
-      'Lihat rangkuman capaian belajar 4 level, skor quiz terbaik, serta catatan perasaan Bunda dalam satu tampilan yang hangat.',
+      'Tumbuhkan benih menjadi Bunga Delima mekar melalui kegiatan menonton video, mendengarkan audio, dan bermain game tebak gambar kecukupan ASI.',
   },
 ];

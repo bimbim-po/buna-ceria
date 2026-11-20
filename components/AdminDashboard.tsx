@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import {
   BookOpen,
   Check,
+  Database,
   Edit3,
   Plus,
+  RefreshCw,
   RotateCcw,
   ShieldCheck,
   Trash2,
@@ -23,8 +25,15 @@ import {
   getModules,
   getUserProgress,
 } from '@/lib/api';
+import {
+  getSupabaseUrl,
+  pushAllLocalDataToSupabase,
+  setSupabaseUrl,
+  SUPABASE_PUBLISHABLE_KEY,
+  testSupabaseConnection,
+} from '@/lib/supabase';
 import { useApp } from '@/context/AppContext';
-import { MockUser, ModuleItem } from '@/types';
+import { MockUser, ModuleItem, UserProgress } from '@/types';
 
 export function AdminDashboard() {
   const { session, setActiveSection, refreshData } = useApp();
@@ -33,6 +42,14 @@ export function AdminDashboard() {
   const [users, setUsers] = useState<MockUser[]>(() => getAllUsers());
   const [modules, setModules] = useState<ModuleItem[]>(() => getModules());
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [supabaseUrlInput, setSupabaseUrlInput] = useState<string>(() =>
+    getSupabaseUrl()
+  );
+  const [supabaseStatus, setSupabaseStatus] = useState<{
+    ok?: boolean;
+    text: string;
+  } | null>(null);
+  const [isTestingSupabase, setIsTestingSupabase] = useState(false);
 
   // State Form Edit / Tambah User
   const [editingUser, setEditingUser] = useState<MockUser | null>(null);
@@ -240,6 +257,86 @@ export function AdminDashboard() {
           <span>{statusMessage}</span>
         </div>
       )}
+
+      {/* KARTU INTEGRASI SUPABASE CLOUD DATABASE */}
+      <div className="rounded-[24px] border border-[#E4EAC9] bg-gradient-to-r from-[#F9FBF4] via-white to-[#FFF5F8] p-5 sm:p-6 shadow-2xs space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#56632A] text-white">
+              <Database className="h-5 w-5" />
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22]">
+                  Integrasi Database Supabase
+                </h2>
+                <span className="rounded-full bg-[#EBF3D8] px-2.5 py-0.5 text-[10px] font-bold text-[#56632A]">
+                  Publishable Key &amp; Secret Key Terpasang
+                </span>
+              </div>
+              <p className="text-xs text-[#6E6A6C]">
+                Key aktif: <code className="font-mono text-[11px] text-[#C84B71]">{SUPABASE_PUBLISHABLE_KEY.slice(0, 26)}...</code> &bull; Masukkan Project URL Supabase untuk mengaktifkan sinkronisasi cloud otomatis.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+          <input
+            type="url"
+            value={supabaseUrlInput}
+            onChange={(e) => setSupabaseUrlInput(e.target.value)}
+            placeholder="Masukkan Project URL Supabase (contoh: https://xxxx.supabase.co)"
+            className="flex-1 rounded-xl border border-[#D5DFC4] bg-white px-3.5 py-2.5 text-xs sm:text-sm font-medium text-[#2A2D22] focus:border-[#56632A] outline-none"
+          />
+          <button
+            type="button"
+            disabled={isTestingSupabase}
+            onClick={async () => {
+              setIsTestingSupabase(true);
+              setSupabaseUrl(supabaseUrlInput);
+              const res = await testSupabaseConnection(supabaseUrlInput);
+              setSupabaseStatus({ ok: res.ok, text: res.message });
+              setIsTestingSupabase(false);
+            }}
+            className="inline-flex min-h-[40px] shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#56632A] hover:bg-[#434e20] px-5 py-2 text-xs font-bold text-white cursor-pointer disabled:opacity-50"
+          >
+            <Check className="h-3.5 w-3.5" />
+            <span>Simpan &amp; Tes Koneksi</span>
+          </button>
+          <button
+            type="button"
+            disabled={isTestingSupabase}
+            onClick={async () => {
+              setIsTestingSupabase(true);
+              setSupabaseUrl(supabaseUrlInput);
+              const progMap: Record<string, UserProgress> = {};
+              users.forEach((u) => {
+                progMap[u.id] = getUserProgress(u.id);
+              });
+              const res = await pushAllLocalDataToSupabase(users, progMap);
+              setSupabaseStatus({ ok: res.ok, text: res.message });
+              setIsTestingSupabase(false);
+            }}
+            className="inline-flex min-h-[40px] shrink-0 items-center justify-center gap-1.5 rounded-full border border-pink-200 bg-white hover:bg-pink-50 px-4 py-2 text-xs font-bold text-[#C84B71] cursor-pointer disabled:opacity-50"
+          >
+            <RefreshCw className="h-3.5 w-3.5" />
+            <span>Sinkronkan Data ke Cloud</span>
+          </button>
+        </div>
+
+        {supabaseStatus && (
+          <div
+            className={`rounded-xl border px-3.5 py-2.5 text-xs font-semibold ${
+              supabaseStatus.ok
+                ? 'border-green-200 bg-green-50 text-green-800'
+                : 'border-amber-200 bg-amber-50 text-amber-900'
+            }`}
+          >
+            {supabaseStatus.text}
+          </div>
+        )}
+      </div>
 
       {/* TAB 1: KELOLA USER YANG MENDAFTAR */}
       {activeTab === 'users' && (

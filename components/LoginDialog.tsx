@@ -7,6 +7,7 @@ import {
   AlertCircle,
   KeyRound,
   LogIn,
+  MessageCircle,
   ShieldCheck,
   UserCheck,
   UserPlus,
@@ -38,7 +39,7 @@ export function LoginDialog() {
   const [regEmail, setRegEmail] = useState('');
   const [regPhone, setRegPhone] = useState('');
   const [regPassword, setRegPassword] = useState('');
-  const [regTrimester, setRegTrimester] = useState('Trimester 1');
+  const [regTrimester, setRegTrimester] = useState('Nifas Hari ke 1-2 Hari');
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,13 +88,41 @@ export function LoginDialog() {
   const onSubmitRegister = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+
+    const nameTrimmed = regName.trim();
+    const emailTrimmed = regEmail.trim();
+    const phoneTrimmed = regPhone.trim();
+    const cleanPhone = phoneTrimmed.replace(/\D/g, '');
+
+    if (!nameTrimmed) {
+      setErrorMsg('Mohon isi nama lengkap Bunda.');
+      return;
+    }
+
+    if (!phoneTrimmed || cleanPhone.length < 9) {
+      setErrorMsg(
+        'Mohon masukkan nomor WhatsApp aktif Bunda (minimal 9 digit, contoh: 0812... atau 628...) agar sistem dapat mengirimkan notifikasi pengingat pengerjaan Post-Test hari ke-7.'
+      );
+      return;
+    }
+
+    if (!emailTrimmed || !emailTrimmed.includes('@')) {
+      setErrorMsg('Mohon isi alamat email yang valid.');
+      return;
+    }
+
+    if (!regPassword || regPassword.length < 4) {
+      setErrorMsg('Kata sandi minimal terdiri dari 4 karakter.');
+      return;
+    }
+
     setIsLoading(true);
 
     window.setTimeout(() => {
       const result = handleRegister({
-        name: regName,
-        email: regEmail,
-        phone: regPhone,
+        name: nameTrimmed,
+        email: emailTrimmed,
+        phone: phoneTrimmed,
         password: regPassword,
         trimesterLabel: regTrimester,
       });
@@ -105,8 +134,9 @@ export function LoginDialog() {
         setRegEmail('');
         setRegPhone('');
         setRegPassword('');
+        setActiveSection('beranda');
       }
-    }, 900);
+    }, 850);
   };
 
   const handleGoogleSignIn = () => {
@@ -214,7 +244,7 @@ export function LoginDialog() {
                   Buna Ceria
                 </p>
                 <p className="mt-1 text-xs text-[#6E6A6C]">
-                  Menyiapkan ruang belajar kehamilan Bunda...
+                  Menyiapkan ruang belajar masa nifas Bunda...
                 </p>
               </div>
             )}
@@ -242,7 +272,7 @@ export function LoginDialog() {
                     : 'Masuk ke Buna Ceria'}
                 </h2>
                 <p id="login-dialog-desc" className="text-xs text-[#6E6A6C]">
-                  WebApp Edukasi Kehamilan Buna Ceria
+                  WebApp Edukasi Masa Nifas Buna Ceria
                 </p>
               </div>
             </div>
@@ -312,12 +342,13 @@ export function LoginDialog() {
                 noValidate
                 className="mt-4 space-y-3.5"
               >
+                {/* 1. Nama Lengkap */}
                 <div>
                   <label
                     htmlFor="reg-name"
                     className="block text-xs font-bold text-[#2A2D22]"
                   >
-                    Nama Lengkap Bunda
+                    Nama Lengkap Bunda <span className="text-[#C84B71]">*</span>
                   </label>
                   <input
                     id="reg-name"
@@ -325,18 +356,54 @@ export function LoginDialog() {
                     required
                     value={regName}
                     onChange={(e) => setRegName(e.target.value)}
-                    placeholder="Contoh: Bunda Faiza"
+                    placeholder="Contoh: Bunda Nadia Pratiwi"
                     className="mt-1 w-full rounded-xl border border-[#ECE7F2] bg-[#FAF8FC] px-3.5 py-2.5 text-sm text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
                   />
                 </div>
 
+                {/* 2. KOLOM NOMOR WHATSAPP (UTAMA & WAJIB UNTUK NOTIFIKASI POST-TEST HARI KE-7) */}
+                <div className="rounded-2xl border border-emerald-200/90 bg-emerald-50/50 p-3.5 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="reg-phone"
+                      className="flex items-center gap-1.5 text-xs font-bold text-[#1F4D36]"
+                    >
+                      <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
+                      <span>Nomor WhatsApp Aktif</span>
+                      <span className="text-[#C84B71]">*</span>
+                    </label>
+                    <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full">
+                      Pengingat Hari ke-7
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      id="reg-phone"
+                      type="tel"
+                      required
+                      value={regPhone}
+                      onChange={(e) => setRegPhone(e.target.value)}
+                      placeholder="Contoh: 0812-3456-7890 atau 6281234567890"
+                      className="w-full rounded-xl border border-emerald-300/80 bg-white px-3.5 py-2.5 pr-10 text-sm font-medium text-[#2A2D22] placeholder:text-gray-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+                    />
+                    <MessageCircle className="pointer-events-none absolute top-3 right-3.5 h-4 w-4 text-emerald-500" />
+                  </div>
+                  <p className="flex items-start gap-1.5 text-[11px] leading-relaxed text-[#2C5E43]">
+                    <span className="shrink-0 font-bold">📲</span>
+                    <span>
+                      Sistem Buna Ceria akan mengirimkan notifikasi pengingat via WhatsApp di <strong>hari ke-7</strong> agar Bunda tidak lupa mengerjakan Post-Test Tingkat Kecemasan.
+                    </span>
+                  </p>
+                </div>
+
+                {/* 3. Email & Kata Sandi */}
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
                     <label
                       htmlFor="reg-email"
                       className="block text-xs font-bold text-[#2A2D22]"
                     >
-                      Email
+                      Alamat Email <span className="text-[#C84B71]">*</span>
                     </label>
                     <input
                       id="reg-email"
@@ -350,53 +417,10 @@ export function LoginDialog() {
                   </div>
                   <div>
                     <label
-                      htmlFor="reg-phone"
-                      className="block text-xs font-bold text-[#2A2D22]"
-                    >
-                      Nomor WhatsApp
-                    </label>
-                    <input
-                      id="reg-phone"
-                      type="text"
-                      value={regPhone}
-                      onChange={(e) => setRegPhone(e.target.value)}
-                      placeholder="0857..."
-                      className="mt-1 w-full rounded-xl border border-[#ECE7F2] bg-[#FAF8FC] px-3.5 py-2.5 text-sm text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="reg-trimester"
-                      className="block text-xs font-bold text-[#2A2D22]"
-                    >
-                      Tahap Kehamilan
-                    </label>
-                    <select
-                      id="reg-trimester"
-                      value={regTrimester}
-                      onChange={(e) => setRegTrimester(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-[#ECE7F2] bg-[#FAF8FC] px-3 py-2.5 text-sm text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
-                    >
-                      <option value="Trimester 1">Trimester 1</option>
-                      <option value="Trimester 2">Trimester 2</option>
-                      <option value="Trimester 3">Trimester 3</option>
-                      <option value="Ibu Nifas & Menyusui">
-                        Ibu Nifas &amp; Menyusui
-                      </option>
-                      <option value="Keluarga Pendamping">
-                        Keluarga Pendamping
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
                       htmlFor="reg-password"
                       className="block text-xs font-bold text-[#2A2D22]"
                     >
-                      Kata Sandi
+                      Kata Sandi <span className="text-[#C84B71]">*</span>
                     </label>
                     <input
                       id="reg-password"
@@ -410,12 +434,42 @@ export function LoginDialog() {
                   </div>
                 </div>
 
+                {/* 4. Fase Nifas */}
+                <div>
+                  <label
+                    htmlFor="reg-trimester"
+                    className="block text-xs font-bold text-[#2A2D22]"
+                  >
+                    Fase Nifas
+                  </label>
+                  <select
+                    id="reg-trimester"
+                    value={regTrimester}
+                    onChange={(e) => setRegTrimester(e.target.value)}
+                    className="mt-1 w-full rounded-xl border border-[#ECE7F2] bg-[#FAF8FC] px-3 py-2.5 text-sm text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
+                  >
+                    <option value="Nifas Hari ke 1-2 Hari">
+                      Nifas Hari ke 1-2 Hari
+                    </option>
+                    <option value="Nifas Hari ke 3-7 Hari">
+                      Nifas Hari ke 3-7 Hari
+                    </option>
+                    <option value="Nifas Hari ke 8-28 Hari">
+                      Nifas Hari ke 8-28 Hari
+                    </option>
+                    <option value="Nifas Hari ke 29-42 Hari">
+                      Nifas Hari ke 29-42 Hari
+                    </option>
+                  </select>
+                </div>
+
                 <button
                   type="submit"
-                  className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full bg-[#C84B71] px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-[#b23b60] cursor-pointer"
+                  disabled={isLoading}
+                  className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full bg-[#C84B71] px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-[#b23b60] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-60"
                 >
                   <UserPlus className="h-4 w-4" />
-                  <span>Daftar &amp; Masuk WebApp</span>
+                  <span>{isLoading ? 'Mendaftarkan Akun...' : 'Daftar & Masuk WebApp'}</span>
                 </button>
               </form>
             ) : (

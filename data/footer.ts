@@ -8,7 +8,7 @@ export const mockFooterContact: FooterContactInfo = {
   whatsappNumber: '6285701308514',
   displayWhatsapp: '0857-0130-8514',
   copyrightText:
-    '© 2026 Buna Ceria — Ruang Belajar Kehamilan yang Hangat & Menenangkan.',
+    '© 2026 Buna Ceria — Ruang belajar masa nifas yang hangat & menenangkan.',
   disclaimerText:
     'Belajar hari ini untuk ibu dan buah hati esok nanti. Informasi di platform ini bersifat edukatif untuk mendukung ketenangan Bunda dan keluarga, serta berdampingan dengan pemeriksaan rutin bersama bidan atau dokter spesialis.',
 };

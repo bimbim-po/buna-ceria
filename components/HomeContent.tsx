@@ -14,8 +14,6 @@ import {
   CheckCircle,
   Clock,
   Globe,
-  Heart,
-  HeartHandshake,
   Home,
   LogOut,
   Mail,
@@ -35,9 +33,9 @@ import {
   getFooterContact,
   getModules,
   getTips,
+  getUserDayInfo,
 } from '@/lib/api';
 import { AppMode, useApp } from '@/context/AppContext';
-import { SplashScreen } from '@/components/SplashScreen';
 import { LandingPage } from '@/components/LandingPage';
 import { Header } from '@/components/Header';
 import { SidebarNav } from '@/components/SidebarNav';
@@ -78,6 +76,22 @@ const AdminDashboard = dynamic(
   { ssr: false }
 );
 
+const DailyMoodCalendar = dynamic(
+  () =>
+    import('@/components/DailyMoodCalendar').then(
+      (mod) => mod.DailyMoodCalendar
+    ),
+  { ssr: false }
+);
+
+const PomegranateGarden = dynamic(
+  () =>
+    import('@/components/PomegranateGarden').then(
+      (mod) => mod.PomegranateGarden
+    ),
+  { ssr: false }
+);
+
 const CUSTOM_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 interface UnifiedCard {
@@ -104,137 +118,149 @@ const UNIFIED_LEARNING_CARDS: UnifiedCard[] = [
   {
     id: 'modul-1',
     orderNumber: '01',
-    title: 'Mengenali Perubahan & Ketenangan Diri',
-    category: 'Level 1 • Materi 01',
-    description: 'Memahami perubahan hormon dan rutinitas relaksasi 4 menit untuk menenangkan pikiran.',
-    badgeText: 'Modul 01',
+    title: 'Mengenali Perubahan Perasaan di Masa Nifas',
+    category: 'Adaptasi Masa Nifas',
+    description:
+      'Memahami masa nifas, perubahan emosional setelah melahirkan, dan mengenali berbagai perasaan yang dapat muncul.',
+    badgeText: 'Materi 01',
     badgeBg: 'bg-[#FCE8EE]',
     badgeTextColor: 'text-[#C84B71]',
     cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFF5F8]',
-    cardBorder: 'border-[#F0E6EC] hover:border-pink-300',
+    cardBorder: 'border-[#F0E6EC] hover:border-[#D9A7B8]',
     imageSrc: '/modul-3d-1.webp',
-    imageAlt: 'Ilustrasi Ibu Hamil Duduk Bersila Meditasi dan Relaksasi Tenang',
+    imageAlt: 'Ilustrasi Adaptasi Perasaan di Masa Nifas',
     type: 'module',
     moduleId: 'materi-1',
-    readingTime: '4 mnt baca',
-    infoOverview: 'Modul pengantar ramah untuk membantu Ibu beradaptasi dengan perubahan hormonal, fisik, dan suasana hati di masa kehamilan secara tenang.',
+    readingTime: '5 mnt baca',
+    infoOverview:
+      'Memahami masa nifas (hingga sekitar 42 hari pascapersalinan), perubahan emosional setelah melahirkan, dan mengenali berbagai perasaan yang dapat muncul selama masa nifas.',
     infoKeyPoints: [
-      'Memahami bahwa perubahan emosi adalah hal fisiologis yang wajar',
-      'Teknik pernapasan relaksasi 5 menit di pagi hari untuk meredakan ketegangan',
-      'Mencatat hal-hal kecil yang disyukuri setiap hari',
+      'Memahami masa nifas sebagai pemulihan fisik dan adaptasi emosional selama 42 hari',
+      'Mengenali perubahan suasana hati akibat hormon, kurang tidur, dan peran baru',
+      'Pentingnya mengenali perasaan untuk menentukan langkah merawat diri',
     ],
   },
   {
     id: 'modul-2',
     orderNumber: '02',
-    title: 'Kenyamanan Harian & Istirahat Berkualitas',
-    category: 'Level 1 • Materi 02',
-    description: 'Menata posisi tidur nyaman dengan bantal hamil dan menjaga kesegaran tubuh Ibu.',
-    badgeText: 'Modul 02',
+    title: 'Mengenali Kecemasan dan Menjaga Ketenangan Diri',
+    category: 'Ketenangan Emosi',
+    description:
+      'Mengenali kecemasan, memahami pemicunya, dan mengetahui kapan kekhawatiran perlu mendapatkan perhatian lebih.',
+    badgeText: 'Materi 02',
     badgeBg: 'bg-[#FFEADA]',
     badgeTextColor: 'text-[#D97706]',
     cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFF8F3]',
-    cardBorder: 'border-[#F2EAE0] hover:border-amber-300',
+    cardBorder: 'border-[#F2EAE0] hover:border-[#DEC29B]',
     imageSrc: '/modul-3d-2.webp',
-    imageAlt: 'Ilustrasi Bantal Hamil U-Shape Peach dengan Boneka Bintang Ramah',
+    imageAlt: 'Ilustrasi Mengenali Kecemasan dan Ketenangan Diri',
     type: 'module',
     moduleId: 'materi-2',
-    readingTime: '5 mnt baca',
-    infoOverview: 'Kualitas tidur yang baik sangat penting bagi kebugaran Ibu dan pertumbuhan janin. Modul ini mengulas posisi tidur ergonomis dan kebiasaan santai sebelum tidur.',
+    readingTime: '6 mnt baca',
+    infoOverview:
+      'Mengenali tanda-tanda kecemasan pada perasaan, pikiran, fisik, dan perilaku, serta memahami 4 tingkat kecemasan (ringan, sedang, berat, panik).',
     infoKeyPoints: [
-      'Posisi tidur miring ke kiri untuk sirkulasi darah optimal',
-      'Manfaat penggunaan bantal penyangga perut dan panggul',
-      'Rutinitas tanpa layar gawai 30 menit sebelum istirahat',
+      'Mengenali tanda kecemasan pada perasaan, pikiran, fisik, dan perilaku',
+      'Memahami 4 tingkat kecemasan: ringan, sedang, berat, hingga panik',
+      'Mengidentifikasi pemicu kekhawatiran Bunda selama merawat bayi',
     ],
   },
   {
     id: 'modul-3',
     orderNumber: '03',
-    title: 'Komunikasi Hangat Bersama Pasangan',
-    category: 'Level 1 • Materi 03',
-    description: 'Cara santun berbagi rasa dan menyampaikan kebutuhan bersama pasangan tercinta.',
-    badgeText: 'Modul 03',
+    title: 'Gangguan Psikologis Masa Nifas',
+    category: 'Kesehatan Psikologis',
+    description:
+      'Mengenali perbedaan baby blues, depresi postpartum, dan psikosis postpartum serta kapan perlu pertolongan.',
+    badgeText: 'Materi 03',
     badgeBg: 'bg-[#F5F7EA]',
     badgeTextColor: 'text-[#56632A]',
     cardGradient: 'bg-gradient-to-b from-white via-white to-[#F8FAF2]',
-    cardBorder: 'border-[#E6EBE0] hover:border-lime-300',
+    cardBorder: 'border-[#E6EBE0] hover:border-[#C2CFA3]',
     imageSrc: '/modul-3d-3.webp',
-    imageAlt: 'Ilustrasi Dua Tangan Saling Merangkul Lembut Hati Pink',
+    imageAlt: 'Ilustrasi Edukasi Baby Blues, Depresi Postpartum, dan Psikosis',
     type: 'module',
     moduleId: 'materi-3',
-    readingTime: '4 mnt baca',
-    infoOverview: 'Kehamilan adalah perjalanan tim antara Ibu dan pasangan. Temukan panduan praktis untuk berdiskusi terbuka tentang perasaan dan pembagian peran.',
+    readingTime: '6 mnt baca',
+    infoOverview:
+      'Dilengkapi ilustrasi visual untuk mengenali perbedaan antara Baby Blues, Depresi Postpartum (DPP), dan Psikosis Postpartum, serta tanda bahaya yang membutuhkan bantuan tenaga kesehatan.',
     infoKeyPoints: [
-      'Mengungkapkan kebutuhan tanpa rasa bersalah atau menuntut',
-      'Melibatkan pasangan dalam persiapan kelahiran dan perawatan diri',
-      'Membangun ikatan batin hangat bersama janin',
+      'Baby Blues: muncul di hari-hari awal dan membaik dalam 1–2 minggu',
+      'Depresi Postpartum (DPP): kesedihan berkepanjangan yang butuh bantuan nakes',
+      'Psikosis Postpartum: kondisi serius darurat medis yang perlu penanganan segera',
     ],
   },
   {
     id: 'modul-4',
     orderNumber: '04',
-    title: 'Kesiapan Menjelang Persalinan',
-    category: 'Level 1 • Materi 04',
-    description: 'Daftar perlengkapan tas rumah sakit dan langkah tenang menyambut kelahiran bayi.',
-    badgeText: 'Modul 04',
+    title: 'Mengenal ASI dan Proses Produksinya',
+    category: 'Edukasi Laktasi & ASI',
+    description:
+      'Memahami manfaat ASI, hormon prolaktin & oksitosin, serta indikator tanda bayi cukup ASI.',
+    badgeText: 'Materi 04',
     badgeBg: 'bg-[#E6F7F3]',
     badgeTextColor: 'text-[#0D9488]',
     cardGradient: 'bg-gradient-to-b from-white via-white to-[#F3FAF8]',
-    cardBorder: 'border-[#E0EFEA] hover:border-teal-300',
+    cardBorder: 'border-[#E0EFEA] hover:border-[#B2D1C7]',
     imageSrc: '/modul-3d-4.webp',
-    imageAlt: 'Ilustrasi Tas Bersalin Rumah Sakit Hijau Sage dan Perlengkapan Bayi',
+    imageAlt: 'Ilustrasi Edukasi Kecukupan ASI dan Laktasi',
     type: 'module',
     moduleId: 'materi-4',
-    readingTime: '5 mnt baca',
-    infoOverview: 'Persiapan yang matang memberikan ketenangan batin. Pelajari checklist barang bawaan ke faskes dan tanda awal persalinan yang harus dipahami.',
+    readingTime: '6 mnt baca',
+    infoOverview:
+      'Memahami cara kerja hormon Prolaktin dan Oksitosin, hubungan kecemasan (kortisol) dengan pengeluaran ASI, serta indikator objektif kecukupan ASI pada bayi.',
     infoKeyPoints: [
-      'Checklist tas bersalin untuk Ibu, bayi, dan dokumen penting',
-      'Mengenali tanda-tanda awal persalinan dan kontraksi',
-      'Menyiapkan rute transportasi darurat dan kontak bidan',
-    ],
-  },
-  {
-    id: 'kuis-evaluasi',
-    orderNumber: '05',
-    title: 'Kuis Pemahaman Kehamilan',
-    category: 'Level 2 • Evaluasi',
-    description: '8 soal interaktif dengan ulasan lembut untuk memperkuat pemahaman materi.',
-    badgeText: 'Level 02',
-    badgeBg: 'bg-[#FEF3C7]',
-    badgeTextColor: 'text-[#B45309]',
-    cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFFDF2]',
-    cardBorder: 'border-[#F2EED8] hover:border-yellow-300',
-    imageSrc: '/modul-3d-5.webp',
-    imageAlt: 'Ilustrasi Piala Emas Juara dan Buku Catatan Checklist Kehamilan',
-    type: 'quiz',
-    readingTime: '8 Soal Kuis',
-    infoOverview: 'Uji pemahaman santai tanpa rasa cemas. Terdapat 8 pertanyaan pilihan ganda yang disertai pembahasan ramah di setiap jawaban.',
-    infoKeyPoints: [
-      '8 soal pilihan ganda dari intisari 4 modul kehamilan',
-      'Penjelasan langsung untuk setiap jawaban benar maupun salah',
-      'Dapat diulang kapan saja dan tersimpan di riwayat belajar',
+      'Peran hormon Prolaktin (produksi ASI) & Oksitosin (refleks pengeluaran ASI)',
+      'Indikator cukup ASI: menyusu 8–12x/hari, BAK ≥6 popok basah, BAB & BB bertambah',
+      'Pengaruh stres/kecemasan terhadap refleks pengeluaran ASI',
     ],
   },
   {
     id: 'refleksi-hasil',
-    orderNumber: '06',
-    title: 'Refleksi Diri & Hasil Saya',
-    category: 'Level 3 & 4 • Pencapaian',
-    description: 'Tandai langkah kecil kesiapan dan lihat rangkuman pencapaian belajar Ibu.',
-    badgeText: 'Level 03–04',
+    orderNumber: '05',
+    title: 'Refleksi Diri dan Tips & Bunga Delima',
+    category: 'Level 2 & Level 3',
+    description:
+      'Checklist usaha Bunda, rencana langkah kecil, teknik relaksasi, dukungan suami (Take Selfie), dan Kebun Bunga Delima.',
+    badgeText: 'Level 02–03',
     badgeBg: 'bg-[#EDE9FE]',
     badgeTextColor: 'text-[#6D28D9]',
     cardGradient: 'bg-gradient-to-b from-white via-white to-[#FAF6FF]',
-    cardBorder: 'border-[#EDE5F8] hover:border-purple-300',
+    cardBorder: 'border-[#EDE5F8] hover:border-[#CBB8DC]',
     imageSrc: '/modul-3d-6.webp',
-    imageAlt: 'Ilustrasi Buku Jurnal Ungu Self Care dan Big Dreams dengan Pulpen',
+    imageAlt: 'Ilustrasi Jurnal Refleksi Diri dan Tips Menghadapi Kecemasan',
     type: 'reflection',
-    readingTime: 'Hasil & Jurnal',
-    infoOverview: 'Ruang jeda penuh makna untuk mengevaluasi komitmen harian merawat diri dan melihat rangkuman capaian belajar 4 level.',
+    readingTime: 'Refleksi & Bunga Delima',
+    infoOverview:
+      'Ruang refleksi diri (10 checklist usaha & 10 rencana langkah Bunda), panduan teknik relaksasi napas dalam, afirmasi positif, audio relaksasi, dukungan suami (Take Selfie), serta Kebun Bunga Delima.',
     infoKeyPoints: [
-      'Refleksi afirmasi positif untuk ketenangan pikiran',
-      'Daftar komitmen langkah kecil merawat tubuh',
-      'Rangkuman lengkap perjalanan belajar Buna Ceria',
+      'Checklist 10 usaha Bunda & 10 rencana langkah menghadapi kecemasan',
+      'Panduan pernapasan dalam, afirmasi positif, audio relaksasi, & dukungan suami',
+      'Menuju Level 3: Kebun Bunga Delima interaktif',
+    ],
+  },
+  {
+    id: 'kuis-evaluasi',
+    orderNumber: '06',
+    title: 'Tahap Akhir (Hari ke-7): Post-Test PASS & Quiz',
+    category: 'Tahap Akhir • Hari ke-7',
+    description:
+      'Post-Test Skrining Kecemasan PASS (31 pertanyaan) bersamaan dengan Quiz Pemahaman (20 pertanyaan). Hanya 1x pengerjaan.',
+    badgeText: 'Hari ke-7',
+    badgeBg: 'bg-[#FEF3C7]',
+    badgeTextColor: 'text-[#B45309]',
+    cardGradient: 'bg-gradient-to-b from-white via-white to-[#FFFDF2]',
+    cardBorder: 'border-[#F2EED8] hover:border-[#DEC29B]',
+    imageSrc: '/modul-3d-5.webp',
+    imageAlt: 'Ilustrasi Evaluasi Tahap Akhir Hari ke-7',
+    type: 'quiz',
+    readingTime: 'PASS 31 + Quiz 20 Soal',
+    infoOverview:
+      'Terbuka pada Hari ke-7 setelah login pertama: mencakup Post-Test Skrining Kecemasan PASS (31 pertanyaan) dan Quiz Post-Test Pemahaman (20 pertanyaan dengan soal yang sama). Hanya dapat dikerjakan 1 kali.',
+    infoKeyPoints: [
+      'Bagian 1: Post-Test Skrining Kecemasan PASS (31 pertanyaan)',
+      'Bagian 2: Materi pengingat + 20 soal Quiz Pemahaman masa nifas & ASI',
+      'Hanya dapat dikerjakan 1 kali dan hasilnya tercatat di Hasil Saya pada Dashboard',
     ],
   },
 ];
@@ -277,7 +303,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
   const [profileEmail, setProfileEmail] = useState(session?.email ?? '');
   const [profilePhone, setProfilePhone] = useState(session?.phone ?? '');
   const [profileTrimester, setProfileTrimester] = useState(
-    session?.trimesterLabel ?? 'Trimester Pertama'
+    session?.trimesterLabel ?? 'Nifas Hari ke 1-2 Hari'
   );
   const [profilePassword, setProfilePassword] = useState('');
   const [profileSavedNotice, setProfileSavedNotice] = useState<string | null>(null);
@@ -287,7 +313,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
       setProfileName(session.name);
       setProfileEmail(session.email);
       setProfilePhone(session.phone);
-      setProfileTrimester(session.trimesterLabel ?? 'Trimester Pertama');
+      setProfileTrimester(session.trimesterLabel ?? 'Nifas Hari ke 1-2 Hari');
     }
   }, [session]);
 
@@ -297,22 +323,33 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
   const experts = getExperts();
   const footerContact = getFooterContact();
 
+  const dayInfo = React.useMemo(() => {
+    return getUserDayInfo(session?.id ?? 'guest');
+  }, [session?.id, progress?.simulatedDayOffset, progress?.firstLoginAt]);
+
+  const isPretestCompleted = Boolean(
+    progress?.initialPretestAnxiety && progress?.initialPretestQuiz
+  );
+  const isPosttestCompleted = Boolean(
+    progress?.posttestAnxiety && progress?.posttestQuiz
+  );
+
   const handleCardClick = (card: UnifiedCard) => {
     if (card.type === 'module' && card.moduleId) {
       openModuleReader(card.moduleId);
     } else if (card.type === 'quiz') {
       if (!session) {
         openLoginDialog();
+      } else if (dayInfo.unlocked.posttestAnxiety) {
+        openAnxietyDialog('posttest');
       } else {
-        selectStage('quiz');
-        setIsQuizModalOpen(true);
+        setActiveSection('tips');
       }
     } else if (card.type === 'reflection') {
       if (!session) {
         openLoginDialog();
       } else {
-        selectStage('hasil-saya');
-        setIsReflectionModalOpen(true);
+        selectStage('tahap-3');
       }
     }
   };
@@ -386,9 +423,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
   return (
     <>
-      {/* Item 24: Animasi Logo saat Loading */}
-      <SplashScreen />
-
       {appMode === 'landing' ? (
         <LandingPage />
       ) : (
@@ -454,47 +488,57 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         bannerImageSrc="/hero-banner-beranda.webp"
                         bgText="BUNA CERIA"
                         characterSrc="/hero-beranda-ibu.webp"
-                        characterAlt="Ibu Hamil Bahagia Buna Ceria"
+                        characterAlt="Ibu Masa Nifas Bahagia Buna Ceria"
                         bgGradientClass="bg-gradient-to-r from-[#4E1E2F] via-[#66283F] to-[#4E1E2F]"
                         shadowClass="shadow-[0_8px_24px_rgba(78,30,47,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
+                        accentColor="#8E3556"
                         leftBadge={{
                           icon: <Sparkles className="h-3 w-3 text-pink-200" />,
-                          label: "WebApp Buna Ceria",
+                          label: 'WebApp Buna Ceria',
                         }}
-                        rightBadge={{
-                          icon: <Heart className="h-3 w-3 text-pink-200" />,
-                          label: session?.trimesterLabel ?? "Trimester Pertama",
-                        }}
-                        subtitle={`Selamat datang, ${session ? session.name : 'Ibu Kasih'}. Mari kenali perasaan hari ini dan ikuti 4 tahapan belajar dengan tenang.`}
+                        showLiveSubtitle={true}
+                        subtitle={`Selamat datang Ibu ${
+                          session
+                            ? session.name
+                                .replace(/^Bunda\s+/i, '')
+                                .replace(/^Ibu\s+/i, '')
+                            : 'Nadia Pratiwi'
+                        }, lanjutkan perjalanan nifas yang tenang, nyaman dan terarah`}
                         actionButton={{
-                          label: "Isi Kuesioner Kecemasan",
+                          label: isPretestCompleted
+                            ? 'Buka Hasil Saya'
+                            : 'Kerjakan Pre-Test',
                           onClick: () => {
                             if (!session) openLoginDialog();
-                            else openAnxietyDialog();
+                            else if (isPretestCompleted) {
+                              handleSelectSection('hasil');
+                            } else {
+                              openAnxietyDialog('pretest');
+                            }
                           },
                         }}
                       />
 
-                      {/* A. PERTANYAAN PERASAAN USER BESERTA TIPSNYA & KUESIONER KECEMASAN */}
+                      {/* A. PERTANYAAN PERASAAN USER BESERTA TIPSNYA & STATUS PRE-TEST AWAL */}
                       <section aria-labelledby="perasaan-heading" className="space-y-4">
                         <FeelingSelector />
 
-                        {/* Status Kuesioner Kecemasan yang Tersimpan (Alur Langkah 4) */}
-                        <div className="flex flex-col sm:flex-row items-center text-center sm:text-left justify-between gap-4 rounded-[22px] border border-[#F5DCE4] bg-white px-5 py-4 shadow-[0_6px_22px_rgba(200,75,113,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(200,75,113,0.11)]">
-                          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3.5">
-                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FFF5F8] text-[#C84B71] border border-pink-100 shadow-2xs">
-                              <Heart className="h-5 w-5 fill-[#C84B71]" />
+                        {/* Status Pre-Test Awal (PASS 31 Pertanyaan & Pemahaman 20 Pertanyaan — 1x Pengerjaan) */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[20px] border border-[#F5DCE4] bg-white px-4 py-4 sm:px-5">
+                          <div className="flex items-start gap-3">
+                            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FBEDF1] text-[#C84B71]">
+                              <CheckCircle className="h-4 w-4" />
                             </span>
                             <div>
                               <h3 className="font-heading text-sm sm:text-base font-bold text-[#2A2D22]">
-                                {anxietySubmission
-                                  ? `Kuesioner Kecemasan Tersimpan: Skor ${anxietySubmission.totalScore}/${anxietySubmission.maxScore} (Tingkat ${anxietySubmission.level.toUpperCase()})`
-                                  : 'Kuesioner Kecemasan Kehamilan (Belum Diisi)'}
+                                {isPretestCompleted
+                                  ? `Pre-Test Awal Selesai: PASS ${progress?.initialPretestAnxiety?.totalScore}/${progress?.initialPretestAnxiety?.maxScore} • Pemahaman ${progress?.initialPretestQuiz?.score}/${progress?.initialPretestQuiz?.maxScore} Soal`
+                                  : 'Pre-Test Awal: Skrining PASS (31 Pertanyaan) & Tes Pemahaman (20 Pertanyaan)'}
                               </h3>
                               <p className="text-xs text-[#6E6A6C] mt-0.5">
-                                {anxietySubmission
-                                  ? 'Jawaban kuesioner kecemasan Ibu telah disimpan otomatis di sistem dan dapat dilihat pada Level 4 (Hasil Saya).'
-                                  : 'Yuk isi 9 pertanyaan singkat untuk mengenali tingkat ketenangan emosi Ibu hari ini. Jawaban akan disimpan otomatis.'}
+                                {isPretestCompleted
+                                  ? 'Pre-Test hanya dapat dikerjakan 1 kali. Lihat analisis lengkapnya pada menu Hasil Saya.'
+                                  : 'Kerjakan Pre-Test awal (1 kali pengerjaan) sebelum memulai pembelajaran.'}
                               </p>
                             </div>
                           </div>
@@ -503,214 +547,184 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             type="button"
                             onClick={() => {
                               if (!session) openLoginDialog();
-                              else openAnxietyDialog();
+                              else if (isPretestCompleted) handleSelectSection('hasil');
+                              else openAnxietyDialog('pretest');
                             }}
-                            className="inline-flex min-h-[40px] shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C84B71] to-[#E46C8E] px-5 py-2 text-xs font-bold text-white shadow-[0_6px_18px_rgba(200,75,113,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(200,75,113,0.35)] active:scale-95 cursor-pointer"
+                            className="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 self-stretch sm:self-auto rounded-full bg-[#C84B71] px-5 text-[13px] font-semibold text-white transition-colors hover:bg-[#B23B60] active:scale-[0.98] cursor-pointer"
                           >
-                            <Heart className="h-3.5 w-3.5" />
                             <span>
-                              {anxietySubmission ? 'Perbarui Kuesioner' : 'Isi Kuesioner Sekarang'}
+                              {isPretestCompleted
+                                ? 'Buka Menu Hasil Saya'
+                                : 'Mulai Pre-Test Awal'}
                             </span>
+                            <ArrowRight className="h-3.5 w-3.5" />
                           </button>
                         </div>
                       </section>
 
-                      {/* B. 4 BULATAN TINGKATAN PEMBELAJARAN BERTAHAP (Item 12 & 13, Alur Langkah 4–5) */}
+                      {/* B. KALENDER EMOTIKON HARIAN (Item 8 Client Brief: 🥰 🙂 😞 😖 😤 🤯) */}
+                      <DailyMoodCalendar />
+
+                      {/* C. 3 BULATAN TINGKATAN PEMBELAJARAN BERTAHAP */}
                       <section aria-labelledby="tahapan-beranda-heading" className="space-y-3">
-                        <div className="flex flex-col sm:flex-row items-center text-center sm:text-left justify-between gap-2">
+                        <div className="flex items-end justify-between gap-3">
                           <div>
                             <h2
                               id="tahapan-beranda-heading"
                               className="font-heading text-lg font-bold text-[#2A2D22]"
                             >
-                              Alur 4 Level Pembelajaran Bertahap
+                              Perjalanan belajar Bunda (3 Level)
                             </h2>
                             <p className="text-xs text-[#767A6E]">
-                              Ikuti secara berurutan mulai dari Level 1 (Materi) hingga Level 4 (Hasil Saya).
+                              Level 1 Materi, Level 2 Refleksi &amp; Tips, dan Level 3 Bunga Delima.
                             </p>
                           </div>
                           <button
                             type="button"
                             onClick={() => handleSelectSection('materi')}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C84B71] hover:underline cursor-pointer"
+                            className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-[#C84B71] underline-offset-4 hover:underline cursor-pointer"
                           >
-                            <span>Buka Halaman Materi Lengkap</span>
+                            <span>Lihat semua</span>
                             <ArrowRight className="h-3.5 w-3.5" />
                           </button>
                         </div>
 
-                        <div onClick={() => handleSelectSection('materi')} className="cursor-pointer transition-transform duration-300 hover:-translate-y-0.5">
-                          <StageTracker />
-                        </div>
+                        <StageTracker />
                       </section>
 
-                      {/* C. TOMBOL CEPAT MENUJU FITUR LAIN DALAM WEBAPP (Item 12) */}
+                      {/* D. PINTASAN FITUR */}
                       <section aria-labelledby="fitur-pintas-heading">
-                        <div className="flex flex-col sm:flex-row items-center text-center sm:text-left justify-between gap-1 mb-3">
-                          <h2
-                            id="fitur-pintas-heading"
-                            className="font-heading text-base font-bold text-[#2A2D22]"
-                          >
-                            Tombol Cepat Fitur WebApp
-                          </h2>
-                          <span className="text-xs text-[#767A6E]">
-                            Pilih fitur untuk mengakses langsung
-                          </span>
-                        </div>
+                        <h2
+                          id="fitur-pintas-heading"
+                          className="mb-3.5 font-heading text-lg font-bold text-[#2A2D22]"
+                        >
+                          Lanjutkan dari sini
+                        </h2>
 
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
-                          {/* Tile 1: Tahapan & Materi (4 Level) */}
-                          <button
-                            type="button"
-                            onClick={() => handleSelectSection('materi')}
-                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#F5DCE4] bg-white p-5 text-center sm:text-left shadow-[0_6px_22px_rgba(200,75,113,0.05)] hover:border-pink-300 hover:shadow-[0_14px_32px_rgba(200,75,113,0.15)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
-                          >
-                            <div className="flex flex-col items-center sm:items-start">
-                              <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 min-w-0">
-                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71] transition-transform group-hover:scale-105">
-                                  <BookOpen className="h-5 w-5" />
-                                </span>
-                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
-                                  Tahapan &amp; Materi
-                                </h3>
-                              </div>
-                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
-                                Ikuti 4 level pembelajaran bertahap, baca modul kehamilan, &amp; kerjakan kuis.
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {[
+                            {
+                              id: 'materi',
+                              title: 'Tahapan & Materi',
+                              desc: 'Tiga level belajar bertahap masa nifas.',
+                              meta: `${completedStages} dari 3 level`,
+                              img: '/modul-3d-1.webp',
+                              tint: 'bg-[#F1F4E6]',
+                              ring: 'hover:ring-[#C9D3A8]',
+                              accent: 'text-[#4F5E24]',
+                            },
+                            {
+                              id: 'tips',
+                              title: 'Kebun Bunga Delima',
+                              desc: 'Siram benih dengan video, audio, dan game ASI.',
+                              meta: `${progress?.pomegranateGarden?.points ?? 0}/100 Poin`,
+                              img: '/tip-3d-1.webp',
+                              tint: 'bg-[#FFF2F6]',
+                              ring: 'hover:ring-[#F8C8D7]',
+                              accent: 'text-[#C84B71]',
+                            },
+                            {
+                              id: 'hasil',
+                              title: 'Hasil Saya',
+                              desc: 'Lihat skor PASS, Pre-Test, Post-Test & progres Bunda.',
+                              meta: 'Rapor Evaluasi',
+                              img: '/modul-3d-6.webp',
+                              tint: 'bg-[#F1F4E6]',
+                              ring: 'hover:ring-[#C9D3A8]',
+                              accent: 'text-[#4F5E24]',
+                            },
+                            {
+                              id: 'selfie',
+                              title: 'Take Selfie',
+                              desc: 'Abadikan momen nifas bersama pasangan.',
+                              meta: 'Dukungan Suami',
+                              img: '/modul-3d-3.webp',
+                              tint: 'bg-[#FBEDF1]',
+                              ring: 'hover:ring-[#F0C9D5]',
+                              accent: 'text-[#A83A5E]',
+                            },
+                          ].map((tile) => (
+                            <button
+                              key={tile.id}
+                              type="button"
+                              onClick={() => handleSelectSection(tile.id)}
+                              className={`group relative flex min-h-[176px] sm:min-h-[188px] flex-col overflow-hidden rounded-[20px] ${tile.tint} p-4 sm:p-5 text-left ring-1 ring-black/4 ${tile.ring} transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(60,40,50,0.08)] active:translate-y-0 cursor-pointer`}
+                            >
+                              <span className={`text-[11px] font-semibold ${tile.accent}`}>
+                                {tile.meta}
+                              </span>
+                              <h3 className="mt-1 font-heading text-[15px] sm:text-[17px] font-bold leading-snug text-[#2A2D22]">
+                                {tile.title}
+                              </h3>
+                              <p className="mt-1 hidden max-w-[62%] text-[12.5px] leading-snug text-[#5F5B5D] sm:block">
+                                {tile.desc}
                               </p>
-                            </div>
-                            <div className="mt-4 flex items-center justify-center sm:justify-between gap-2 pt-3 border-t border-[#F8E8EE] text-xs font-bold text-[#C84B71]">
-                              <span>{completedStages}/4 Level Selesai</span>
-                              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                            </div>
-                          </button>
+                              <span
+                                className={`relative z-10 mt-auto inline-flex items-center gap-1 text-xs font-semibold ${tile.accent}`}
+                              >
+                                Buka
+                                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                              </span>
 
-                          {/* Tile 2: Tips Kehamilan */}
-                          <button
-                            type="button"
-                            onClick={() => handleSelectSection('tips')}
-                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#F5DCE4] bg-white p-5 text-center sm:text-left shadow-[0_6px_22px_rgba(200,75,113,0.05)] hover:border-green-300 hover:shadow-[0_14px_32px_rgba(86,99,42,0.14)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
-                          >
-                            <div className="flex flex-col items-center sm:items-start">
-                              <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 min-w-0">
-                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5F8EB] text-[#56632A] transition-transform group-hover:scale-105">
-                                  <Sun className="h-5 w-5" />
-                                </span>
-                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#56632A] transition-colors">
-                                  Tips Kehamilan
-                                </h3>
-                              </div>
-                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
-                                Langkah kecil harian merawat tubuh, nutrisi, dan ketenangan pikiran.
-                              </p>
-                            </div>
-                            <div className="mt-4 flex items-center justify-center sm:justify-between gap-2 pt-3 border-t border-[#F8E8EE] text-xs font-bold text-[#56632A]">
-                              <span>{savedTipIds.length} Tersimpan</span>
-                              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                            </div>
-                          </button>
-
-                          {/* Tile 3: Kontak Ahli */}
-                          <button
-                            type="button"
-                            onClick={() => handleSelectSection('kontak-ahli')}
-                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#F5DCE4] bg-white p-5 text-center sm:text-left shadow-[0_6px_22px_rgba(200,75,113,0.05)] hover:border-blue-300 hover:shadow-[0_14px_32px_rgba(50,80,160,0.14)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
-                          >
-                            <div className="flex flex-col items-center sm:items-start">
-                              <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 min-w-0">
-                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-transform group-hover:scale-105">
-                                  <HeartHandshake className="h-5 w-5" />
-                                </span>
-                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-blue-600 transition-colors">
-                                  Kontak Ahli
-                                </h3>
-                              </div>
-                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
-                                Konsultasi langsung via WhatsApp dengan bidan &amp; konselor ahli.
-                              </p>
-                            </div>
-                            <div className="mt-4 flex items-center justify-center sm:justify-between gap-2 pt-3 border-t border-[#F8E8EE] text-xs font-bold text-blue-600">
-                              <span>4 Tenaga Ahli</span>
-                              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                            </div>
-                          </button>
-
-                          {/* Tile 4: Take Selfie Pasangan */}
-                          <button
-                            type="button"
-                            onClick={() => handleSelectSection('selfie')}
-                            className="group flex h-full flex-col justify-between rounded-[22px] border border-[#F5DCE4] bg-white p-5 text-center sm:text-left shadow-[0_6px_22px_rgba(200,75,113,0.05)] hover:border-pink-300 hover:shadow-[0_14px_32px_rgba(200,75,113,0.16)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
-                          >
-                            <div className="flex flex-col items-center sm:items-start">
-                              <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 min-w-0">
-                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FDF2F5] text-[#C84B71] transition-transform group-hover:scale-105">
-                                  <Camera className="h-5 w-5" />
-                                </span>
-                                <h3 className="min-w-0 truncate font-heading text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors">
-                                  Take Selfie
-                                </h3>
-                              </div>
-                              <p className="mt-2.5 h-[54px] text-xs leading-relaxed text-[#767A6E] line-clamp-3">
-                                Foto bersama pasangan dengan siluet garis putus-putus, edit nama, &amp; unduh.
-                              </p>
-                            </div>
-                            <div className="mt-4 flex items-center justify-center sm:justify-between gap-2 pt-3 border-t border-[#F8E8EE] text-xs font-bold text-[#C84B71]">
-                              <span>Buka Studio Foto</span>
-                              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                            </div>
-                          </button>
+                              <span className="pointer-events-none absolute -bottom-2 -right-2 h-[92px] w-[92px] sm:h-[118px] sm:w-[118px] transition-transform duration-300 group-hover:scale-[1.04]">
+                                <Image
+                                  src={tile.img}
+                                  alt=""
+                                  fill
+                                  sizes="120px"
+                                  className="object-contain object-bottom"
+                                />
+                              </span>
+                            </button>
+                          ))}
                         </div>
                       </section>
 
-                      {/* Footer WebApp Narahubung (Kak Faiza 085701308514) */}
-                      <footer className="rounded-[22px] border border-[#F5DCE4] bg-white p-5 sm:p-6 shadow-[0_6px_24px_rgba(200,75,113,0.05)]">
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12 items-center text-center sm:text-left">
-                          <div className="lg:col-span-7 flex flex-col items-center sm:items-start">
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#C84B71]">
-                              Narahubung Program Buna Ceria
-                            </span>
-                            <h3 className="font-heading text-base font-bold text-[#2A2D22] mt-0.5">
-                              {footerContact.personInCharge}
+                      {/* Footer WebApp — tenang, tanpa kartu & tanpa pill berlebihan */}
+                      <footer className="border-t border-[#F0DCE3] pt-6">
+                        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                          <div className="max-w-xl">
+                            <h3 className="font-heading text-base font-bold text-[#2A2D22]">
+                              Ada pertanyaan soal program?
                             </h3>
-                            <p className="text-xs text-[#767A6E]">
-                              {footerContact.role}
-                            </p>
-                            <p className="mt-2 text-xs leading-relaxed text-[#767A6E]">
-                              {footerContact.disclaimerText}
+                            <p className="mt-1 text-[13px] leading-relaxed text-[#6E6A6C]">
+                              Hubungi {footerContact.personInCharge.replace(/\s*\(.*\)\s*/, '')},{' '}
+                              {footerContact.role.toLowerCase()}.
                             </p>
                           </div>
 
-                          <div className="lg:col-span-5 flex flex-col items-center gap-2.5 sm:items-end">
+                          <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5">
                             <a
                               href={`mailto:${footerContact.email}`}
-                              className="inline-flex items-center gap-2 rounded-full bg-[#FFF5F8] border border-[#F5DCE4] px-4 py-2 text-xs font-semibold text-[#2A2D22] hover:bg-pink-50 transition-all duration-200 hover:-translate-y-0.5"
+                              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#2A2D22] underline-offset-4 hover:underline"
                             >
-                              <Mail className="h-3.5 w-3.5 text-[#C84B71]" />
-                              <span>{footerContact.email}</span>
+                              <Mail className="h-4 w-4 text-[#A83A5E]" />
+                              {footerContact.email}
                             </a>
-
                             <a
                               href={`https://wa.me/${footerContact.whatsappNumber}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 rounded-full bg-[#EBF7EE] border border-green-200 px-4 py-2 text-xs font-bold text-green-700 hover:bg-green-100 transition-all duration-200 hover:-translate-y-0.5"
+                              className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#2F6B43] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#275a38]"
                             >
                               <Phone className="h-3.5 w-3.5" />
-                              <span>WhatsApp: {footerContact.displayWhatsapp}</span>
+                              {footerContact.displayWhatsapp}
                             </a>
                           </div>
                         </div>
 
-                        <div className="mt-5 border-t border-[#F8E8EE] pt-4 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-[#A09CA8]">
-                          <span>{footerContact.copyrightText}</span>
-                          <span>Team Buna Ceria • Kak Faiza (085701308514)</span>
-                        </div>
+                        <p className="mt-6 max-w-3xl text-[11.5px] leading-relaxed text-[#9A96A0]">
+                          {footerContact.disclaimerText}
+                        </p>
+                        <p className="mt-2 text-[11.5px] text-[#9A96A0]">
+                          {footerContact.copyrightText}
+                        </p>
                       </footer>
                     </motion.div>
                   )}
 
                   {/* =========================================================
-                      2. HALAMAN: TAHAPAN & MATERI KEHAMILAN (4 LEVEL)
-                         (Items 13 & 14: 4 Bulatan Level + Garis Penghubung + Modul, Quiz, Refleksi, Hasil)
+                      2. HALAMAN: TAHAPAN & MATERI MASA NIFAS (3 LEVEL + TAHAP AKHIR HARI KE-7)
                      ========================================================= */}
                   {activeSection === 'materi' && (
                     <motion.div
@@ -718,25 +732,26 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       {...viewTransitionProps}
                       className="space-y-8"
                     >
-                      {/* Editorial Hero Banner: Kurikulum 4 Level */}
+                      {/* Editorial Hero Banner: Kurikulum 3 Level */}
                       <EditorialHeroBanner
                         bannerImageSrc="/hero-banner-materi.webp"
-                        bgText="4 LEVEL BELAJAR"
+                        bgText="3 LEVEL BELAJAR"
                         characterSrc="/hero-materi-mentor.webp"
-                        characterAlt="Mentor Edukasi Materi Kehamilan"
+                        characterAlt="Mentor Edukasi Materi Masa Nifas"
                         bgGradientClass="bg-gradient-to-r from-[#243315] via-[#33461E] to-[#243315]"
                         shadowClass="shadow-[0_8px_24px_rgba(36,51,21,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
+                        accentColor="#3F5222"
                         leftBadge={{
                           icon: <BookOpen className="h-3 w-3 text-lime-200" />,
-                          label: "Alur 4 Level Bertahap",
+                          label: "Alur 3 Level Bertahap",
                         }}
                         rightBadge={{
                           icon: <CheckCircle className="h-3 w-3 text-lime-200" />,
-                          label: `${completedModules}/${modules.length} Modul Selesai`,
+                          label: `${completedModules} dari ${modules.length} modul selesai`,
                         }}
-                        subtitle="Selesaikan setiap level secara berurutan: Level 1 Materi, Level 2 Quiz, Level 3 Refleksi, dan Level 4 Hasil Saya."
+                        subtitle="Pelajari 4 modul interaktif, uji pemahaman mandiri melalui kuis ramah, dan rekam refleksi harian."
                         actionButton={{
-                          label: "Mulai Level 1",
+                          label: "Mulai belajar",
                           onClick: () => {
                             selectStage('materi');
                             const el = document.getElementById('stage-tracker-section');
@@ -745,11 +760,87 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                         }}
                       />
 
-                      {/* 4 BULATAN LEVEL DENGAN GARIS PENGHUBUNG + PANEL LEVEL AKTIF (Items 13 & 14) */}
+                      {/* 3 BULATAN LEVEL DENGAN GARIS PENGHUBUNG + PANEL LEVEL AKTIF */}
                       <div id="stage-tracker-section" className="space-y-6">
                         <StageTracker />
                         <StagePanel />
                       </div>
+
+                      {/* TAHAP AKHIR (HARI KE-7): POST-TEST TINGKAT KECEMASAN PASS (31 SOAL) & QUIZ PEMAHAMAN (20 SOAL) */}
+                      <section aria-labelledby="tahap-akhir-hari-7-heading">
+                        <div className="rounded-[26px] border border-[#F0C9D5] bg-gradient-to-r from-[#FFF5F8] via-white to-[#F5F8EB] p-6 sm:p-7 shadow-2xs">
+                          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                            <div className="flex items-start gap-4">
+                              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#C84B71] text-white shadow-xs">
+                                <Award className="h-6 w-6" />
+                              </span>
+                              <div>
+                                <div className="flex flex-wrap items-center gap-2 mb-1">
+                                  <span className="rounded-full bg-[#FCE8EE] px-3 py-0.5 text-xs font-bold text-[#C84B71]">
+                                    Tahap Akhir &bull; Hari ke-7 (1x Pengerjaan)
+                                  </span>
+                                  {isPosttestCompleted ? (
+                                    <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-800">
+                                      Sudah Selesai Dikerjakan (1x)
+                                    </span>
+                                  ) : dayInfo.unlocked.posttestAnxiety ? (
+                                    <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-800">
+                                      Terbuka Hari Ini
+                                    </span>
+                                  ) : (
+                                    <span className="rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-600">
+                                      Terbuka pada Hari ke-7 (Saat ini Hari ke-{dayInfo.dayNumber})
+                                    </span>
+                                  )}
+                                </div>
+                                <h3
+                                  id="tahap-akhir-hari-7-heading"
+                                  className="font-heading text-base sm:text-lg font-bold text-[#2A2D22]"
+                                >
+                                  Tahap Akhir (Hari ke-7): Post-Test Tingkat Kecemasan PASS (31 Pertanyaan) &amp; Quiz Pemahaman (20 Pertanyaan)
+                                </h3>
+                                <p className="mt-1 text-xs sm:text-sm text-[#5F5B5D] max-w-3xl leading-relaxed">
+                                  Pada tahap akhir (Hari ke-7), bagian Quiz Pemahaman (20 pertanyaan) dikerjakan bersamaan dengan Post-Test Tingkat Kecemasan PASS (31 pertanyaan). Evaluasi ini hanya dapat dikerjakan 1 kali dan hasilnya tercatat di halaman menu Hasil Saya.
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="shrink-0">
+                              {isPosttestCompleted ? (
+                                <button
+                                  type="button"
+                                  onClick={() => handleSelectSection('hasil')}
+                                  className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-full bg-[#F5F8EB] border border-[#C5D49B] px-5 text-xs font-bold text-[#56632A] cursor-pointer"
+                                >
+                                  <CheckCircle className="h-4 w-4" />
+                                  <span>Lihat di Hasil Saya</span>
+                                </button>
+                              ) : dayInfo.unlocked.posttestAnxiety ? (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (!session) openLoginDialog();
+                                    else openAnxietyDialog('posttest');
+                                  }}
+                                  className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-full bg-[#C84B71] px-6 text-xs font-bold text-white hover:bg-[#B23B60] shadow-xs transition-colors cursor-pointer"
+                                >
+                                  <span>Kerjakan Post-Test &amp; Quiz Hari ke-7</span>
+                                  <ArrowRight className="h-4 w-4" />
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => handleSelectSection('tips')}
+                                  className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-full border border-pink-200 bg-white px-5 text-xs font-bold text-[#C84B71] hover:bg-pink-50 cursor-pointer"
+                                >
+                                  <span>Buka Kebun Bunga Delima</span>
+                                  <ArrowRight className="h-3.5 w-3.5" />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </section>
 
                       {/* KARTU VISUAL 3D MODUL & EVALUASI */}
                       <section aria-labelledby="kurikulum-materi-heading" className="space-y-4 pt-2">
@@ -771,12 +862,10 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             if (card.type === 'module' && card.moduleId) {
                               isDone = moduleStatuses[card.moduleId] === 'selesai';
                             } else if (card.type === 'quiz') {
-                              isDone =
-                                (progress?.bestQuizScore ?? 0) > 0 ||
-                                (progress?.completedStageIds.includes('quiz') ?? false);
+                              isDone = isPosttestCompleted;
                             } else if (card.type === 'reflection') {
                               isDone =
-                                (progress?.completedStageIds.includes('hasil-saya') ?? false) ||
+                                (progress?.completedStageIds.includes('tahap-3') ?? false) ||
                                 ((progress?.reflectionSelectedItems?.length ?? 0) > 0);
                             }
 
@@ -867,7 +956,10 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   )}
 
                   {/* =========================================================
-                      3. HALAMAN KHUSUS: TIPS KEHAMILAN (Item 15)
+                      3. HALAMAN KHUSUS: KEBUN BUAH DELIMA (Item 5 & 6 Client Brief)
+                         - Tanaman bertumbuh dari benih -> tunas -> kuncup -> bunga delima mekar (0–100 poin)
+                         - Poin dari: Video Edukasi (Hari 1), Audio Afirmasi (Hari 3), Game Tebak Gambar ASI (Hari 5)
+                         - Post-Test Kecemasan Hari ke-7 & WhatsApp reminder notification
                      ========================================================= */}
                   {activeSection === 'tips' && (
                     <motion.div
@@ -877,140 +969,46 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                     >
                       <EditorialHeroBanner
                         bannerImageSrc="/hero-banner-tips.webp"
-                        bgText="TIPS KEHAMILAN HARI INI"
+                        bgText="KEBUN BUAH DELIMA"
                         characterSrc="/hero-tips-kaka.webp"
-                        characterAlt="Kaka Tenaga Kesehatan Pendamping Tips Kehamilan"
-                        bgGradientClass="bg-gradient-to-r from-[#1E204E] via-[#282B61] to-[#1E204E]"
-                        shadowClass="shadow-[0_8px_24px_rgba(30,32,78,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
+                        characterAlt="Pendamping Kebun Buah Delima Buna Ceria"
+                        bgGradientClass="bg-gradient-to-r from-[#4E1E2F] via-[#66283F] to-[#4E1E2F]"
+                        shadowClass="shadow-[0_8px_24px_rgba(78,30,47,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
+                        accentColor="#8E3556"
                         leftBadge={{
                           icon: <Sparkles className="h-3 w-3 text-pink-200" />,
-                          label: "Terkurasi Medis",
+                          label: "Gamifikasi Poin & Tanaman",
                         }}
                         rightBadge={{
-                          icon: <Bookmark className="h-3 w-3 text-green-200" />,
-                          label: `${savedTipIds.length} Tips Tersimpan`,
+                          icon: <Sparkles className="h-3 w-3 text-pink-200" />,
+                          label: `${progress?.pomegranateGarden?.points ?? 0}/100 Poin`,
                         }}
-                        subtitle="Langkah kecil teruji dari bidan & pakar untuk menjaga kenyamanan tubuh serta ketenangan pikiran Ibu."
+                        subtitle="Kumpulkan poin dari menonton video, mendengar audio, dan bermain game tebak gambar materi kecukupan ASI tiap 2 hari untuk memekarkan Bunga Delima Bunda."
                         actionButton={{
-                          label: "Eksplorasi Tips",
+                          label: "Buka kebun",
                           onClick: () => {
-                            const grid = document.getElementById('tips-grid');
+                            const grid = document.getElementById('garden-container');
                             grid?.scrollIntoView({ behavior: 'smooth' });
                           },
                         }}
                       />
 
-                      <div id="tips-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-                        {filteredTips.map((tip, idx) => (
-                          <TipCard
-                            key={tip.id}
-                            tip={tip}
-                            orderNumber={idx + 1}
-                            isSaved={savedTipIds.includes(tip.id)}
-                            onToggleSave={toggleSaveTip}
-                          />
-                        ))}
+                      <div id="garden-container">
+                        <PomegranateGarden />
                       </div>
                     </motion.div>
                   )}
 
                   {/* =========================================================
-                      4. HALAMAN KHUSUS: KONTAK AHLI (Item 16)
+                      4. HALAMAN KHUSUS: HASIL SAYA (MENU MANDIRI DI WEBAPP)
                      ========================================================= */}
-                  {activeSection === 'kontak-ahli' && (
+                  {activeSection === 'hasil' && (
                     <motion.div
-                      key="view-kontak-ahli"
+                      key="view-hasil"
                       {...viewTransitionProps}
                       className="space-y-6"
                     >
-                      <EditorialHeroBanner
-                        bannerImageSrc="/hero-banner-kontak.webp"
-                        bgText="KONTAK AHLI"
-                        characterSrc="/hero-kontak-bidan.webp"
-                        characterAlt="Bidan & Konselor Kehamilan Berlisensi"
-                        bgGradientClass="bg-gradient-to-r from-[#143242] via-[#1E4357] to-[#143242]"
-                        shadowClass="shadow-[0_8px_24px_rgba(20,50,66,0.08),0_2px_6px_rgba(0,0,0,0.03)]"
-                        leftBadge={{
-                          icon: <HeartHandshake className="h-3 w-3 text-cyan-200" />,
-                          label: "Pendamping Berlisensi",
-                        }}
-                        rightBadge={{
-                          icon: <MessageCircle className="h-3 w-3 text-cyan-200" />,
-                          label: "Siap Konsultasi WhatsApp",
-                        }}
-                        subtitle="Bidan dan konselor profesional terverifikasi siap mendampingi serta menjawab setiap keluhan Ibu secara personal."
-                        actionButton={{
-                          label: "Tanya Bidan Sekarang",
-                          onClick: () => {
-                            const firstExp = experts[0];
-                            const num = firstExp?.whatsappNumber || '6285701308514';
-                            window.open(
-                              `https://wa.me/${num}?text=${encodeURIComponent(
-                                `Halo Bidan, saya ${session?.name ?? 'Ibu hamil pengguna Buna Ceria'}. Saya ingin berkonsultasi mengenai kehamilan saya.`
-                              )}`,
-                              '_blank'
-                            );
-                          },
-                        }}
-                      />
-
-                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                        {experts.map((exp, idx) => {
-                          const waUrl = `https://wa.me/${exp.whatsappNumber}?text=${encodeURIComponent(
-                            `Halo ${exp.name}, saya ${
-                              session?.name ?? 'Ibu hamil pengguna Buna Ceria'
-                            }. Saya ingin berkonsultasi mengenai kehamilan saya.`
-                          )}`;
-                          const photoSrc =
-                            exp.avatarUrl || `/expert-${(idx % 4) + 1}.jpg`;
-
-                          return (
-                            <div
-                              key={exp.id}
-                              className="group flex flex-col justify-between rounded-[22px] border border-[#F5DCE4] bg-white p-4 text-center sm:text-left shadow-[0_6px_22px_rgba(200,75,113,0.05)] hover:border-pink-300 hover:shadow-[0_14px_32px_rgba(200,75,113,0.15)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300"
-                            >
-                              <div>
-                                <div className="relative aspect-[1.15/1] w-full overflow-hidden rounded-[16px] bg-[#FAF8FC]">
-                                  <Image
-                                    src={photoSrc}
-                                    alt={exp.name}
-                                    fill
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                                  />
-                                </div>
-
-                                <div className="mt-3.5 px-1">
-                                  <h3
-                                    title={exp.name}
-                                    className="truncate font-heading text-sm font-bold text-[#2A2D22] group-hover:text-[#C84B71] transition-colors"
-                                  >
-                                    {exp.name}
-                                  </h3>
-                                  <p className="mt-0.5 truncate text-xs font-medium text-[#767A6E]">
-                                    {exp.role}
-                                  </p>
-                                  <p className="mt-1 truncate text-[11px] text-[#A09CA8]">
-                                    {exp.experienceLabel ?? exp.scheduleNote}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="mt-4 pt-3 border-t border-[#F0ECF5]">
-                                <a
-                                  href={waUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex min-h-[38px] w-full items-center justify-center gap-1.5 rounded-full bg-[#EBF7EE] px-3 text-xs font-bold text-green-700 hover:bg-green-100 transition-colors"
-                                >
-                                  <MessageCircle className="h-3.5 w-3.5" />
-                                  <span>Konsultasi WhatsApp</span>
-                                </a>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                      <ResultSummary />
                     </motion.div>
                   )}
 
@@ -1041,7 +1039,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             Informasi Akun &amp; Ubah Profil
                           </h1>
                           <p className="mt-1 text-xs sm:text-sm text-[#6E6A6C]">
-                            Kelola nama panggilan, email, usia trimester kehamilan, atau beralih akun dengan mudah.
+                            Kelola nama panggilan, email, fase masa nifas, atau beralih akun dengan mudah.
                           </p>
                         </div>
 
@@ -1113,38 +1111,47 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             </div>
 
                             <div>
-                              <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
-                                Nomor WhatsApp Aktif
-                              </label>
+                              <div className="flex items-center justify-between mb-1.5">
+                                <label className="block text-xs font-bold text-[#2A2D22]">
+                                  Nomor WhatsApp Aktif
+                                </label>
+                                <span className="text-[10.5px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                  Notifikasi Post-Test
+                                </span>
+                              </div>
                               <input
                                 type="tel"
+                                required
                                 value={profilePhone}
                                 onChange={(e) => setProfilePhone(e.target.value)}
                                 placeholder="0857-xxxx-xxxx"
                                 className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm font-semibold text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
                               />
+                              <p className="mt-1 text-[11px] text-[#6E6A6C]">
+                                Nomor ini menerima pengingat WhatsApp otomatis di hari ke-7 untuk evaluasi Post-Test.
+                              </p>
                             </div>
 
                             <div>
                               <label className="block text-xs font-bold text-[#2A2D22] mb-1.5">
-                                Fase / Trimester Kehamilan
+                                Fase Nifas
                               </label>
                               <select
                                 value={profileTrimester}
                                 onChange={(e) => setProfileTrimester(e.target.value)}
                                 className="w-full rounded-xl border border-pink-200 bg-[#FAF8FC] px-3.5 py-2.5 text-sm font-semibold text-[#2A2D22] focus:border-[#C84B71] focus:bg-white outline-none"
                               >
-                                <option value="Trimester Pertama (Minggu 1–12)">
-                                  Trimester Pertama (Minggu 1–12)
+                                <option value="Nifas Hari ke 1-2 Hari">
+                                  Nifas Hari ke 1-2 Hari
                                 </option>
-                                <option value="Trimester Kedua (Minggu 13–27)">
-                                  Trimester Kedua (Minggu 13–27)
+                                <option value="Nifas Hari ke 3-7 Hari">
+                                  Nifas Hari ke 3-7 Hari
                                 </option>
-                                <option value="Trimester Ketiga (Minggu 28–40)">
-                                  Trimester Ketiga (Minggu 28–40)
+                                <option value="Nifas Hari ke 8-28 Hari">
+                                  Nifas Hari ke 8-28 Hari
                                 </option>
-                                <option value="Masa Nifas & Menyusui">
-                                  Masa Nifas &amp; Menyusui
+                                <option value="Nifas Hari ke 29-42 Hari">
+                                  Nifas Hari ke 29-42 Hari
                                 </option>
                               </select>
                             </div>
@@ -1172,17 +1179,19 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                               <span>Simpan Perubahan Profil</span>
                             </button>
 
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (!session) openLoginDialog();
-                                else openAnxietyDialog();
-                              }}
-                              className="inline-flex min-h-[42px] items-center gap-2 rounded-full border border-pink-200 bg-[#FDF2F5] px-4 py-2 text-xs font-bold text-[#C84B71] hover:bg-pink-100 transition-colors cursor-pointer"
-                            >
-                              <Heart className="h-3.5 w-3.5" />
-                              <span>Isi Ulang Kuesioner Kecemasan</span>
-                            </button>
+                            {!isPretestCompleted && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (!session) openLoginDialog();
+                                  else openAnxietyDialog('pretest');
+                                }}
+                                className="inline-flex min-h-[42px] items-center gap-2 rounded-full border border-pink-200 bg-[#FDF2F5] px-4 py-2 text-xs font-bold text-[#C84B71] hover:bg-pink-100 transition-colors cursor-pointer"
+                              >
+                                <Sparkles className="h-3.5 w-3.5" />
+                                <span>Kerjakan Pre-Test Awal</span>
+                              </button>
+                            )}
                           </div>
                         </form>
 
@@ -1288,8 +1297,8 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                 {[
                   { id: 'beranda', label: 'Beranda', icon: Home },
                   { id: 'materi', label: 'Materi', icon: BookOpen },
-                  { id: 'tips', label: 'Tips', icon: Sun },
-                  { id: 'kontak-ahli', label: 'Bidan', icon: HeartHandshake },
+                  { id: 'tips', label: 'Delima', icon: Sparkles },
+                  { id: 'hasil', label: 'Hasil Saya', icon: Award },
                   { id: 'selfie', label: 'Selfie', icon: Camera },
                 ].map((item) => {
                   const Icon = item.icon;
@@ -1453,7 +1462,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   <Award className="h-4 w-4" />
                 </span>
                 <h3 className="font-heading text-lg font-bold text-[#2A2D22]">
-                  Level 2 • Kuis Pemahaman Kehamilan
+                  Level 4 • Quiz (Post Test) 20 Soal
                 </h3>
               </div>
               <button
@@ -1479,7 +1488,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                   <CheckCircle className="h-4 w-4" />
                 </span>
                 <h3 className="font-heading text-lg font-bold text-[#2A2D22]">
-                  Level 4 • Rangkuman Hasil Belajar
+                  Level 3 • Rangkuman Hasil Belajar
                 </h3>
               </div>
               <button

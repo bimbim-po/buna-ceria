@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
   Award,
+  BookOpen,
   Check,
   CheckCircle2,
   Flower2,
@@ -16,18 +17,21 @@ import {
   X,
 } from 'lucide-react';
 import { getQuizQuestions } from '@/lib/api';
+import { quizReminderMaterial } from '@/data/quiz';
 import { useApp } from '@/context/AppContext';
 import { CountUpNumber, ProgressRing } from '@/components/AnimatedMetric';
 
 const CUSTOM_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function QuizRunner() {
-  const { progress, handleSaveQuizScore, selectStage } = useApp();
+  const { progress, handleSaveQuizScore, enterWebApp } = useApp();
   const prefersReducedMotion = useReducedMotion();
 
   const questions = useMemo(() => getQuizQuestions(), []);
   const totalQuestions = questions.length;
 
+  // Tampilkan Materi Pengingat terlebih dahulu sebelum Post-Test dimulai
+  const [showReminderIntro, setShowReminderIntro] = useState(true);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -37,6 +41,7 @@ export function QuizRunner() {
   >({});
   const [isFinished, setIsFinished] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isPretestMode, setIsPretestMode] = useState<boolean>(false);
 
   const currentQuestion = questions[currentIdx];
 
@@ -51,7 +56,7 @@ export function QuizRunner() {
           await document.exitFullscreen?.();
         }
       } catch {
-        // Abaikan jika browser memblokir native fullscreen, overlay fixed tetap berjalan
+        // Abaikan jika browser memblokir native fullscreen
       }
     }
   }, [isFullscreen]);
@@ -86,10 +91,16 @@ export function QuizRunner() {
       setSelectedOption(null);
       setIsSubmitted(false);
     } else {
-      handleSaveQuizScore(correctCount, totalQuestions);
+      handleSaveQuizScore(correctCount, totalQuestions, isPretestMode);
       setIsFinished(true);
     }
-  }, [currentIdx, totalQuestions, handleSaveQuizScore, correctCount]);
+  }, [
+    currentIdx,
+    totalQuestions,
+    handleSaveQuizScore,
+    correctCount,
+    isPretestMode,
+  ]);
 
   const handleRestartQuiz = () => {
     setCurrentIdx(0);
@@ -100,9 +111,8 @@ export function QuizRunner() {
     setIsFinished(false);
   };
 
-  // Dukungan Pintasan Keyboard (A/B/C/D atau 1/2/3/4, Enter untuk Periksa/Lanjut, Esc untuk keluar fullscreen)
   useEffect(() => {
-    if (isFinished) return;
+    if (isFinished || showReminderIntro) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (
         document.activeElement?.tagName === 'INPUT' ||
@@ -132,6 +142,7 @@ export function QuizRunner() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [
     isFinished,
+    showReminderIntro,
     isSubmitted,
     selectedOption,
     isFullscreen,
@@ -144,6 +155,90 @@ export function QuizRunner() {
     ? 'fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-page p-4 sm:p-8'
     : 'rounded-[28px] border border-pink-100 bg-surface p-5 shadow-pink-soft sm:p-8';
 
+  // =========================================================================
+  // 1. TAMPILAN MATERI PENGINGAT SEBELUM MULAI POST TEST (20 SOAL)
+  // =========================================================================
+  if (showReminderIntro && !isFinished) {
+    return (
+      <div className={wrapperClass}>
+        <div className="mx-auto w-full max-w-4xl space-y-6">
+          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-pink-100 pb-4">
+            <div>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FCE8EE] px-3.5 py-1 text-xs font-bold text-[#C84B71] mb-2">
+                <BookOpen className="h-3.5 w-3.5" />
+                <span>LEVEL 4 • {quizReminderMaterial.badge}</span>
+              </span>
+              <h3 className="font-heading text-xl font-bold text-[#2A2D22] sm:text-2xl">
+                {quizReminderMaterial.title}
+              </h3>
+              <p className="mt-1 text-xs sm:text-sm text-[#5F5B5D] max-w-2xl leading-relaxed">
+                {quizReminderMaterial.subtitle}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowReminderIntro(false)}
+              className="inline-flex min-h-[42px] shrink-0 items-center gap-2 rounded-full bg-[#C84B71] px-5 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#b23b60] transition-all cursor-pointer"
+            >
+              <span>Langsung Mulai Post Test ({totalQuestions} Soal)</span>
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          {/* 4 Kartu Materi Pengingat */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {quizReminderMaterial.sections.map((sec) => (
+              <div
+                key={sec.number}
+                className="rounded-[22px] border border-[#ECE7F2] bg-[#FAF8FC] p-5 space-y-2.5"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#FCE8EE] text-xs font-bold text-[#C84B71]">
+                    {sec.number}
+                  </span>
+                  <h4 className="font-heading text-sm sm:text-base font-bold text-[#2A2D22]">
+                    {sec.title}
+                  </h4>
+                </div>
+                <ul className="space-y-1.5 text-xs text-[#4A4748] leading-relaxed">
+                  {sec.points.map((pt, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#C84B71]" />
+                      <span>{pt}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-[#E4EAC9] bg-[#F7F9EE] p-5">
+            <div className="text-center sm:text-left">
+              <p className="font-heading text-sm sm:text-base font-bold text-[#2A2D22]">
+                Sudah siap mengerjakan {totalQuestions} soal Post Test, Bunda?
+              </p>
+              <p className="text-xs text-[#5F5B5D]">
+                Setiap soal dilengkapi ulasan pembahasan agar Bunda semakin percaya diri menjalani masa nifas dan menyusui.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowReminderIntro(false)}
+              className="inline-flex min-h-[46px] w-full sm:w-auto shrink-0 items-center justify-center gap-2 rounded-full bg-[#C84B71] px-7 py-3 text-sm font-bold text-white shadow-md hover:bg-[#b23b60] transition-all cursor-pointer"
+            >
+              <span>Mulai Kerjakan {totalQuestions} Soal Post Test</span>
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // 2. TAMPILAN SELESAI POST TEST
+  // =========================================================================
   if (isFinished) {
     const currentScorePct = Math.round((correctCount / totalQuestions) * 100);
     const bestScorePct = progress?.bestQuizScore ?? currentScorePct;
@@ -170,19 +265,18 @@ export function QuizRunner() {
 
           <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-pink-50 border border-pink-100 px-3.5 py-1 text-xs font-bold text-pink-700">
             <Sparkles className="h-3.5 w-3.5" />
-            <span>Evaluasi Pemahaman Selesai</span>
+            <span>Evaluasi Post Test Selesai</span>
           </span>
 
           <h3 className="mt-3 font-heading text-2xl font-bold text-ink sm:text-3xl">
-            Terima kasih sudah menyelesaikan kuis, Ibu
+            Terima kasih sudah menyelesaikan Post Test, Bunda!
           </h3>
 
-          <p className="mx-auto mt-2 max-w-lg text-base text-ink-muted">
-            Berikut adalah catatan hasil latihan Ibu hari ini. Ibu boleh
-            mengulang kapan saja jika ingin mengulas kembali.
+          <p className="mx-auto mt-2 max-w-lg text-sm sm:text-base text-ink-muted">
+            Berikut adalah catatan hasil evaluasi pemahaman masa nifas &amp; kecukupan ASI Bunda hari ini. Hasil ini telah disimpan otomatis di Hasil Saya.
           </p>
 
-          {/* Kotak Skor dengan Angka Menghitung Naik */}
+          {/* Kotak Skor */}
           <div className="mx-auto mt-6 grid max-w-lg grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="flex items-center justify-between rounded-[24px] border border-pink-100 bg-page p-5 text-left">
               <div>
@@ -206,7 +300,7 @@ export function QuizRunner() {
             <div className="flex items-center justify-between rounded-[24px] border border-green-100 bg-green-50 p-5 text-left">
               <div>
                 <span className="text-sm font-semibold text-green-700">
-                  Skor Terbaik Ibu
+                  Skor Terbaik Bunda
                 </span>
                 <p className="mt-1 font-heading text-3xl font-bold text-ink">
                   <CountUpNumber value={bestScorePct} suffix="%" />
@@ -223,7 +317,7 @@ export function QuizRunner() {
             </div>
           </div>
 
-          {/* Tombol Ulangi atau Lanjut ke Tahap 3 */}
+          {/* Tombol Ulangi atau Lihat Hasil Saya */}
           <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
@@ -235,18 +329,18 @@ export function QuizRunner() {
                 strokeWidth={1.75}
                 aria-hidden="true"
               />
-              <span>Ulangi Quiz</span>
+              <span>Ulangi Post Test</span>
             </button>
 
             <button
               type="button"
               onClick={async () => {
                 await exitFullscreenIfActive();
-                selectStage('tahap-3');
+                enterWebApp('hasil');
               }}
               className="btn-pill inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center gap-2 bg-pink-500 px-7 py-3 text-base font-bold text-ink shadow-pink-soft cursor-pointer"
             >
-              <span>Lanjut ke Tahap Refleksi</span>
+              <span>Lihat Ringkasan di Hasil Saya</span>
               <ArrowRight
                 className="h-4 w-4"
                 strokeWidth={1.75}
@@ -265,26 +359,54 @@ export function QuizRunner() {
   return (
     <div className={wrapperClass}>
       {/* =====================================================================
-          TOP BAR APLIKASI QUIZ (Progress Segmen + Mode Layar Penuh)
+          TOP BAR APLIKASI QUIZ (Progress 20 Soal + Materi Pengingat + Layar Penuh)
          ===================================================================== */}
       <div className="mx-auto w-full max-w-3xl">
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-pink-100 pb-4">
           <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1 rounded-full bg-[#FAF4F6] p-0.5 text-xs">
+              <button
+                type="button"
+                onClick={() => setIsPretestMode(false)}
+                className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold transition-all cursor-pointer ${
+                  !isPretestMode
+                    ? 'bg-white text-[#56632A] shadow-2xs'
+                    : 'text-[#767A6E] hover:text-[#2A2D22]'
+                }`}
+              >
+                Post Test (Level 4)
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsPretestMode(true)}
+                className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold transition-all cursor-pointer ${
+                  isPretestMode
+                    ? 'bg-white text-[#C84B71] shadow-2xs'
+                    : 'text-[#767A6E] hover:text-[#2A2D22]'
+                }`}
+              >
+                Pre-Test Materi
+              </button>
+            </div>
+
             <span className="rounded-full bg-pink-50 border border-pink-100 px-3.5 py-1 text-xs font-bold text-pink-700 sm:text-sm">
               Soal {currentIdx + 1} / {totalQuestions}
             </span>
             <span className="rounded-full bg-green-50 border border-green-100 px-3.5 py-1 text-xs font-bold text-green-700 sm:text-sm">
               Benar: {correctCount}
             </span>
-            {progress?.bestQuizScore !== null &&
-              progress?.bestQuizScore !== undefined && (
-                <span className="hidden sm:inline-block rounded-full bg-page border border-pink-100 px-3 py-1 text-xs font-semibold text-ink-muted">
-                  Rekor: {progress.bestQuizScore}%
-                </span>
-              )}
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowReminderIntro(true)}
+              className="btn-pill inline-flex min-h-[38px] items-center gap-1.5 border border-[#ECE7F2] bg-[#FAF8FC] px-3.5 py-1.5 text-xs font-bold text-[#2A2D22] hover:bg-pink-50 cursor-pointer"
+            >
+              <BookOpen className="h-3.5 w-3.5 text-[#C84B71]" />
+              <span>Materi Pengingat</span>
+            </button>
+
             <button
               type="button"
               onClick={toggleFullscreen}
@@ -293,16 +415,11 @@ export function QuizRunner() {
                   ? 'border-green-700 bg-green-100 text-green-700'
                   : 'border-pink-100 bg-page text-ink hover:bg-pink-50'
               }`}
-              title={
-                isFullscreen
-                  ? 'Keluar dari Mode Fokus Layar Penuh'
-                  : 'Buka Quiz dalam Mode Fokus Layar Penuh'
-              }
             >
               {isFullscreen ? (
                 <>
                   <Minimize2 className="h-3.5 w-3.5" strokeWidth={2} />
-                  <span>Kecilkan Layar</span>
+                  <span>Kecilkan</span>
                 </>
               ) : (
                 <>
@@ -310,7 +427,7 @@ export function QuizRunner() {
                     className="h-3.5 w-3.5 text-pink-700"
                     strokeWidth={2}
                   />
-                  <span>Mode Fokus Layar Penuh</span>
+                  <span>Layar Penuh</span>
                 </>
               )}
             </button>
@@ -328,9 +445,9 @@ export function QuizRunner() {
           </div>
         </div>
 
-        {/* Bar Progres 8 Segmen Interaktif (Gaya WebApp Modern) */}
+        {/* Bar Progres 20 Segmen Interaktif */}
         <div
-          className="mt-3.5 grid grid-cols-8 gap-1.5"
+          className="mt-3.5 grid grid-cols-10 sm:grid-cols-20 gap-1"
           role="progressbar"
           aria-valuenow={currentIdx + 1}
           aria-valuemin={1}
@@ -343,7 +460,7 @@ export function QuizRunner() {
             return (
               <div
                 key={q.id}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-all duration-300 ${
                   historyStatus === 'correct'
                     ? 'bg-green-500'
                     : historyStatus === 'wrong'
@@ -381,11 +498,11 @@ export function QuizRunner() {
           >
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-bold uppercase tracking-wider text-pink-700">
-                Pertanyaan Pemahaman 0{currentIdx + 1}
+                Pertanyaan Post Test {String(currentIdx + 1).padStart(2, '0')} dari {totalQuestions}
               </span>
               <span className="hidden sm:inline-flex items-center gap-1 text-xs text-ink-muted">
                 <Keyboard className="h-3.5 w-3.5" />
-                <span>Pintasan: Tombol A–D & Enter</span>
+                <span>Pintasan: Tombol A–D &amp; Enter</span>
               </span>
             </div>
 
@@ -493,8 +610,8 @@ export function QuizRunner() {
                     <div>
                       <p className="font-heading text-lg font-bold text-ink">
                         {isChoiceCorrect
-                          ? 'Jawaban Ibu tepat'
-                          : 'Belum tepat, tidak apa-apa Ibu'}
+                          ? 'Jawaban Bunda tepat'
+                          : 'Belum tepat, tidak apa-apa Bunda'}
                       </p>
                       <p className="mt-1 text-base leading-relaxed text-ink-muted">
                         {currentQuestion.explanation}

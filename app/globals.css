@@ -144,6 +144,51 @@ h4,
   transform: scale(0.97);
 }
 
+/* Masking & Blending Halus untuk Gambar Hero Landing Page (Poin 1) */
+.hero-image-blend {
+  -webkit-mask-image: radial-gradient(
+    ellipse 94% 90% at 50% 46%,
+    #000000 72%,
+    rgba(0, 0, 0, 0.65) 86%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 94% 90% at 50% 46%,
+    #000000 72%,
+    rgba(0, 0, 0, 0.65) 86%,
+    transparent 100%
+  );
+}
+
+/* Kelas Hero Bersama untuk Seluruh Halaman WebApp (Poin 3: .page-hero)
+   Menjaga rasio 1415:420 secara proporsional di semua ukuran layar (mobile, tablet, desktop)
+   tanpa min-height/max-height yang memotong teks atau gambar. */
+.page-hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1415 / 420;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .page-hero {
+    border-radius: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-hero {
+    border-radius: 22px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-hero {
+    border-radius: 28px;
+  }
+}
+
 /* Animasi SVG Garis Bunga & Daun di SplashScreen (1.2 detik) */
 @keyframes draw-stroke {
   0% {

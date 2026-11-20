@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import {
-  ArrowRight,
   BatteryLow,
-  BookOpen,
   ClipboardCheck,
   CloudRain,
   Heart,
-  HeartHandshake,
   Moon,
   Smile,
   Users,
@@ -27,213 +25,23 @@ const topicIconMap = {
   tidur: Moon,
 } as const;
 
-function FeelingIllustration({ id }: { id: FeelingTopic['id'] }) {
-  switch (id) {
-    case 'keluarga':
-      return (
-        <svg
-          viewBox="0 0 96 84"
-          className="h-20 w-24 shrink-0"
-          aria-hidden="true"
-        >
-          <circle cx="48" cy="44" r="30" fill="#FEF3F5" />
-          <path d="M 24 72 C 24 54, 46 54, 46 72 Z" fill="#A8B371" />
-          <circle
-            cx="35"
-            cy="40"
-            r="9"
-            fill="#FBDDE3"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-          />
-          <path d="M 27 38 C 28 30, 42 30, 43 38" fill="#2A2D22" />
-
-          <path d="M 46 72 C 46 54, 70 54, 70 72 Z" fill="#F5AFB9" />
-          <circle
-            cx="58"
-            cy="42"
-            r="8.5"
-            fill="#FFF9F7"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-          />
-          <path d="M 50 42 C 50 32, 66 32, 66 44" fill="#2A2D22" />
-          <path
-            d="M 48 26 C 48 26, 42 21, 42 17 C 42 14.5, 44 13, 46 13 C 47.2 13, 48 14, 48 15 C 48 14, 48.8 13, 50 13 C 52 13, 54 14.5, 54 17 C 54 21, 48 26, 48 26 Z"
-            fill="#A8435A"
-          />
-        </svg>
-      );
-    case 'kecemasan':
-      return (
-        <svg
-          viewBox="0 0 96 84"
-          className="h-20 w-24 shrink-0"
-          aria-hidden="true"
-        >
-          <circle cx="48" cy="44" r="30" fill="#F5F7EA" />
-          <path
-            d="M 34 20 C 38 14, 46 16, 44 22 C 42 26, 52 14, 58 20"
-            fill="none"
-            stroke="#A8435A"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-          />
-          <path d="M 32 72 C 32 52, 64 52, 64 72 Z" fill="#F5AFB9" />
-          <circle
-            cx="48"
-            cy="41"
-            r="10"
-            fill="#FFF9F7"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-          />
-          <path d="M 38 42 C 38 29, 58 29, 58 42" fill="#2A2D22" />
-          <path
-            d="M 42 62 L 45 47"
-            stroke="#2A2D22"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-      );
-    case 'stres':
-      return (
-        <svg
-          viewBox="0 0 96 84"
-          className="h-20 w-24 shrink-0"
-          aria-hidden="true"
-        >
-          <circle cx="48" cy="44" r="30" fill="#FEF3F5" />
-          <path
-            d="M 24 28 L 29 32 L 26 35"
-            fill="none"
-            stroke="#A8435A"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 72 28 L 67 32 L 70 35"
-            fill="none"
-            stroke="#A8435A"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-          <path d="M 30 72 C 30 52, 66 52, 66 72 Z" fill="#A8B371" />
-          <circle
-            cx="48"
-            cy="41"
-            r="10"
-            fill="#FFF9F7"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-          />
-          <path d="M 38 40 C 38 28, 58 28, 58 40" fill="#2A2D22" />
-          <path
-            d="M 34 56 L 39 42 M 62 56 L 57 42"
-            stroke="#2A2D22"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-      );
-    case 'mood':
-      return (
-        <svg
-          viewBox="0 0 96 84"
-          className="h-20 w-24 shrink-0"
-          aria-hidden="true"
-        >
-          <circle cx="48" cy="44" r="30" fill="#F5F7EA" />
-          <circle cx="25" cy="34" r="6" fill="#FBDDE3" />
-          <circle cx="71" cy="34" r="6" fill="#E4EAC9" />
-          <path d="M 32 72 C 32 52, 64 52, 64 72 Z" fill="#F5AFB9" />
-          <circle
-            cx="48"
-            cy="41"
-            r="10"
-            fill="#FFF9F7"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-          />
-          <path d="M 38 41 C 38 28, 58 28, 58 41" fill="#2A2D22" />
-          <path
-            d="M 45 45 Q 48 43 51 45"
-            fill="none"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-        </svg>
-      );
-    case 'persalinan':
-      return (
-        <svg
-          viewBox="0 0 96 84"
-          className="h-20 w-24 shrink-0"
-          aria-hidden="true"
-        >
-          <circle cx="48" cy="44" r="30" fill="#FEF3F5" />
-          <path d="M 30 72 C 30 50, 66 50, 66 72 Z" fill="#F5AFB9" />
-          <circle
-            cx="48"
-            cy="38"
-            r="9.5"
-            fill="#FFF9F7"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-          />
-          <path d="M 38 38 C 38 26, 58 26, 58 38" fill="#2A2D22" />
-          <path
-            d="M 48 65 C 48 65, 41 60, 41 56 C 41 53.5, 43 52, 45 52 C 46.5 52, 47.5 53, 48 54 C 48.5 53, 49.5 52, 51 52 C 53 52, 55 53.5, 55 56 C 55 60, 48 65, 48 65 Z"
-            fill="#FFFFFF"
-            stroke="#A8435A"
-            strokeWidth="1.5"
-          />
-        </svg>
-      );
-    case 'tidur':
-      return (
-        <svg
-          viewBox="0 0 96 84"
-          className="h-20 w-24 shrink-0"
-          aria-hidden="true"
-        >
-          <circle cx="48" cy="44" r="30" fill="#F5F7EA" />
-          <path
-            d="M 66 22 C 62 24, 62 31, 67 33 C 63 34, 58 30, 60 24 C 61 21, 64 21, 66 22 Z"
-            fill="#56632A"
-          />
-          <path d="M 32 72 C 32 52, 64 52, 64 72 Z" fill="#A8B371" />
-          <circle
-            cx="48"
-            cy="42"
-            r="10"
-            fill="#FFF9F7"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-          />
-          <path d="M 38 41 C 38 29, 58 29, 58 41" fill="#2A2D22" />
-          <path
-            d="M 43 42 Q 45 44 47 42 M 49 42 Q 51 44 53 42"
-            fill="none"
-            stroke="#2A2D22"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-        </svg>
-      );
-  }
-}
+const TOPIC_VISUAL_MAP: Record<
+  FeelingTopic['id'],
+  { src: string; tint: string }
+> = {
+  keluarga: { src: '/modul-3d-3.webp', tint: 'bg-[#FBEDF1]' },
+  kecemasan: { src: '/modul-3d-1.webp', tint: 'bg-[#F2F5E8]' },
+  stres: { src: '/tip-3d-1.webp', tint: 'bg-[#FDF4E5]' },
+  mood: { src: '/tip-3d-6.webp', tint: 'bg-[#F5EFFB]' },
+  persalinan: { src: '/modul-3d-4.webp', tint: 'bg-[#EBF4F1]' },
+  tidur: { src: '/modul-3d-2.webp', tint: 'bg-[#FDF2EA]' },
+};
 
 export function FeelingSelector() {
   const {
     session,
-    appMode,
     openLoginDialog,
     openAnxietyDialog,
-    openModuleReader,
-    enterWebApp,
   } = useApp();
   const topics = getFeelingTopics();
   const [selectedId, setSelectedId] = useState<FeelingTopic['id']>(
@@ -251,43 +59,34 @@ export function FeelingSelector() {
     openAnxietyDialog();
   };
 
-  const handleContactExpert = () => {
-    if (appMode === 'landing') {
-      const el = document.getElementById('landing-experts');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
-    }
-    enterWebApp('kontak-ahli');
-  };
+  const visual = TOPIC_VISUAL_MAP[activeTopic?.id ?? 'keluarga'] ?? TOPIC_VISUAL_MAP.keluarga;
 
   return (
     <section
       aria-labelledby="feelings-heading"
       className="space-y-3.5"
     >
-      {/* Kepala Bagian */}
-      <div className="max-w-2xl text-center sm:text-left mx-auto sm:mx-0">
+      {/* Kepala Bagian — rata kiri yang tenang & editorial */}
+      <div className="max-w-2xl">
         <h2
           id="feelings-heading"
           className="font-heading text-lg font-bold tracking-tight text-[#2A2D22] sm:text-xl"
         >
           {uiContent.feelingsSection.sectionTitle}
         </h2>
-        <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[#6E6A6C]">
+        <p className="mt-1 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
           {uiContent.feelingsSection.sectionSubtitle}
         </p>
       </div>
 
-      {/* Kontainer: Menu Perasaan di Kiri & Kanvas Putih di Kanan */}
-      <div className="overflow-hidden rounded-[24px] border border-[#F5DCE4] bg-white p-3 sm:p-4 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:shadow-[0_12px_32px_rgba(200,75,113,0.1)]">
-        <div className="flex flex-col md:flex-row gap-4 items-stretch">
-          {/* Kolom Kiri: Daftar Pilihan Perasaan dengan Pill Tab yang Rapi */}
+      {/* Kontainer Utama: Tab Perasaan di Kiri & Panel Panduan di Kanan */}
+      <div className="overflow-hidden rounded-[22px] border border-[#F0DCE3] bg-white p-3 sm:p-4 shadow-[0_4px_20px_rgba(78,30,47,0.04)]">
+        <div className="flex flex-col md:flex-row gap-3.5 sm:gap-4 items-stretch">
+          {/* Kolom Kiri: Daftar Pilihan Perasaan */}
           <div
             role="tablist"
             aria-label="Pilih perasaan yang sedang Ibu hadapi"
-            className="grid grid-cols-2 gap-1.5 md:flex md:w-60 md:shrink-0 md:flex-col md:justify-between md:gap-1.5 p-2 bg-[#FFF5F8] rounded-[18px] border border-[#F5DCE4]"
+            className="grid grid-cols-2 gap-1.5 md:flex md:w-56 md:shrink-0 md:flex-col md:justify-between md:gap-1 p-1.5 bg-[#FAF4F6] rounded-[16px]"
           >
             {topics.map((topic) => {
               const isSelected = topic.id === activeTopic.id;
@@ -301,105 +100,76 @@ export function FeelingSelector() {
                   aria-controls={`feeling-panel-${topic.id}`}
                   id={`feeling-tab-${topic.id}`}
                   onClick={() => setSelectedId(topic.id)}
-                  className={`group relative flex min-h-[42px] items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all duration-200 hover:-translate-y-0.5 active:scale-95 cursor-pointer ${
+                  className={`group relative flex min-h-[40px] items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? 'bg-white font-bold text-[#2A2D22] shadow-xs border border-pink-200/80'
-                      : 'font-medium text-[#6E6A6C] hover:bg-white/80 hover:text-[#2A2D22]'
+                      ? 'bg-white font-semibold text-[#2A2D22] shadow-[0_2px_8px_rgba(78,30,47,0.06)] ring-1 ring-[#EED8E0]'
+                      : 'font-medium text-[#6E6A6C] hover:bg-white/60 hover:text-[#2A2D22]'
                   }`}
                 >
-                  <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                  <Icon
+                    className={`h-4 w-4 shrink-0 transition-colors ${
                       isSelected
-                        ? 'bg-[#FDF2F5] text-[#C84B71]'
-                        : 'bg-white text-[#8C8896] group-hover:text-[#2A2D22]'
+                        ? 'text-[#C84B71]'
+                        : 'text-[#8C8896] group-hover:text-[#2A2D22]'
                     }`}
-                  >
-                    <Icon
-                      className="h-3.5 w-3.5"
-                      strokeWidth={1.75}
-                      aria-hidden="true"
-                    />
-                  </span>
+                    strokeWidth={isSelected ? 2 : 1.75}
+                    aria-hidden="true"
+                  />
                   <span className="text-xs sm:text-[13px] leading-snug">{topic.label}</span>
                 </button>
               );
             })}
           </div>
 
-          {/* Kolom Kanan: Kanvas Putih Panduan & Bantuan */}
+          {/* Kolom Kanan: Kanvas Panduan & Langkah Praktis */}
           {activeTopic && (
             <div
               role="tabpanel"
               id={`feeling-panel-${activeTopic.id}`}
               aria-labelledby={`feeling-tab-${activeTopic.id}`}
-              className="flex flex-1 flex-col justify-between rounded-[18px] bg-white p-5 sm:p-6 border border-[#F5DCE4]"
+              className="flex flex-1 flex-col justify-between rounded-[16px] bg-[#FFFCFD] p-4 sm:p-6 border border-[#F4E4EA]"
             >
-              {/* Bagian Atas: Ilustrasi + Judul + Saran Bidan */}
-              <div className="flex flex-col items-center text-center gap-4 sm:flex-row sm:items-center sm:text-left">
-                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-pink-100 bg-[#FFF5F8] p-2 shadow-2xs">
-                  <FeelingIllustration id={activeTopic.id} />
+              {/* Bagian Atas: Ilustrasi 3D + Judul + Saran Bidan */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
+                <div
+                  className={`relative flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center rounded-2xl ${visual.tint} p-2.5`}
+                >
+                  <Image
+                    src={visual.src}
+                    alt={activeTopic.title}
+                    fill
+                    sizes="96px"
+                    className="object-contain p-2 drop-shadow-[0_6px_12px_rgba(0,0,0,0.08)]"
+                  />
                 </div>
 
-                <div className="flex-1">
-                  <h3 className="font-heading text-lg font-bold text-[#2A2D22] sm:text-xl">
+                <div className="flex-1 min-w-0">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#A83A5E]">
+                    Saran Pendampingan
+                  </span>
+                  <h3 className="mt-0.5 font-heading text-base font-bold text-[#2A2D22] sm:text-xl">
                     {activeTopic.title}
                   </h3>
-
-                  <p className="mt-1.5 text-xs sm:text-[13.5px] leading-relaxed text-[#6E6A6C]">
+                  <p className="mt-1.5 text-xs sm:text-[13.5px] leading-relaxed text-[#5F5B5D]">
                     {activeTopic.advice}
                   </p>
                 </div>
               </div>
 
-              {/* Bagian Bawah: Baris Tombol Aksi yang Rapi & Proporsional */}
-              <div className="mt-6 flex flex-col gap-3 border-t border-[#F8E8EE] pt-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+              {/* Bagian Bawah: Aksi Tenang Kuesioner Kecemasan */}
+              <div className="mt-5 flex flex-col gap-3 border-t border-[#F4E4EA] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-xs text-[#767A6E]">
+                  Ingin mengenali kondisi emosi lebih dalam?
+                </div>
+
                 <button
                   type="button"
-                  onClick={() =>
-                    openModuleReader(activeTopic.recommendedModuleId)
-                  }
-                  className="inline-flex min-h-[40px] items-center justify-center gap-2 rounded-full border border-[#F5DCE4] bg-[#FFF5F8] px-4 py-2 text-xs font-bold text-[#2A2D22] hover:bg-white hover:border-pink-300 hover:text-[#C84B71] hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer shadow-2xs"
+                  onClick={handleOpenAnxietyCheck}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 self-start sm:self-auto rounded-full bg-[#C84B71] px-4 text-xs font-semibold text-white transition-colors hover:bg-[#B23B60] active:scale-[0.98] cursor-pointer"
                 >
-                  <BookOpen
-                    className="h-3.5 w-3.5 text-[#C84B71]"
-                    strokeWidth={1.8}
-                    aria-hidden="true"
-                  />
-                  <span>{activeTopic.recommendedModuleLabel}</span>
-                  <ArrowRight
-                    className="h-3.5 w-3.5 text-[#C84B71]"
-                    strokeWidth={1.8}
-                    aria-hidden="true"
-                  />
+                  <ClipboardCheck className="h-3.5 w-3.5" strokeWidth={1.9} />
+                  <span>{uiContent.feelingsSection.checkAnxietyButton}</span>
                 </button>
-
-                <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5">
-                  <button
-                    type="button"
-                    onClick={handleOpenAnxietyCheck}
-                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#C84B71] to-[#E46C8E] px-4 py-2 text-xs font-bold text-white shadow-[0_6px_18px_rgba(200,75,113,0.25)] hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(200,75,113,0.35)] active:scale-95 transition-all cursor-pointer"
-                  >
-                    <ClipboardCheck
-                      className="h-3.5 w-3.5"
-                      strokeWidth={1.8}
-                      aria-hidden="true"
-                    />
-                    <span>{uiContent.feelingsSection.checkAnxietyButton}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleContactExpert}
-                    className="inline-flex min-h-[40px] flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-full bg-[#EBF7EE] border border-green-200 px-4 py-2 text-xs font-bold text-green-700 hover:bg-green-100 hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer"
-                  >
-                    <HeartHandshake
-                      className="h-3.5 w-3.5"
-                      strokeWidth={1.8}
-                      aria-hidden="true"
-                    />
-                    <span>{uiContent.feelingsSection.contactExpertButton}</span>
-                  </button>
-                </div>
               </div>
             </div>
           )}

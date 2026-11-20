@@ -8,6 +8,7 @@ import {
   anxietyClosingMessages,
   anxietyIntroDisclaimer,
   anxietyScaleOptions,
+  evaluatePassScore,
   mockAnxietyQuestions,
 } from '@/data/anxiety';
 import { mockStages } from '@/data/stages';
@@ -18,27 +19,45 @@ import { mockReferences } from '@/data/references';
 import { mockFooterContact } from '@/data/footer';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
 import {
+  syncAnxietyToSupabase,
+  syncProgressToSupabase,
+  syncUserToSupabase,
+} from '@/lib/supabase';
+import {
   AnxietyOption,
   AnxietyQuestion,
   AnxietySubmission,
   CompletionStatus,
+  DailyMoodEntry,
+  DailyMoodType,
   ExpertContact,
   FeelingTopic,
   FooterContactInfo,
   MockUser,
   ModuleItem,
+  PomegranateGardenState,
   PregnancyPillar,
   PregnancyTip,
   QuizQuestion,
   ReferenceItem,
   StageDefinition,
   StageId,
+  TestAttemptCategory,
+  TestAttemptRecord,
   UserProgress,
   UserSession,
 } from '@/types';
 
-// 4 Level Tahapan Pembelajaran sesuai Client Brief No. 13, 14, dan User Flow No. 6
-const STAGE_ORDER: StageId[] = ['materi', 'quiz', 'tahap-3', 'hasil-saya'];
+// 3 Level Tahapan Pembelajaran Masa Nifas:
+// Level 1: Materi -> Level 2: Refleksi Diri & Tips ('tahap-3') -> Level 3: Bunga Delima ('bunga-delima')
+const STAGE_ORDER: StageId[] = ['materi', 'tahap-3', 'bunga-delima'];
+
+function normalizeNifasLabel(label?: string): string {
+  if (!label || label.startsWith('Trimester')) {
+    return 'Nifas Hari ke 1-2 Hari';
+  }
+  return label;
+}
 
 function createDefaultProgress(userId: string): UserProgress {
   return {
@@ -49,6 +68,16 @@ function createDefaultProgress(userId: string): UserProgress {
     bestQuizScore: null,
     bestQuizCorrectCount: null,
     quizAttempts: 0,
+    firstLoginAt: new Date().toISOString(),
+    testHistory: [],
+    dailyMoods: {},
+    pomegranateGarden: {
+      points: 0,
+      completedActivities: {},
+      activityLogs: [],
+      lastUpdatedAt: new Date().toISOString(),
+    },
+    simulatedDayOffset: 0,
     reflectionNote: '',
     reflectionSelectedItems: [],
     evaluationCheckedItems: [],
@@ -62,10 +91,12 @@ function createDefaultProgress(userId: string): UserProgress {
 
 export function getAllUsers(): MockUser[] {
   const saved = storage.getItem<MockUser[] | null>(STORAGE_KEYS.USERS_LIST, null);
-  if (!saved || saved.length === 0) {
-    return [...mockUsers];
-  }
-  return saved;
+  const raw = !saved || saved.length === 0 ? [...mockUsers] : saved;
+  return raw.map((u) => ({
+    ...u,
+    trimesterLabel:
+      u.role === 'admin' ? u.trimesterLabel : normalizeNifasLabel(u.trimesterLabel),
+  }));
 }
 
 function saveAllUsers(users: MockUser[]): void {
@@ -89,7 +120,17 @@ export function getDemoAccounts(): Pick<
 }
 
 export function getSession(): UserSession | null {
-  return storage.getItem<UserSession | null>(STORAGE_KEYS.SESSION, null);
+  const session = storage.getItem<UserSession | null>(STORAGE_KEYS.SESSION, null);
+  if (!session) return null;
+  if (session.role !== 'admin' && (!session.trimesterLabel || session.trimesterLabel.startsWith('Trimester'))) {
+    const normalized: UserSession = {
+      ...session,
+      trimesterLabel: normalizeNifasLabel(session.trimesterLabel),
+    };
+    storage.setItem(STORAGE_KEYS.SESSION, normalized);
+    return normalized;
+  }
+  return session;
 }
 
 export function login(
@@ -141,7 +182,10 @@ export function login(
     name: matchedUser.name,
     email: matchedUser.email,
     phone: matchedUser.phone,
-    trimesterLabel: matchedUser.trimesterLabel ?? 'Trimester 1',
+    trimesterLabel:
+      matchedUser.role === 'admin'
+        ? matchedUser.trimesterLabel
+        : normalizeNifasLabel(matchedUser.trimesterLabel),
     role: matchedUser.role ?? 'user',
     loggedInAt: new Date().toISOString(),
   };
@@ -165,6 +209,12 @@ export function registerUser(input: {
   if (!name) {
     return { success: false, error: 'Mohon isi nama lengkap Bunda.' };
   }
+  if (!phone || phone.replace(/\D/g, '').length < 9) {
+    return {
+      success: false,
+      error: 'Mohon masukkan nomor WhatsApp aktif Bunda (minimal 9 digit) untuk pengiriman notifikasi pengingat Post-Test hari ke-7.',
+    };
+  }
   if (!email || !email.includes('@')) {
     return { success: false, error: 'Mohon isi alamat email yang valid.' };
   }
@@ -182,19 +232,27 @@ export function registerUser(input: {
       error: 'Email tersebut sudah terdaftar. Silakan langsung masuk (Login).',
     };
   }
+  const cleanPhone = phone.replace(/\D/g, '');
+  if (cleanPhone && users.some((u) => u.phone && u.phone.replace(/\D/g, '') === cleanPhone)) {
+    return {
+      success: false,
+      error: 'Nomor WhatsApp tersebut sudah terdaftar pada akun lain. Silakan langsung masuk (Login).',
+    };
+  }
 
   const newUser: MockUser = {
     id: `user-${Date.now()}`,
     name,
     email,
-    phone: phone || '081200009999',
+    phone,
     password,
-    trimesterLabel: input.trimesterLabel || 'Trimester 1',
+    trimesterLabel: input.trimesterLabel || 'Nifas Hari ke 1-2 Hari',
     role: 'user',
   };
 
   const updatedUsers = [...users, newUser];
   saveAllUsers(updatedUsers);
+  void syncUserToSupabase(newUser);
 
   const session: UserSession = {
     id: newUser.id,
@@ -253,6 +311,7 @@ export function updateUserProfile(
     users.push(updatedUser);
   }
   saveAllUsers(users);
+  void syncUserToSupabase(updatedUser);
 
   if (currentSession && currentSession.id === userId) {
     const newSession: UserSession = {
@@ -277,6 +336,7 @@ export function adminSaveUser(user: MockUser): MockUser[] {
     users.push(user);
   }
   saveAllUsers(users);
+  void syncUserToSupabase(user);
   return [...users];
 }
 
@@ -389,8 +449,21 @@ export function getAnxietySubmission(userId: string): AnxietySubmission | null {
 
 export function saveAnxietyAnswers(
   userId: string,
-  answers: Record<string, 0 | 1 | 2 | 3>
+  answers: Record<string, 0 | 1 | 2 | 3>,
+  phase: 'pretest' | 'posttest' = 'pretest'
 ): AnxietySubmission {
+  const currentProgress = getUserProgress(userId);
+
+  // Pre-Test dan Post-Test masing-masing hanya bisa dikerjakan 1 kali
+  if (phase === 'pretest' && currentProgress.initialPretestAnxiety) {
+    const existing = getAnxietySubmission(userId);
+    if (existing) return existing;
+  }
+  if (phase === 'posttest' && currentProgress.posttestAnxiety) {
+    const existing = getAnxietySubmission(userId);
+    if (existing) return existing;
+  }
+
   const questions = getAnxietyConfig().questions;
   const maxScore = questions.length * 3;
   const totalScore = Object.values(answers).reduce<number>(
@@ -398,12 +471,9 @@ export function saveAnxietyAnswers(
     0
   );
 
-  let level: 'rendah' | 'sedang' | 'tinggi' = 'rendah';
-  if (totalScore >= 13) {
-    level = 'tinggi';
-  } else if (totalScore >= 7) {
-    level = 'sedang';
-  }
+  const passInfo = evaluatePassScore(totalScore, maxScore);
+  const level = passInfo.level;
+  const categoryLabel = passInfo.categoryLabel;
 
   const submission: AnxietySubmission = {
     userId,
@@ -411,6 +481,9 @@ export function saveAnxietyAnswers(
     totalScore,
     maxScore,
     level,
+    categoryLabel,
+    phase,
+    attemptNumber: 1,
     completedAt: new Date().toISOString(),
   };
 
@@ -421,11 +494,65 @@ export function saveAnxietyAnswers(
   allSubmissions[userId] = submission;
   storage.setItem(STORAGE_KEYS.ANXIETY_BY_USER, allSubmissions);
 
+  // Perbarui UserProgress: catat riwayat pengerjaan tes dan hasil awal/akhir (1x pengerjaan)
+  const testHistory = currentProgress.testHistory ? [...currentProgress.testHistory] : [];
+
+  const targetCategory: TestAttemptCategory =
+    phase === 'posttest' ? 'posttest-kecemasan' : 'pretest-kecemasan';
+
+  const newRecord: TestAttemptRecord = {
+    id: `attempt-anxiety-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    category: targetCategory,
+    title:
+      phase === 'posttest'
+        ? `Post-Test Skrining Kecemasan PASS (Hari ke-7)`
+        : `Pre-Test Skrining Kecemasan PASS`,
+    score: totalScore,
+    maxScore,
+    percentage: Math.round((totalScore / maxScore) * 100),
+    level,
+    categoryLabel,
+    attemptNumber: 1,
+    completedAt: submission.completedAt,
+  };
+
+  testHistory.unshift(newRecord);
+
+  const updatedProgress: UserProgress = {
+    ...currentProgress,
+    testHistory,
+    ...(phase === 'pretest' && !currentProgress.initialPretestAnxiety
+      ? {
+          initialPretestAnxiety: {
+            totalScore,
+            maxScore,
+            level,
+            categoryLabel,
+            completedAt: submission.completedAt,
+          },
+        }
+      : {}),
+    ...(phase === 'posttest' && !currentProgress.posttestAnxiety
+      ? {
+          posttestAnxiety: {
+            totalScore,
+            maxScore,
+            level,
+            categoryLabel,
+            completedAt: submission.completedAt,
+          },
+        }
+      : {}),
+  };
+
+  saveUserProgress(updatedProgress);
+  void syncAnxietyToSupabase(submission);
+
   return submission;
 }
 
 // ============================================================================
-// 4. PROGRES BELAJAR 4 LEVEL, ATURAN KUNCI TAHAPAN, DAN SKOR QUIZ
+// 4. PROGRES BELAJAR 3 LEVEL, ATURAN KUNCI TAHAPAN, DAN SKOR QUIZ
 // ============================================================================
 
 export function getUserProgress(userId: string): UserProgress {
@@ -437,12 +564,15 @@ export function getUserProgress(userId: string): UserProgress {
   if (!saved) {
     return createDefaultProgress(userId);
   }
-  // Normalisasi jika ada activeStageId lama ('tahap-4') menjadi 'tahap-3'
   const validStage = STAGE_ORDER.includes(saved.activeStageId)
     ? saved.activeStageId
     : 'materi';
+  const cleanedCompletedStages = (saved.completedStageIds || []).filter((id) =>
+    STAGE_ORDER.includes(id)
+  );
   return {
     ...saved,
+    completedStageIds: cleanedCompletedStages,
     activeStageId: validStage,
   };
 }
@@ -458,6 +588,7 @@ function saveUserProgress(progress: UserProgress): UserProgress {
   };
   allProgress[progress.userId] = updated;
   storage.setItem(STORAGE_KEYS.PROGRESS_BY_USER, allProgress);
+  void syncProgressToSupabase(updated);
   return updated;
 }
 
@@ -507,9 +638,8 @@ export function getStageStatuses(
 ): Record<StageId, CompletionStatus> {
   const statuses: Record<StageId, CompletionStatus> = {
     materi: 'terbuka',
-    quiz: 'terkunci',
     'tahap-3': 'terkunci',
-    'hasil-saya': 'terkunci',
+    'bunga-delima': 'terkunci',
   };
 
   if (!progress) {
@@ -517,7 +647,9 @@ export function getStageStatuses(
   }
 
   STAGE_ORDER.forEach((stageId, index) => {
-    const isCompleted = progress.completedStageIds.includes(stageId);
+    const isCompleted =
+      progress.completedStageIds.includes(stageId) ||
+      (stageId === 'bunga-delima' && (progress.pomegranateGarden?.points ?? 0) >= 25);
     if (isCompleted) {
       statuses[stageId] = 'selesai';
     } else if (index === 0) {
@@ -572,15 +704,25 @@ export function completeModule(userId: string, moduleId: string): UserProgress {
 }
 
 /**
- * Menyimpan skor quiz (Level 2).
- * Setelah skor tersimpan, Level 2 ('quiz') otomatis selesai dan Level 3 ('tahap-3') terbuka.
+ * Menyimpan skor pemahaman 20 soal (Pre-Test Awal atau Post-Test Hari ke-7).
+ * Baik Pre-Test maupun Post-Test hanya dapat dikerjakan 1 kali per akun.
  */
 export function saveQuizScore(
   userId: string,
   correctCount: number,
-  totalQuestions: number
+  totalQuestions: number,
+  isPretest: boolean = false
 ): UserProgress {
   const current = getUserProgress(userId);
+
+  // Hanya bisa dikerjakan 1 kali untuk Pre-Test dan 1 kali untuk Post-Test
+  if (isPretest && current.initialPretestQuiz) {
+    return current;
+  }
+  if (!isPretest && current.posttestQuiz) {
+    return current;
+  }
+
   const percentage = Math.round((correctCount / totalQuestions) * 100);
 
   const bestQuizScore =
@@ -593,20 +735,54 @@ export function saveQuizScore(
       ? correctCount
       : Math.max(current.bestQuizCorrectCount, correctCount);
 
-  const updatedStages: StageId[] = [...current.completedStageIds];
-  if (!updatedStages.includes('materi')) {
-    updatedStages.push('materi');
-  }
-  if (!updatedStages.includes('quiz')) {
-    updatedStages.push('quiz');
-  }
+  const testHistory = current.testHistory ? [...current.testHistory] : [];
+  const targetCategory: TestAttemptCategory = isPretest
+    ? 'pretest-materi'
+    : 'kuis-materi';
+
+  const newRecord: TestAttemptRecord = {
+    id: `attempt-quiz-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    category: targetCategory,
+    title: isPretest
+      ? 'Pre-Test Pemahaman Materi (20 Pertanyaan)'
+      : 'Post-Test Pemahaman Materi (Hari ke-7 • 20 Pertanyaan)',
+    score: correctCount,
+    maxScore: totalQuestions,
+    percentage,
+    attemptNumber: 1,
+    completedAt: new Date().toISOString(),
+  };
+
+  testHistory.unshift(newRecord);
+
+  const initialPretestQuiz =
+    isPretest && !current.initialPretestQuiz
+      ? {
+          score: correctCount,
+          maxScore: totalQuestions,
+          percentage,
+          completedAt: newRecord.completedAt,
+        }
+      : current.initialPretestQuiz;
+
+  const posttestQuiz =
+    !isPretest && !current.posttestQuiz
+      ? {
+          score: correctCount,
+          maxScore: totalQuestions,
+          percentage,
+          completedAt: newRecord.completedAt,
+        }
+      : current.posttestQuiz;
 
   return saveUserProgress({
     ...current,
-    bestQuizScore,
-    bestQuizCorrectCount,
-    quizAttempts: current.quizAttempts + 1,
-    completedStageIds: updatedStages,
+    bestQuizScore: isPretest ? current.bestQuizScore : bestQuizScore,
+    bestQuizCorrectCount: isPretest ? current.bestQuizCorrectCount : bestQuizCorrectCount,
+    quizAttempts: isPretest ? current.quizAttempts : current.quizAttempts + 1,
+    initialPretestQuiz,
+    posttestQuiz,
+    testHistory,
   });
 }
 
@@ -620,6 +796,7 @@ export function completeStage(
     reflectionNote?: string;
     reflectionSelectedItems?: string[];
     evaluationCheckedItems?: string[];
+    reflectionStartTimeChoice?: string;
     advanceToNext?: boolean;
   }
 ): UserProgress {
@@ -636,8 +813,8 @@ export function completeStage(
       ? STAGE_ORDER[currentIdx + 1]
       : current.activeStageId;
 
-  if (nextStageId === 'hasil-saya' && !updatedStages.includes('hasil-saya')) {
-    updatedStages.push('hasil-saya');
+  if (nextStageId === 'bunga-delima' && !updatedStages.includes('bunga-delima')) {
+    updatedStages.push('bunga-delima');
   }
 
   return saveUserProgress({
@@ -649,5 +826,126 @@ export function completeStage(
       extraData?.reflectionSelectedItems ?? current.reflectionSelectedItems,
     evaluationCheckedItems:
       extraData?.evaluationCheckedItems ?? current.evaluationCheckedItems,
+    reflectionStartTimeChoice:
+      extraData?.reflectionStartTimeChoice ?? current.reflectionStartTimeChoice,
+  });
+}
+
+// ============================================================================
+// 5. KALENDER EMOT HARIAN & KEBUN BUAH DELIMA (GAMIFIKASI 2 HARI & HARI KE-7)
+// ============================================================================
+
+export function getUserDayInfo(userId: string): {
+  dayNumber: number;
+  firstLoginAt: string;
+  simulatedOffset: number;
+  unlocked: {
+    video: boolean;
+    audio: boolean;
+    game: boolean;
+    posttestAnxiety: boolean;
+  };
+} {
+  const progress = getUserProgress(userId);
+  const firstLoginAt = progress.firstLoginAt || new Date().toISOString();
+  const startTime = new Date(firstLoginAt).getTime();
+  const now = Date.now();
+  const realDiffDays = Math.max(0, Math.floor((now - startTime) / (1000 * 60 * 60 * 24)));
+  const simulatedOffset = progress.simulatedDayOffset || 0;
+  const dayNumber = Math.max(1, 1 + realDiffDays + simulatedOffset);
+
+  return {
+    dayNumber,
+    firstLoginAt,
+    simulatedOffset,
+    unlocked: {
+      video: dayNumber >= 1,
+      audio: dayNumber >= 3,
+      game: dayNumber >= 5,
+      posttestAnxiety: dayNumber >= 7,
+    },
+  };
+}
+
+export function setSimulatedDay(userId: string, targetDay: 1 | 3 | 5 | 7): UserProgress {
+  const current = getUserProgress(userId);
+  const firstLoginAt = current.firstLoginAt || new Date().toISOString();
+  const startTime = new Date(firstLoginAt).getTime();
+  const now = Date.now();
+  const realDiffDays = Math.max(0, Math.floor((now - startTime) / (1000 * 60 * 60 * 24)));
+  const offset = (targetDay - 1) - realDiffDays;
+
+  return saveUserProgress({
+    ...current,
+    simulatedDayOffset: offset,
+  });
+}
+
+export function completeGardenActivity(
+  userId: string,
+  activityId: 'video' | 'audio' | 'game',
+  pointsEarned: number,
+  title: string
+): UserProgress {
+  const current = getUserProgress(userId);
+  const garden = current.pomegranateGarden || {
+    points: 0,
+    completedActivities: {},
+    activityLogs: [],
+    lastUpdatedAt: new Date().toISOString(),
+  };
+
+  if (garden.completedActivities[activityId]) {
+    return current;
+  }
+
+  const dayInfo = getUserDayInfo(userId);
+  const newPoints = Math.min(100, (garden.points || 0) + pointsEarned);
+
+  const updatedGarden: PomegranateGardenState = {
+    points: newPoints,
+    completedActivities: {
+      ...garden.completedActivities,
+      [activityId]: true,
+    },
+    activityLogs: [
+      {
+        activityId,
+        title,
+        pointsEarned,
+        completedAt: new Date().toISOString(),
+        dayNumber: dayInfo.dayNumber,
+      },
+      ...(garden.activityLogs || []),
+    ],
+    lastUpdatedAt: new Date().toISOString(),
+  };
+
+  return saveUserProgress({
+    ...current,
+    pomegranateGarden: updatedGarden,
+  });
+}
+
+export function saveDailyMood(
+  userId: string,
+  entry: {
+    dateKey: string;
+    mood: DailyMoodType;
+    emoji: string;
+    label: string;
+    note?: string;
+  }
+): UserProgress {
+  const current = getUserProgress(userId);
+  const dailyMoods = { ...(current.dailyMoods || {}) };
+  dailyMoods[entry.dateKey] = {
+    ...entry,
+    updatedAt: new Date().toISOString(),
+  };
+
+  return saveUserProgress({
+    ...current,
+    dailyMoods,
   });
 }

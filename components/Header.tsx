@@ -7,7 +7,6 @@ import {
   Camera,
   ChevronDown,
   Globe,
-  Heart,
   LogIn,
   LogOut,
   Maximize2,
@@ -90,19 +89,10 @@ export function Header({
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full shrink-0 border-b border-[#F5DCE4] bg-white/95 backdrop-blur-md px-5 py-3.5 sm:px-8 shadow-[0_4px_20px_rgba(200,75,113,0.05)]">
-        <div className="flex items-center justify-between gap-4">
-          {/* Sisi Kiri Mobile: Menu Drawer Button + Logo */}
-          <div className="flex items-center gap-2.5 lg:hidden">
-            <button
-              type="button"
-              onClick={() => setMobileDrawerOpen(true)}
-              aria-label="Buka menu navigasi"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#F5DCE4] bg-[#FFF5F8] text-[#2A2D22] transition-all active:scale-95 cursor-pointer"
-            >
-              <Menu className="h-5 w-5" strokeWidth={1.8} />
-            </button>
-
+      <header className="sticky top-0 z-40 w-full shrink-0 border-b border-[#F5DCE4] bg-white/95 backdrop-blur-md px-4 py-3 sm:px-8 shadow-[0_4px_20px_rgba(200,75,113,0.05)]">
+        <div className="flex items-center justify-between gap-2.5 sm:gap-4">
+          {/* Sisi Kiri Mobile: Logo & Brand Buna Ceria (Poin 7: Hamburger dipindah ke kanan) */}
+          <div className="flex items-center gap-2 lg:hidden shrink-0">
             <button
               type="button"
               onClick={() => onSelectSection?.('beranda')}
@@ -111,11 +101,11 @@ export function Header({
               <Image
                 src="/logo.png"
                 alt="Buna Ceria"
-                width={28}
-                height={28}
-                className="h-6 w-6 object-contain"
+                width={30}
+                height={30}
+                className="h-7 w-7 object-contain"
               />
-              <span className="font-heading text-base font-bold text-[#2A2D22]">
+              <span className="font-heading text-base font-bold text-[#2A2D22] whitespace-nowrap">
                 Buna Ceria
               </span>
             </button>
@@ -179,32 +169,15 @@ export function Header({
               )}
             </button>
 
-            {/* Tombol Sapa Perasaan / Kuesioner Kecemasan (Heart) */}
-            <button
-              type="button"
-              onClick={() => {
-                if (!session) {
-                  openLoginDialog();
-                } else {
-                  openAnxietyDialog();
-                }
-              }}
-              title="Kuesioner Kecemasan & Perasaan Ibu"
-              aria-label="Kuesioner Kecemasan & Perasaan Ibu"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-pink-100 bg-[#FDF2F5] text-[#C84B71] hover:bg-[#FCE8EE] transition-colors cursor-pointer"
-            >
-              <Heart className="h-4 w-4 fill-[#C84B71]" strokeWidth={1.5} />
-            </button>
-
             {/* User Profile Dropdown atau Tombol Masuk */}
             {!session ? (
               <button
                 type="button"
                 onClick={openLoginDialog}
-                className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full bg-[#C84B71] px-5 text-xs font-bold text-white shadow-2xs hover:bg-[#b23b60] transition-colors cursor-pointer"
+                className="inline-flex min-h-[36px] sm:min-h-[38px] items-center gap-1.5 rounded-full bg-[#C84B71] px-3.5 sm:px-5 text-xs font-bold text-white shadow-2xs hover:bg-[#b23b60] transition-colors cursor-pointer whitespace-nowrap"
               >
-                <LogIn className="h-3.5 w-3.5" />
-                <span>Masuk / Daftar</span>
+                <LogIn className="h-3.5 w-3.5 shrink-0" />
+                <span>Masuk</span>
               </button>
             ) : (
               <div className="relative" ref={menuRef}>
@@ -343,15 +316,25 @@ export function Header({
                 </AnimatePresence>
               </div>
             )}
+
+            {/* Tombol Hamburger di Sisi Paling Kanan Header pada Mobile (Poin 7) */}
+            <button
+              type="button"
+              onClick={() => setMobileDrawerOpen(true)}
+              aria-label="Buka menu navigasi"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#F5DCE4] bg-[#FFF5F8] text-[#2A2D22] transition-all active:scale-95 cursor-pointer lg:hidden"
+            >
+              <Menu className="h-5 w-5" strokeWidth={1.8} />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Navigation Drawer: Muncul dari Sisi Kanan Layar (Poin 7) */}
       <AnimatePresence>
         {mobileDrawerOpen && (
           <div
-            className="fixed inset-0 z-50 lg:hidden"
+            className="fixed inset-0 z-[55] flex justify-end lg:hidden"
             role="dialog"
             aria-modal="true"
           >
@@ -361,18 +344,18 @@ export function Header({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25, ease: CUSTOM_EASE }}
               onClick={() => setMobileDrawerOpen(false)}
-              className="fixed inset-0 bg-black/40"
+              className="fixed inset-0 bg-black/45 backdrop-blur-[1px]"
               aria-hidden="true"
             />
 
             <motion.aside
               initial={
-                prefersReducedMotion ? { opacity: 0 } : { x: '-100%' }
+                prefersReducedMotion ? { opacity: 0 } : { x: '100%' }
               }
               animate={{ opacity: 1, x: 0 }}
-              exit={prefersReducedMotion ? { opacity: 0 } : { x: '-100%' }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { x: '100%' }}
               transition={{ duration: 0.3, ease: CUSTOM_EASE }}
-              className="relative z-10 h-full w-72 max-w-[85vw] overflow-y-auto bg-white shadow-xl"
+              className="relative z-10 ml-auto h-full w-72 max-w-[85vw] overflow-y-auto bg-white shadow-2xl"
             >
               <SidebarNav
                 activeSection={activeSection}

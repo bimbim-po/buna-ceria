@@ -3,20 +3,20 @@
 import React from 'react';
 import Image from 'next/image';
 import {
+  Award,
   BookOpen,
   Camera,
   ChevronLeft,
   ChevronRight,
+  ClipboardCheck,
   Globe,
-  Heart,
-  HeartHandshake,
   Home,
   LogIn,
   Power,
   RefreshCw,
   Settings,
   ShieldCheck,
-  Sun,
+  Sparkles,
   X,
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
@@ -49,8 +49,8 @@ export function SidebarNav({
   const menuItems = [
     { id: 'beranda', label: 'Beranda', icon: Home },
     { id: 'materi', label: 'Tahapan & Materi', icon: BookOpen },
-    { id: 'tips', label: 'Tips Kehamilan', icon: Sun },
-    { id: 'kontak-ahli', label: 'Kontak Ahli', icon: HeartHandshake },
+    { id: 'tips', label: 'Kebun Buah Delima', icon: Sparkles },
+    { id: 'hasil', label: 'Hasil Saya', icon: Award },
     { id: 'selfie', label: 'Take Selfie', icon: Camera, badge: 'Foto' },
     { id: 'pengaturan', label: 'Pengaturan', icon: Settings },
     ...(session?.role === 'admin'
@@ -68,8 +68,12 @@ export function SidebarNav({
   return (
     <aside
       aria-label="Navigasi WebApp Buna Ceria"
-      className={`flex h-full flex-col justify-between rounded-[24px] bg-white border border-[#F5DCE4] shadow-[0_6px_26px_rgba(200,75,113,0.06)] text-[#2A2D22] select-none transition-all duration-300 ${
-        isCollapsed ? 'p-2.5 items-center' : 'p-3.5'
+      className={`flex min-h-full flex-col justify-between bg-white text-[#2A2D22] select-none transition-all duration-300 ${
+        isMobileDrawer
+          ? 'p-4 pb-24 rounded-none border-l border-[#F5DCE4]'
+          : `h-full rounded-[24px] border border-[#F5DCE4] shadow-[0_6px_26px_rgba(200,75,113,0.06)] ${
+              isCollapsed ? 'p-2.5 items-center' : 'p-3.5'
+            }`
       }`}
     >
       <div className="w-full">
@@ -239,9 +243,9 @@ export function SidebarNav({
             }}
             title="Kuesioner Kecemasan"
             aria-label="Kuesioner Kecemasan"
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-pink-600 hover:bg-[#FDF2F5] transition-colors cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-[#C84B71] hover:bg-[#FDF2F5] transition-colors cursor-pointer"
           >
-            <Heart className="h-4 w-4" />
+            <ClipboardCheck className="h-4 w-4" />
           </button>
         ) : (
           <button
@@ -253,7 +257,7 @@ export function SidebarNav({
             }}
             className="flex w-full items-center gap-3 rounded-xl px-3 py-1.5 text-left text-xs font-semibold text-[#6E6A6C] hover:bg-[#FDF2F5] hover:text-[#C84B71] transition-colors cursor-pointer"
           >
-            <Heart className="h-4 w-4 text-pink-500 shrink-0" />
+            <ClipboardCheck className="h-4 w-4 text-[#C84B71] shrink-0" />
             <span className="truncate">Kuesioner Kecemasan</span>
           </button>
         )}

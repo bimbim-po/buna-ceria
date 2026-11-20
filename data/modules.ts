@@ -1,20 +1,48 @@
 import { ModuleItem } from '@/types';
 
-// 4 Materi edukasi kehamilan bertahap
-// Struktur konten menggunakan blok bertipe agar siap menerima teks, gambar, maupun video
+// 4 Materi Pembelajaran Masa Nifas & Kecukupan ASI (Level 1)
 export const mockModules: ModuleItem[] = [
   {
     id: 'materi-1',
     order: 1,
-    title: 'Mengenali Perubahan & Menjaga Ketenangan Diri',
+    title: 'Mengenali Perubahan Perasaan di Masa Nifas',
     summary:
-      'Memahami perubahan perasaan serta rutinitas sederhana agar hati tetap tenang.',
-    readingTimeMinutes: 4,
-    category: 'Tahap Awal',
+      'Memahami masa nifas, perubahan emosional setelah melahirkan, dan mengenali berbagai perasaan yang dapat muncul selama masa nifas.',
+    readingTimeMinutes: 5,
+    category: 'Adaptasi Masa Nifas',
     content: [
       {
+        type: 'subheading',
+        text: 'Selamat Datang di Masa Baru, Bunda!',
+      },
+      {
         type: 'paragraph',
-        text: 'Selamat datang di ruang belajar Buna Ceria. Setiap perjalanan kehamilan memiliki cerita yang unik, sehingga wajar apabila Ibu merasakan beragam emosi sekaligus di masa awal ini.',
+        text: 'Menjadi seorang ibu merupakan pengalaman yang penuh kebahagiaan sekaligus tantangan. Setelah melahirkan, Ibu tidak hanya mengalami perubahan fisik, tetapi juga perubahan perasaan dan rutinitas sehari-hari.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Ibu mungkin merasa bahagia ketika melihat si kecil, tetapi pada waktu yang sama juga merasa lelah, khawatir, mudah menangis, atau lebih sensitif dari biasanya.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Perubahan tersebut dapat berkaitan dengan proses pemulihan setelah persalinan, perubahan hormon, kurang tidur, serta penyesuaian terhadap peran baru sebagai seorang ibu.',
+      },
+      {
+        type: 'subheading',
+        text: 'Mengenal Masa Nifas?',
+      },
+      {
+        type: 'paragraph',
+        text: 'Tahukah Bunda? Setelah melahirkan, tubuh membutuhkan waktu untuk kembali pulih. Periode ini dikenal sebagai masa nifas, yaitu masa setelah bayi dan plasenta dilahirkan hingga sekitar 42 hari. Pada masa ini, tubuh Bunda mengalami proses pemulihan dan penyesuaian, termasuk perubahan pada organ reproduksi serta proses menyusui.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Pada masa ini, Ibu juga mulai beradaptasi dengan berbagai perubahan, seperti pola tidur yang berubah, kebutuhan bayi yang harus dipenuhi, serta tanggung jawab baru dalam merawat si kecil.',
+      },
+      {
+        type: 'callout',
+        title: 'Ingat, Bunda!',
+        text: 'Masa nifas bukan hanya tentang pemulihan tubuh, tetapi juga tentang memberikan waktu bagi Ibu untuk beradaptasi secara emosional dengan kehidupan setelah melahirkan.',
       },
       {
         type: 'subheading',
@@ -22,132 +50,318 @@ export const mockModules: ModuleItem[] = [
       },
       {
         type: 'paragraph',
-        text: 'Memberikan jeda sejenak dalam keseharian dapat membantu Ibu merasa lebih nyaman. Fokus utama dari materi ini adalah mengajak Ibu mendengarkan kebutuhan diri sendiri tanpa terburu-buru.',
+        text: 'Mengenali perasaan membantu Ibu memahami apa yang sedang dialami dan apa yang dibutuhkan saat ini.',
       },
       {
-        type: 'list',
-        title: 'Langkah Sederhana Hari Ini:',
-        items: [
-          'Meluangkan waktu 5 menit di pagi hari untuk bernapas perlahan dan nyaman.',
-          'Mencatat hal-hal kecil yang membuat Ibu merasa bersyukur atau tenang.',
-          'Berbicara terbuka dengan pasangan atau keluarga mengenai dukungan yang dibutuhkan.',
-        ],
+        type: 'paragraph',
+        text: 'Ketika Ibu merasa sedang lelah, khawatir, atau membutuhkan dukungan, Ibu dapat mengambil langkah yang lebih tepat untuk merawat diri.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Tidak semua perasaan tidak nyaman berarti Ibu mengalami gangguan mental. Namun, perasaan sedih atau cemas yang berlangsung terus-menerus, semakin berat, atau mengganggu aktivitas sehari-hari perlu mendapatkan perhatian.',
       },
       {
         type: 'callout',
-        title: 'Catatan Hangat untuk Ibu',
-        text: 'Tidak apa-apa jika hari ini Ibu ingin beristirahat lebih banyak. Memahami ritme tubuh adalah langkah awal yang berharga.',
+        title: 'Pesan untuk Bunda 💗',
+        text: 'Menjadi ibu adalah perjalanan baru yang membutuhkan waktu untuk dipelajari. Bunda tidak harus selalu merasa bahagia atau mampu melakukan semuanya sendiri. Beri kesempatan kepada diri sendiri untuk beradaptasi, beristirahat, dan mendapatkan dukungan.',
       },
     ],
   },
   {
     id: 'materi-2',
     order: 2,
-    title: 'Kenyamanan Harian & Istirahat Berkualitas',
+    title: 'Mengenali Kecemasan dan Menjaga Ketenangan Diri',
     summary:
-      'Menata waktu istirahat, suasana kamar yang teduh, dan menjaga kesegaran tubuh.',
-    readingTimeMinutes: 5,
-    category: 'Keseharian',
+      'Mengenali kecemasan, memahami pemicunya, dan mengetahui kapan kekhawatiran perlu mendapatkan perhatian lebih.',
+    readingTimeMinutes: 6,
+    category: 'Ketenangan Emosi',
     content: [
       {
+        type: 'subheading',
+        text: 'Apa itu Kecemasan?',
+      },
+      {
         type: 'paragraph',
-        text: 'Istirahat yang cukup membantu tubuh dan pikiran Ibu tetap segar. Bagian ini membahas langkah praktis yang mudah diterapkan di rumah setiap hari.',
+        text: 'Kecemasan merupakan perasaan khawatir, takut, atau gelisah terhadap sesuatu yang belum pasti atau dianggap mengancam.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Setelah melahirkan, Bunda mungkin merasa khawatir terhadap kondisi bayi, kemampuan merawat bayi, proses menyusui, maupun perubahan kehidupan setelah menjadi seorang ibu. Apabila kecemasan berlangsung terus-menerus, sulit dikendalikan, atau mulai mengganggu aktivitas sehari-hari, kondisi tersebut perlu mendapatkan perhatian.',
       },
       {
         type: 'subheading',
-        text: 'Menciptakan Ruang Istirahat yang Nyaman',
+        text: 'Yuk, Kenali Tanda-Tanda Kecemasan!',
       },
       {
         type: 'paragraph',
-        text: 'Suasana lingkungan sekitar yang rapi, sejuk, dan tenang sering kali membantu pikiran menjadi lebih rileks menjelang waktu tidur malam maupun istirahat siang.',
+        text: 'Kecemasan tidak selalu muncul dalam bentuk rasa takut. Terkadang, Bunda mungkin merasakannya melalui perubahan pikiran, perasaan, tubuh, maupun perilaku.',
       },
       {
         type: 'list',
-        title: 'Kebiasaan Kecil Menjelang Istirahat:',
+        title: '4 Dimensi Tanda Kecemasan:',
         items: [
-          'Mengurangi paparan layar gawai sekitar 30 menit sebelum beristirahat.',
-          'Menyiapkan bantal tambahan untuk menopang posisi duduk atau berbaring yang nyaman.',
-          'Memutar suara alam yang lembut atau membaca bacaan ringan yang menenangkan.',
+          'Perasaan: Bunda mungkin merasa mudah khawatir, takut, gelisah, mudah tersinggung, atau merasa tidak tenang.',
+          'Pikiran: Terus memikirkan sesuatu yang buruk, sulit berkonsentrasi, atau merasa takut tidak mampu merawat bayi.',
+          'Fisik: Kecemasan dapat disertai jantung berdebar, berkeringat, pusing, otot terasa tegang, atau sulit tidur.',
+          'Perilaku: Gelisah, berulang kali memeriksa kondisi bayi, atau menghindari hal-hal yang membuat khawatir.',
         ],
       },
       {
         type: 'callout',
-        title: 'Pengingat Lembut',
-        text: 'Dengarkan sinyal tubuh Ibu. Beristirahat sejenak di siang hari sangat baik untuk memulihkan tenaga.',
+        title: 'Tahukah Bunda? 🌷',
+        text: 'Kecemasan tidak hanya berkaitan dengan pikiran dan perasaan, tetapi juga dapat dirasakan melalui tubuh. Ketika merasa cemas, tubuh dapat menjadi lebih tegang, jantung berdebar, atau napas terasa lebih cepat. Hal ini merupakan respons tubuh terhadap situasi yang dianggap mengancam. Karena itu, mengenali perubahan yang terjadi pada tubuh dapat membantu Bunda lebih memahami kondisi diri ketika sedang merasa cemas.',
+      },
+      {
+        type: 'subheading',
+        text: 'Mengenal Tingkat Kecemasan',
+      },
+      {
+        type: 'paragraph',
+        text: 'Kecemasan dapat dibedakan menjadi empat tingkat berdasarkan beratnya gejala.',
+      },
+      {
+        type: 'list',
+        title: 'Empat Tingkat Kecemasan:',
+        items: [
+          'Kecemasan ringan: Bunda merasa sedikit khawatir, tetapi masih dapat melakukan aktivitas sehari-hari.',
+          'Kecemasan sedang: Rasa khawatir mulai mengganggu konsentrasi dan membuat Bunda sulit merasa tenang.',
+          'Kecemasan berat: Bunda mengalami rasa takut atau khawatir yang kuat sehingga aktivitas sehari-hari dapat terganggu.',
+          'Panik: Bunda dapat merasa sangat takut, sulit mengendalikan diri, dan kesulitan berpikir dengan jernih.',
+        ],
+      },
+      {
+        type: 'subheading',
+        text: 'Mengapa Kecemasan Perlu Dikenali?',
+      },
+      {
+        type: 'paragraph',
+        text: 'Kecemasan yang berlangsung terus-menerus dapat memengaruhi kenyamanan Bunda selama masa nifas. Bunda mungkin menjadi lebih sulit beristirahat, merasa kurang percaya diri dalam merawat bayi, atau mengalami kesulitan menikmati proses menyusui.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Kecemasan juga dapat memengaruhi refleks pengeluaran ASI pada sebagian ibu. Namun, kecemasan tidak selalu menyebabkan produksi ASI berkurang. Mengenali kecemasan sejak awal membantu Bunda memahami kebutuhan diri dan mengetahui kapan perlu mendapatkan dukungan.',
+      },
+      {
+        type: 'subheading',
+        text: 'Yuk, Kenali Apa yang Membuat Bunda Khawatir!',
+      },
+      {
+        type: 'list',
+        title: 'Pertanyaan Reflektif untuk Bunda:',
+        items: [
+          'Apakah Bunda sering merasa khawatir ketika bayi menangis?',
+          'Apakah Bunda merasa takut ASI tidak cukup?',
+          'Apakah Bunda merasa khawatir ketika harus merawat bayi sendiri?',
+          'Apakah Bunda sulit beristirahat karena terus memikirkan kondisi bayi?',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'Jika pernah merasakan hal tersebut, cobalah mengenali apa yang sebenarnya membuat Bunda khawatir. Memahami pemicu kecemasan dapat membantu Bunda menentukan informasi yang dibutuhkan, meminta bantuan suami, atau konsultasi dengan tenaga kesehatan.',
+      },
+      {
+        type: 'callout',
+        title: 'Pesan untuk Bunda 💗',
+        text: 'Merasa cemas setelah melahirkan bukan berarti Bunda lemah atau tidak mampu menjadi ibu yang baik. Bunda tidak harus menghadapi semuanya sendirian. Jangan ragu untuk bercerita dan meminta bantuan ketika membutuhkannya.',
       },
     ],
   },
   {
     id: 'materi-3',
     order: 3,
-    title: 'Komunikasi Hangat Bersama Pasangan',
+    title: 'Gangguan Psikologis Masa Nifas',
     summary:
-      'Cara berbagi cerita dan menyampaikan kebutuhan dengan jujur kepada keluarga.',
-    readingTimeMinutes: 4,
-    category: 'Dukungan Sosial',
+      'Mengenali perbedaan baby blues, depresi postpartum, dan psikosis postpartum serta memahami kapan Ibu perlu mendapatkan pertolongan.',
+    readingTimeMinutes: 6,
+    category: 'Kesehatan Psikologis',
     content: [
       {
         type: 'paragraph',
-        text: 'Perjalanan kehamilan terasa lebih ringan ketika dijalani bersama orang-orang terdekat yang saling memahami dan mendengarkan.',
-      },
-      {
-        type: 'subheading',
-        text: 'Menyampaikan Kebutuhan dengan Bahasa yang Lembut',
+        text: 'Setelah melahirkan, perubahan suasana hati dapat terjadi sebagai bagian dari penyesuaian. Namun, beberapa kondisi dapat membutuhkan perhatian dan penanganan lebih lanjut.',
       },
       {
         type: 'paragraph',
-        text: 'Terkadang orang di sekitar kita ingin membantu, namun belum tahu bentuk bantuan apa yang paling Ibu perlukan. Mengungkapkannya secara sederhana dapat mempererat hubungan.',
+        text: 'Yuk, Bunda, kenali tiga kondisi berikut agar lebih memahami perubahan perasaan setelah melahirkan.',
+      },
+      {
+        type: 'subheading',
+        text: '1. Baby Blues',
+      },
+      {
+        type: 'image',
+        src: '/materi-baby-blues.webp',
+        alt: 'Ilustrasi kondisi Baby Blues pada ibu masa nifas yang didampingi suami',
+        caption:
+          'Ilustrasi Baby Blues: Perubahan suasana hati di hari-hari pertama nifas yang membaik dengan dukungan hangat keluarga & istirahat.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Baby blues merupakan perubahan suasana hati yang umum terjadi setelah melahirkan.',
       },
       {
         type: 'list',
-        title: 'Contoh Kalimat Komunikasi Positif:',
+        title: 'Bunda mungkin mengalami:',
         items: [
-          '"Hari ini aku merasa sedikit lelah, bolehkah kita berbagi tugas rumah sore ini?"',
-          '"Terima kasih sudah mendengarkan ceritaku hari ini tanpa terburu-buru memberi saran."',
-          '"Yuk, kita jadwalkan waktu santai berdua akhir pekan ini untuk mengobrol ringan."',
+          'Mudah menangis.',
+          'Merasa sedih atau sensitif.',
+          'Mudah tersinggung.',
+          'Perubahan suasana hati.',
+          'Merasa cemas atau kewalahan.',
         ],
       },
       {
+        type: 'paragraph',
+        text: 'Baby blues biasanya muncul pada hari-hari pertama setelah melahirkan dan membaik dengan sendirinya dalam waktu sekitar 1–2 minggu. Pada masa ini, dukungan keluarga, istirahat, dan bantuan dalam merawat bayi dapat membantu Bunda melewati proses adaptasi.',
+      },
+      {
+        type: 'subheading',
+        text: '2. Depresi Postpartum (DPP)',
+      },
+      {
+        type: 'image',
+        src: '/materi-dpp.webp',
+        alt: 'Ilustrasi kondisi Depresi Postpartum dan pendampingan tenaga kesehatan',
+        caption:
+          'Ilustrasi Depresi Postpartum (DPP): Kesedihan berkepanjangan yang memerlukan pendampingan bidan atau konselor kesehatan.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Depresi postpartum merupakan kondisi ketika Bunda mengalami kesedihan berkepanjangan, kehilangan minat, merasa putus asa, atau merasa tidak berharga. Kondisi ini dapat mengganggu aktivitas sehari-hari dan kemampuan merawat bayi.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Depresi postpartum tidak sama dengan baby blues. Kondisi ini dapat berlangsung lebih lama, terasa lebih berat, dan mengganggu kehidupan sehari-hari.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Depresi postpartum bukan kesalahan Bunda dan bukan tanda bahwa Bunda gagal menjadi ibu. Kondisi ini dapat ditangani dengan bantuan tenaga kesehatan.',
+      },
+      {
+        type: 'subheading',
+        text: '3. Psikosis Postpartum',
+      },
+      {
+        type: 'image',
+        src: '/materi-psikosis.webp',
+        alt: 'Ilustrasi penanganan medis darurat pada kondisi Psikosis Postpartum',
+        caption:
+          'Ilustrasi Psikosis Postpartum: Kondisi serius yang jarang terjadi namun membutuhkan pertolongan medis darurat segera.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Psikosis postpartum merupakan kondisi yang jarang terjadi, tetapi sangat serius.',
+      },
+      {
+        type: 'list',
+        title: 'Gejalanya dapat muncul secara tiba-tiba, seperti:',
+        items: [
+          'Kebingungan berat.',
+          'Perubahan perilaku yang sangat drastis.',
+          'Mendengar atau melihat sesuatu yang sebenarnya tidak ada.',
+          'Memiliki keyakinan yang tidak sesuai dengan kenyataan.',
+          'Sulit membedakan kenyataan dan sesuatu yang tidak nyata.',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'Kondisi ini membutuhkan pertolongan medis darurat.',
+      },
+      {
         type: 'callout',
-        title: 'Dukungan Bersama',
-        text: 'Meminta bantuan bukanlah tanda kelemahan, melainkan bentuk kasih sayang kepada diri sendiri dan keluarga.',
+        title: 'Penting untuk Bunda!',
+        text: 'Jika perasaan sedih atau cemas berlangsung lebih dari dua minggu, semakin berat, atau mengganggu aktivitas sehari-hari, segera konsultasikan kepada bidan atau tenaga kesehatan. Jika muncul pikiran untuk menyakiti diri sendiri atau bayi, atau gejala psikosis, segera cari pertolongan medis darurat.',
       },
     ],
   },
   {
     id: 'materi-4',
     order: 4,
-    title: 'Menyiapkan Hati Menyambut Buah Hati',
+    title: 'Mengenal ASI dan Proses Produksinya',
     summary:
-      'Perencanaan bertahap dan menumbuhkan rasa percaya diri menjelang persalinan.',
+      'Memahami manfaat ASI, proses produksi dan pengeluaran ASI, serta tanda bayi cukup ASI.',
     readingTimeMinutes: 6,
-    category: 'Persiapan Diri',
+    category: 'Edukasi Laktasi & ASI',
     content: [
       {
+        type: 'subheading',
+        text: 'Mengenal Kecukupan ASI',
+      },
+      {
         type: 'paragraph',
-        text: 'Selamat, Ibu telah mencapai materi keempat dalam rangkaian pembelajaran Buna Ceria. Bagian ini merangkum langkah-langkah reflektif untuk menumbuhkan rasa percaya diri.',
+        text: 'ASI merupakan sumber nutrisi utama bagi bayi yang mengandung zat gizi dan antibodi untuk mendukung pertumbuhan dan melindungi bayi dari penyakit, terutama selama enam bulan pertama kehidupan.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Kecukupan ASI adalah kondisi ketika bayi mendapatkan ASI sesuai kebutuhannya untuk memenuhi kebutuhan nutrisi dan cairan tubuh.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Perlu Bunda ketahui, ASI yang terlihat sedikit belum tentu berarti kebutuhan bayi tidak terpenuhi. Kecukupan ASI dapat dilihat dari kondisi bayi, seperti frekuensi buang air kecil, perubahan BAB, dan pertambahan berat badan.',
       },
       {
         type: 'subheading',
-        text: 'Melangkah Satu Hari demi Satu Hari',
+        text: 'Bagaimana ASI Diproduksi?',
       },
       {
         type: 'paragraph',
-        text: 'Menyiapkan diri menyambut kehadiran buah hati tidak harus diselesaikan dalam satu malam. Membagi persiapan menjadi langkah-langkah kecil membantu pikiran tetap jernih.',
+        text: 'Tahukah Bunda? Produksi dan pengeluaran ASI melibatkan dua hormon penting, yaitu:',
       },
       {
         type: 'list',
-        title: 'Bekal Ketenangan untuk Ibu:',
+        title: 'Dua Hormon Penting Menyusui:',
         items: [
-          'Menyusun daftar persiapan sederhana sesuai prioritas mingguan.',
-          'Menghindari membandingkan perjalanan diri sendiri dengan cerita orang lain di media sosial.',
-          'Menyimpan kontak tenaga pendamping atau ahli tepercaya jika membutuhkan teman diskusi.',
+          'Prolaktin: berperan dalam merangsang produksi ASI di payudara.',
+          'Oksitosin: membantu mengeluarkan ASI dari payudara melalui refleks pengeluaran ASI (let-down reflex).',
+        ],
+      },
+      {
+        type: 'paragraph',
+        text: 'Ketika bayi menyusu, rangsangan isapan akan membantu pelepasan kedua hormon tersebut. Oleh karena itu, menyusui secara sering dan efektif penting untuk mendukung kelancaran ASI.',
+      },
+      {
+        type: 'subheading',
+        text: 'Apakah ASI Bunda Sudah Cukup?',
+      },
+      {
+        type: 'paragraph',
+        text: 'Salah satu kekhawatiran adalah Ibu tidak dapat melihat secara langsung jumlah ASI yang diminum bayi ketika menyusu, kecukupan ASI perlu dinilai melalui beberapa indikator:',
+      },
+      {
+        type: 'list',
+        title: 'Indikator Kecukupan ASI pada Bayi:',
+        items: [
+          'Bayi Menyusu secara Efektif: Bayi memiliki pelekatan yang baik, mengisap secara teratur, dan terdengar menelan. Bayi umumnya menyusu sekitar 8–12 kali dalam 24 jam.',
+          'Frekuensi Buang Air Kecil (BAK): Setelah hari ke-5, bayi umumnya memiliki setidaknya enam popok basah dalam 24 jam.',
+          'Frekuensi Buang Air Besar (BAB): Usia 1–2 hari sekitar 1–2 kali sehari; Usia 3–4 hari minimal 2 kali sehari; Usia 5–7 hari minimal 3–4 kali sehari.',
+          'Berat Badan Bertambah: Berat badan bayi biasanya mengalami penurunan pada beberapa hari pertama setelah lahir. Namun, berat badan umumnya kembali mencapai berat lahir pada usia 10–14 hari dan selanjutnya bertambah sesuai pertumbuhan bayi.',
+        ],
+      },
+      {
+        type: 'subheading',
+        text: 'Hubungan Kecemasan dengan Kecukupan ASI',
+      },
+      {
+        type: 'paragraph',
+        text: 'Tahukah Bunda bahwa perasaan cemas dapat memengaruhi proses menyusui? Ketika merasa cemas atau stres, tubuh dapat meningkatkan pelepasan hormon kortisol sebagai respons terhadap stres. Kondisi ini dapat memengaruhi kerja hormon oksitosin yang berperan dalam refleks pengeluaran ASI.',
+      },
+      {
+        type: 'paragraph',
+        text: 'Akibatnya, ASI mungkin menjadi lebih sulit keluar meskipun sebenarnya masih diproduksi. Jika pengeluaran ASI terus tidak efektif, hal ini juga dapat memengaruhi produksi ASI.',
+      },
+      {
+        type: 'list',
+        title: 'Langkah Sederhana Hari Ini:',
+        items: [
+          'Perhatikan frekuensi menyusui bayi.',
+          'Amati jumlah popok basah sesuai usia bayi.',
+          'Pantau berat badan bayi secara berkala.',
+          'Catat hal yang membuat Ibu khawatir dan konsultasikan jika diperlukan.',
         ],
       },
       {
         type: 'callout',
-        title: 'Siap Melanjutkan ke Tahap Quiz',
-        text: 'Setelah menandai materi keempat ini selesai, tahap Quiz akan terbuka secara otomatis agar Ibu dapat mengulas kembali poin-poin di atas.',
+        title: 'Pesan untuk Bunda 💗',
+        text: 'Setiap proses menyusui memiliki perjalanan yang berbeda. Jangan hanya menilai ASI dari banyaknya ASI yang terlihat keluar. Kenali tanda kecukupan ASI pada bayi dan jangan ragu meminta bantuan ketika mengalami kesulitan.',
       },
     ],
   },

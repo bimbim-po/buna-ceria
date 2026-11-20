@@ -7,7 +7,7 @@ export const STORAGE_KEYS = {
   ANXIETY_BY_USER: `${STORAGE_PREFIX}anxiety_by_user`,
   PROGRESS_BY_USER: `${STORAGE_PREFIX}progress_by_user`,
   USERS_LIST: `${STORAGE_PREFIX}users_list`,
-  MODULES_LIST: `${STORAGE_PREFIX}modules_list`,
+  MODULES_LIST: `${STORAGE_PREFIX}modules_nifas_v3`,
 } as const;
 
 function isBrowser(): boolean {

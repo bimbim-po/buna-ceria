@@ -9,6 +9,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  completeGardenActivity as apiCompleteGardenActivity,
   completeModule as apiCompleteModule,
   completeStage as apiCompleteStage,
   getAnxietySubmission,
@@ -16,18 +17,22 @@ import {
   getModules,
   getSession,
   getStageStatuses,
+  getUserDayInfo,
   getUserProgress,
   login as apiLogin,
   logout as apiLogout,
   registerUser as apiRegisterUser,
   saveAnxietyAnswers as apiSaveAnxietyAnswers,
+  saveDailyMood as apiSaveDailyMood,
   saveQuizScore as apiSaveQuizScore,
   setActiveStage as apiSetActiveStage,
+  setSimulatedDay as apiSetSimulatedDay,
   updateUserProfile as apiUpdateUserProfile,
 } from '@/lib/api';
 import {
   AnxietySubmission,
   CompletionStatus,
+  DailyMoodType,
   StageId,
   UserProgress,
   UserSession,
@@ -46,6 +51,7 @@ interface AppContextValue {
   stageStatuses: Record<StageId, CompletionStatus>;
   isLoginDialogOpen: boolean;
   isAnxietyDialogOpen: boolean;
+  anxietyDialogPhase: 'pretest' | 'posttest';
   activeModuleId: string | null;
   lockedNotice: string | null;
   dataVersion: number;
@@ -57,7 +63,7 @@ interface AppContextValue {
   openLoginDialog: () => void;
   closeLoginDialog: () => void;
   closeAnxietyDialog: () => void;
-  openAnxietyDialog: () => void;
+  openAnxietyDialog: (phase?: 'pretest' | 'posttest') => void;
   handleLogin: (
     identifier: string,
     password: string
@@ -78,19 +84,38 @@ interface AppContextValue {
   }) => void;
   handleLogout: () => void;
   handleSubmitAnxiety: (
-    answers: Record<string, 0 | 1 | 2 | 3>
+    answers: Record<string, 0 | 1 | 2 | 3>,
+    phase?: 'pretest' | 'posttest'
   ) => AnxietySubmission | null;
   selectStage: (stageId: StageId) => boolean;
   openModuleReader: (moduleId: string) => void;
   closeModuleReader: () => void;
   handleCompleteModule: (moduleId: string) => void;
-  handleSaveQuizScore: (correctCount: number, totalQuestions: number) => void;
+  handleSaveQuizScore: (
+    correctCount: number,
+    totalQuestions: number,
+    isPretest?: boolean
+  ) => void;
+  handleSaveDailyMood: (entry: {
+    dateKey: string;
+    mood: DailyMoodType;
+    emoji: string;
+    label: string;
+    note?: string;
+  }) => void;
+  handleCompleteGardenActivity: (
+    activityId: 'video' | 'audio' | 'game',
+    points: number,
+    title: string
+  ) => void;
+  handleSetSimulatedDay: (targetDay: 1 | 3 | 5 | 7) => void;
   handleCompleteStage: (
     stageId: StageId,
     extraData?: {
       reflectionNote?: string;
       reflectionSelectedItems?: string[];
       evaluationCheckedItems?: string[];
+      reflectionStartTimeChoice?: string;
       advanceToNext?: boolean;
     }
   ) => void;
@@ -103,7 +128,7 @@ const VALID_SECTIONS = [
   'beranda',
   'materi',
   'tips',
-  'kontak-ahli',
+  'hasil',
   'selfie',
   'pengaturan',
   'admin',
@@ -126,6 +151,7 @@ export function AppProvider({
 
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [isAnxietyDialogOpen, setIsAnxietyDialogOpen] = useState(false);
+  const [anxietyDialogPhase, setAnxietyDialogPhase] = useState<'pretest' | 'posttest'>('pretest');
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [pendingModuleId, setPendingModuleId] = useState<string | null>(null);
   const [pendingTargetSection, setPendingTargetSection] = useState<string | null>(
@@ -222,7 +248,8 @@ export function AppProvider({
     setIsAnxietyDialogOpen(false);
   }, []);
 
-  const openAnxietyDialog = useCallback(() => {
+  const openAnxietyDialog = useCallback((phase: 'pretest' | 'posttest' = 'pretest') => {
+    setAnxietyDialogPhase(phase);
     setIsAnxietyDialogOpen(true);
   }, []);
 
@@ -257,12 +284,16 @@ export function AppProvider({
         setPendingModuleId(null);
       }
 
-      // Sesuai User Flow No. 4:
-      // Sistem menampilkan pertanyaan kecemasan dalam beranda (jika belum diisi atau saat login pengguna)
-      if (newSession.role !== 'admin') {
+      // Sesuai User Flow:
+      // Sistem menampilkan Pre-Test di awal saat login pengguna jika Pre-Test (PASS 31 + Pemahaman 20) belum selesai
+      const isInitialPretestComplete = Boolean(
+        userProgress.initialPretestAnxiety && userProgress.initialPretestQuiz
+      );
+      if (newSession.role !== 'admin' && !isInitialPretestComplete) {
         window.setTimeout(() => {
+          setAnxietyDialogPhase('pretest');
           setIsAnxietyDialogOpen(true);
-        }, 1350);
+        }, 850);
       }
 
       if (typeof window !== 'undefined') {
@@ -331,10 +362,15 @@ export function AppProvider({
   }, []);
 
   const handleSubmitAnxiety = useCallback(
-    (answers: Record<string, 0 | 1 | 2 | 3>) => {
+    (
+      answers: Record<string, 0 | 1 | 2 | 3>,
+      phase: 'pretest' | 'posttest' = 'pretest'
+    ) => {
       if (!session) return null;
-      const saved = apiSaveAnxietyAnswers(session.id, answers);
+      const saved = apiSaveAnxietyAnswers(session.id, answers, phase);
       setAnxietySubmission(saved);
+      const updatedProgress = getUserProgress(session.id);
+      setProgress(updatedProgress);
       return saved;
     },
     [session]
@@ -364,7 +400,12 @@ export function AppProvider({
       const updated = apiSetActiveStage(session.id, stageId);
       setProgress(updated);
       setAppMode('webapp');
-      setActiveSection('materi');
+      // Jika Level 3 (Bunga Delima) ditekan, langsung pergi ke menu Kebun Bunga Delima ('tips')
+      if (stageId === 'bunga-delima') {
+        setActiveSection('tips');
+      } else {
+        setActiveSection('materi');
+      }
       return true;
     },
     [session, progress, stageStatuses, triggerLockedNotice]
@@ -424,9 +465,42 @@ export function AppProvider({
   );
 
   const handleSaveQuizScore = useCallback(
-    (correctCount: number, totalQuestions: number) => {
+    (correctCount: number, totalQuestions: number, isPretest: boolean = false) => {
       if (!session) return;
-      const updated = apiSaveQuizScore(session.id, correctCount, totalQuestions);
+      const updated = apiSaveQuizScore(session.id, correctCount, totalQuestions, isPretest);
+      setProgress(updated);
+    },
+    [session]
+  );
+
+  const handleSaveDailyMood = useCallback(
+    (entry: {
+      dateKey: string;
+      mood: DailyMoodType;
+      emoji: string;
+      label: string;
+      note?: string;
+    }) => {
+      if (!session) return;
+      const updated = apiSaveDailyMood(session.id, entry);
+      setProgress(updated);
+    },
+    [session]
+  );
+
+  const handleCompleteGardenActivity = useCallback(
+    (activityId: 'video' | 'audio' | 'game', points: number, title: string) => {
+      if (!session) return;
+      const updated = apiCompleteGardenActivity(session.id, activityId, points, title);
+      setProgress(updated);
+    },
+    [session]
+  );
+
+  const handleSetSimulatedDay = useCallback(
+    (targetDay: 1 | 3 | 5 | 7) => {
+      if (!session) return;
+      const updated = apiSetSimulatedDay(session.id, targetDay);
       setProgress(updated);
     },
     [session]
@@ -439,12 +513,16 @@ export function AppProvider({
         reflectionNote?: string;
         reflectionSelectedItems?: string[];
         evaluationCheckedItems?: string[];
+        reflectionStartTimeChoice?: string;
         advanceToNext?: boolean;
       }
     ) => {
       if (!session) return;
       const updated = apiCompleteStage(session.id, stageId, extraData);
       setProgress(updated);
+      if (stageId === 'tahap-3' && extraData?.advanceToNext !== false) {
+        setActiveSection('tips');
+      }
     },
     [session]
   );
@@ -461,6 +539,7 @@ export function AppProvider({
       stageStatuses,
       isLoginDialogOpen,
       isAnxietyDialogOpen,
+      anxietyDialogPhase,
       activeModuleId,
       lockedNotice,
       dataVersion,
@@ -483,6 +562,9 @@ export function AppProvider({
       closeModuleReader,
       handleCompleteModule,
       handleSaveQuizScore,
+      handleSaveDailyMood,
+      handleCompleteGardenActivity,
+      handleSetSimulatedDay,
       handleCompleteStage,
       triggerLockedNotice,
     }),
@@ -497,6 +579,7 @@ export function AppProvider({
       stageStatuses,
       isLoginDialogOpen,
       isAnxietyDialogOpen,
+      anxietyDialogPhase,
       activeModuleId,
       lockedNotice,
       dataVersion,
@@ -517,6 +600,9 @@ export function AppProvider({
       closeModuleReader,
       handleCompleteModule,
       handleSaveQuizScore,
+      handleSaveDailyMood,
+      handleCompleteGardenActivity,
+      handleSetSimulatedDay,
       handleCompleteStage,
       triggerLockedNotice,
     ]

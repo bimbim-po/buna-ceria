@@ -1,6 +1,6 @@
 import { MockUser } from '@/types';
 
-// Data pengguna terdaftar & Admin sesuai Client Brief Bagian 3 (User Roles)
+// Data pengguna terdaftar & Admin sesuai masa nifas Buna Ceria
 export const mockUsers: MockUser[] = [
   {
     id: 'user-1',
@@ -8,7 +8,7 @@ export const mockUsers: MockUser[] = [
     email: 'nadia@bunaceria.id',
     phone: '081200001111',
     password: 'kasih123',
-    trimesterLabel: 'Trimester 1',
+    trimesterLabel: 'Nifas Hari ke 1-2 Hari',
     role: 'user',
   },
   {
@@ -17,7 +17,7 @@ export const mockUsers: MockUser[] = [
     email: 'raras@bunaceria.id',
     phone: '081200002222',
     password: 'kasih123',
-    trimesterLabel: 'Trimester 2',
+    trimesterLabel: 'Nifas Hari ke 3-7 Hari',
     role: 'user',
   },
   {
@@ -26,7 +26,7 @@ export const mockUsers: MockUser[] = [
     email: 'sinta@bunaceria.id',
     phone: '081200003333',
     password: 'kasih123',
-    trimesterLabel: 'Trimester 3',
+    trimesterLabel: 'Nifas Hari ke 8-28 Hari',
     role: 'user',
   },
   {

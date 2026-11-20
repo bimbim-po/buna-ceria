@@ -111,8 +111,8 @@ export function ModuleReader({
         articleEl.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } else {
-      // Jika modul terakhir selesai, arahkan ke tahap Kuis
-      selectStage('quiz');
+      // Jika modul terakhir selesai, arahkan ke Level 2: Refleksi Diri dan Tips
+      selectStage('tahap-3');
       onBackToOverview();
     }
   };

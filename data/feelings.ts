@@ -1,84 +1,83 @@
 import { FeelingTopic, PregnancyPillar } from '@/types';
 
-// Data untuk bagian "Semua yang Ibu perlukan di kehamilan pertama" (Referensi Diary Bunda)
 export const mockPregnancyPillars: PregnancyPillar[] = [
   {
     id: 'tips-harian',
-    title: 'Dapatkan tips harian tentang kesehatan Ibu',
+    title: 'Dapatkan tips harian tentang kesehatan Ibu Nifas',
     description:
-      'Nikmati bacaan dan tips singkat seputar kehamilan serta ketenangan hati yang telah disusun bersama bidan pendamping.',
+      'Nikmati bacaan dan tips singkat seputar masa nifas, kecukupan ASI, serta ketenangan hati yang telah disusun bersama bidan pendamping.',
     targetHref: '#tips-kehamilan',
   },
   {
     id: 'tahapan',
-    title: 'Memandu dalam setiap tahapan',
+    title: 'Memandu dalam setiap tahapan nifas',
     description:
-      'Pelajari 4 materi secara bertahap, kerjakan kuis ringan, hingga refleksi mingguan sesuai ritme kenyamanan Ibu.',
+      'Pelajari 4 materi masa nifas secara bertahap, refleksi diri dan tips, hingga kuis evaluasi sesuai ritme kenyamanan Ibu.',
     targetHref: '#ruang-belajar',
   },
   {
     id: 'konsultasi',
-    title: 'Nggak usah lagi tebak-tebakan',
+    title: 'Temukan informasi terpercaya',
     description:
-      'Tidak perlu bingung mana mitos mana fakta, sekarang Ibu bisa langsung terhubung dan bertanya dengan bidan serta konselor kami.',
-    targetHref: '#kontak-ahli',
+      'Pahami perubahan emosi, tanda kecukupan ASI, dan langkah praktis merawat diri serta buah hati dengan lebih percaya diri.',
+    targetHref: '#ruang-belajar',
   },
 ];
 
-// Data untuk bagian interaktif "Apa yang Sedang Ibu Rasakan?" (Referensi Pemilih Perasaan)
+// Data untuk bagian interaktif "Apa yang Bunda Rasakan Hari Ini?"
 export const mockFeelingTopics: FeelingTopic[] = [
   {
-    id: 'keluarga',
-    label: 'Keluarga & hubungan',
-    title: 'Ingin lebih dimengerti oleh pasangan & keluarga',
+    id: 'tidur',
+    label: 'Sulit tidur malam hari',
+    title: 'Sulit tidur atau sering terbangun pada malam hari',
     advice:
-      'Perubahan peran selama hamil sering membuat Ibu butuh dukungan ekstra. Mengobrol jujur selama 10 menit sehari bersama pasangan tentang hal kecil yang Ibu butuhkan dapat mempererat ikatan di rumah.',
-    recommendedModuleId: 'materi-4',
-    recommendedModuleLabel: 'Materi 4: Komunikasi dengan Pasangan & Pendamping',
+      'Perubahan pola tidur setelah melahirkan sering terjadi karena Ibu perlu menyesuaikan waktu istirahat dengan kebutuhan si Kecil. Cobalah beristirahat ketika bayi tidur, atur posisi senyaman mungkin, dan mintalah bantuan pasangan untuk bergantian menjaga bayi agar Ibu memiliki waktu istirahat yang cukup.',
+    recommendedModuleId: 'materi-1',
+    recommendedModuleLabel: 'Materi 1: Mengenali Perubahan Perasaan di Masa Nifas',
   },
   {
     id: 'kecemasan',
-    label: 'Kecemasan',
-    title: 'Pikiran sering penuh kekhawatiran tentang janin',
+    label: 'Khawatir merawat bayi',
+    title: 'Merasa khawatir dalam merawat bayi',
     advice:
-      'Wajar sekali bila sesekali Ibu bertanya-tanya apakah si kecil baik-baik saja di dalam kandungan. Mari kenali pemicu cemas dan latih teknik jeda napas agar hati kembali teduh.',
+      'Menjadi ibu baru merupakan pengalaman yang membutuhkan proses penyesuaian. Ibu mungkin merasa takut salah saat memandikan, menggendong, atau menyusui bayi. Jangan terburu-buru menuntut diri untuk langsung mahir karena keterampilan merawat bayi dapat dipelajari secara bertahap.',
     recommendedModuleId: 'materi-2',
-    recommendedModuleLabel: 'Materi 2: Mengenali & Meredakan Rasa Cemas',
-  },
-  {
-    id: 'stres',
-    label: 'Stres & lelah',
-    title: 'Tubuh terasa cepat lelah dan pikiran penat',
-    advice:
-      'Tubuh Ibu sedang bekerja luar biasa setiap detiknya. Beri izin pada diri sendiri untuk menunda pekerjaan rumah yang belum mendesak dan beristirahat tanpa rasa bersalah.',
-    recommendedModuleId: 'materi-1',
-    recommendedModuleLabel: 'Materi 1: Memahami Perubahan Tubuh & Emosi',
+    recommendedModuleLabel: 'Materi 2: Mengenali Kecemasan dan Menjaga Ketenangan Diri',
   },
   {
     id: 'mood',
-    label: 'Gangguan mood',
-    title: 'Suasana hati mudah berubah dari senang ke sedih',
+    label: 'Suasana hati berubah',
+    title: 'Suasana hati mudah berubah dari senang menjadi sedih',
     advice:
-      'Lonjakan hormon kehamilan membuat perasaan menjadi lebih peka. Ibu tidak perlu menyalahkan diri sendiri saat tiba-tiba ingin menangis atau butuh waktu tenang sejenak.',
+      'Setelah persalinan, perubahan hormon, kelelahan, dan penyesuaian terhadap peran baru dapat membuat suasana hati ibu lebih sensitif. Terkadang Ibu merasa bahagia, tetapi di waktu lain mudah menangis atau merasa sedih tanpa alasan yang jelas. Perasaan tersebut tidak perlu membuat Ibu menyalahkan diri sendiri.',
+    recommendedModuleId: 'materi-3',
+    recommendedModuleLabel: 'Materi 3: Gangguan Psikologis Masa Nifas',
+  },
+  {
+    id: 'stres',
+    label: 'Cepat lelah & penat',
+    title: 'Tubuh terasa cepat lelah dan pikiran mudah penat',
+    advice:
+      'Setelah melahirkan, tubuh Ibu membutuhkan waktu untuk memulihkan diri sekaligus menyesuaikan diri dengan rutinitas merawat bayi. Rasa lelah dapat muncul akibat kurang tidur, aktivitas menyusui, dan perubahan aktivitas sehari-hari. Jangan memaksakan diri untuk menyelesaikan semua pekerjaan rumah ketika tubuh membutuhkan istirahat.',
     recommendedModuleId: 'materi-1',
-    recommendedModuleLabel: 'Materi 1: Memahami Perubahan Tubuh & Emosi',
+    recommendedModuleLabel: 'Materi 1: Mengenali Perubahan Perasaan di Masa Nifas',
   },
   {
     id: 'persalinan',
-    label: 'Takut persalinan',
-    title: 'Membayangkan hari persalinan terasa menegangkan',
+    label: 'Khawatir kecukupan ASI',
+    title: 'Sering merasa khawatir apakah ASI sudah cukup untuk bayi',
     advice:
-      'Rasa gugup menjelang hari H akan berkurang saat Ibu memiliki persiapan yang terarah. Mari susun langkah demi langkah bersama pasangan dan bidan agar Ibu merasa lebih siap.',
+      'Kekhawatiran mengenai kecukupan ASI sering muncul, terutama ketika Ibu belum memahami tanda-tanda bayi mendapatkan ASI yang cukup. Ibu dapat memperhatikan frekuensi buang air kecil, kondisi bayi setelah menyusu, serta pertambahan berat badan bayi untuk membantu menilai kecukupan asupan ASI.',
     recommendedModuleId: 'materi-4',
-    recommendedModuleLabel: 'Materi 4: Menyiapkan Hati Menjelang Persalinan',
+    recommendedModuleLabel: 'Materi 4: Mengenal ASI dan Proses Produksinya',
   },
   {
-    id: 'tidur',
-    label: 'Sulit tidur',
-    title: 'Sering terbangun atau sulit mencari posisi nyaman',
+    id: 'keluarga',
+    label: 'Dukungan pasangan & keluarga',
+    title: 'Ingin lebih dimengerti oleh pasangan dan keluarga',
     advice:
-      'Cobalah tidur miring dengan bantal penyangga di antara lutut dan kurangi menelusuri layar ponsel 30 menit sebelum tidur. Latihan relaksasi bahu juga sangat membantu.',
-    recommendedModuleId: 'materi-3',
-    recommendedModuleLabel: 'Materi 3: Latihan Napas & Relaksasi Harian',
+      'Menjalani peran baru sebagai seorang ibu bukanlah hal yang selalu mudah. Ibu mungkin membutuhkan perhatian, bantuan, dan dukungan emosional dari orang-orang terdekat. Dukungan pasangan dan keluarga dapat membantu Ibu merasa lebih dihargai, nyaman, dan tidak sendirian dalam menjalani masa nifas.',
+    recommendedModuleId: 'materi-2',
+    recommendedModuleLabel: 'Materi 2: Mengenali Kecemasan dan Menjaga Ketenangan Diri',
   },
 ];

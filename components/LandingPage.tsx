@@ -6,13 +6,15 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
   BookOpen,
+  Camera,
   CheckCircle2,
   ChevronUp,
   FileText,
-  Heart,
   Menu,
   Play,
   Search,
+  ShieldCheck,
+  Sparkles,
   Users,
   X,
 } from 'lucide-react';
@@ -85,7 +87,7 @@ export function LandingPage() {
                   Buna Ceria
                 </span>
                 <span className="block text-[11px] text-[#767A6E] leading-tight">
-                  Edukasi Kehamilan
+                  Edukasi Ibu Nifas
                 </span>
               </div>
             </a>
@@ -226,22 +228,23 @@ export function LandingPage() {
             <div className="lg:col-span-5 relative z-20 flex flex-col items-center text-center sm:items-start sm:text-left">
               <h1
                 id="hero-clean-heading"
-                className="font-heading text-[2.65rem] font-normal leading-[1.08] tracking-[-0.02em] text-[#2A2D22] sm:text-[3.5rem] lg:text-[4.15rem] xl:text-[4.5rem]"
+                className="font-heading text-[2.45rem] font-normal leading-[1.1] tracking-[-0.02em] text-[#2A2D22] sm:text-[3.2rem] lg:text-[3.75rem] xl:text-[4.1rem]"
               >
-                Pendamping
+                Pendamping ibu
                 <br />
-                <span className="text-[#E46C8E]">kehamilan</span>
+                <span className="text-[#E46C8E]">menjalani</span>
                 <br />
-                pertama
+                masa nifas
               </h1>
 
               <p className="mt-5 max-w-md lg:max-w-lg text-xs sm:text-[14.5px] leading-[1.75] text-[#6E6A6C]">
                 <strong className="font-semibold text-[#2A2D22]">
                   Buna Ceria
                 </strong>{' '}
-                adalah webapp pembelajaran kehamilan yang dirancang khusus untuk
-                memandu ibu melewati trimester pertama hingga persalinan dengan
-                lebih percaya diri.
+                adalah webapp pembelajaran ibu masa nifas, meningkatkan
+                pengetahuan tentang cara mengatasi kecemasan dan memahami
+                kecukupan ASI agar ibu dapat menjalani masa pemulihan dan
+                merawat bayi dengan lebih percaya.
               </p>
 
               {/* 2 Action Buttons: Selalu Bersebelahan 1 Baris di Mobile & Desktop */}
@@ -267,13 +270,19 @@ export function LandingPage() {
               </div>
             </div>
 
-            {/* Right Column: Foto Ibu Hamil di Sofa (Latar Transparan Menyatu dengan Pastel Pink) */}
+            {/* Right Column: Foto Ibu Hamil di Sofa (Utuh, Menyatu Halus dengan Latar Pink & Elemen Dekoratif Rapi) */}
             <div className="relative flex justify-center lg:col-span-7 lg:justify-end">
-              <div className="relative w-full max-w-[560px] lg:max-w-[680px] xl:max-w-[740px] transition-transform duration-500 hover:scale-[1.01]">
-                {/* Floating Frosted Card */}
-                <div className="absolute right-2 sm:right-6 top-[26%] z-20 rounded-[20px] border border-white/90 bg-white/85 px-4 py-3.5 shadow-[0_12px_32px_rgba(200,75,113,0.12)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(200,75,113,0.18)]">
+              <div className="relative w-full max-w-[540px] sm:max-w-[600px] lg:max-w-[680px] xl:max-w-[740px] px-2 sm:px-4 py-2 transition-transform duration-500 hover:scale-[1.01]">
+                {/* Ambient Soft Pink & Sage Glow di Belakang Subjek agar Menyatu Sempurna */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-6 -z-10 rounded-full bg-gradient-to-tr from-[#FCE4EC]/75 via-[#FFF5F8]/60 to-[#EFF5E4]/70 blur-2xl"
+                />
+
+                {/* Floating Frosted Card: Posisi Aman di Dalam Kontainer agar Tidak Terpotong */}
+                <div className="absolute right-3 sm:right-7 top-[14%] sm:top-[18%] z-20 rounded-[20px] border border-white/90 bg-white/88 px-3.5 py-3 sm:px-4 sm:py-3.5 shadow-[0_12px_32px_rgba(200,75,113,0.12)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(200,75,113,0.18)]">
                   <div className="flex items-start gap-2.5 text-left">
-                    <Heart
+                    <Sparkles
                       className="mt-0.5 h-4 w-4 text-[#E46C8E] shrink-0"
                       strokeWidth={2}
                     />
@@ -285,7 +294,7 @@ export function LandingPage() {
                         <br />
                         Si Kecil
                       </p>
-                      <Heart className="mt-1.5 h-3 w-3 fill-[#F7C6D4] text-[#F7C6D4]" />
+                      <Sparkles className="mt-1.5 h-3 w-3 text-[#F7C6D4]" />
                     </div>
                   </div>
                 </div>
@@ -296,7 +305,7 @@ export function LandingPage() {
                   width={1200}
                   height={896}
                   priority
-                  className="h-auto w-full object-contain drop-shadow-[0_14px_32px_rgba(228,108,142,0.08)]"
+                  className="hero-image-blend h-auto w-full object-contain object-center select-none"
                 />
               </div>
             </div>
@@ -327,14 +336,14 @@ export function LandingPage() {
               {/* Col 2 */}
               <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-3.5 sm:gap-4 md:px-6 lg:px-8 transition-transform duration-300 hover:-translate-y-0.5">
                 <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-[#F2F5E8] text-[#8E9B5E] shadow-2xs">
-                  <Heart className="h-5 w-5" strokeWidth={1.8} />
+                  <Sparkles className="h-5 w-5" strokeWidth={1.8} />
                 </span>
                 <div>
                   <h2 className="font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22]">
                     Mudah Diakses
                   </h2>
                   <p className="mt-1 text-xs leading-relaxed text-[#767A6E]">
-                    Bisa dibaca kapan saja untuk menemani perjalanan kehamilan.
+                    Bisa dibaca kapan saja untuk menemani perjalanan nifas.
                   </p>
                 </div>
               </div>
@@ -349,7 +358,7 @@ export function LandingPage() {
                     Pendamping Setia
                   </h2>
                   <p className="mt-1 text-xs leading-relaxed text-[#767A6E]">
-                    Membantu ibu memahami setiap tahap kehamilan dengan lebih tenang.
+                    Membantu ibu memahami setiap tahap nifas dengan lebih tenang.
                   </p>
                 </div>
               </div>
@@ -412,24 +421,24 @@ export function LandingPage() {
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
               {/* Kartu Tip Nifas 1 */}
               <div
-                onClick={() => enterWebApp('tips')}
+                onClick={() => enterWebApp('materi')}
                 className="flex flex-col items-center text-center rounded-[22px] border border-[#F5DCE4] bg-white p-5 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#F0B8C8] hover:shadow-[0_14px_32px_rgba(228,108,142,0.15)] active:scale-[0.98] cursor-pointer"
               >
-                <div className="relative h-20 w-20 shrink-0">
+                <div className="relative h-24 w-24 shrink-0">
                   <Image
                     src="/feature-tips.webp"
-                    alt="Penuhi nutrisi dan cairan harian Bunda"
+                    alt="Kenali dan kelola kecemasan masa nifas"
                     fill
-                    sizes="80px"
+                    sizes="96px"
                     className="object-contain"
                   />
                 </div>
                 <h3 className="mt-3.5 font-sans text-xs sm:text-[13.5px] font-bold text-[#2A2D22] leading-snug">
-                  Nutrisi &amp; Cairan Harian Bunda
+                  Kenali dan Kelola Kecemasan
                 </h3>
                 <p className="mt-1.5 text-[11.5px] leading-relaxed text-[#767A6E]">
-                  Penuhi asupan tinggi protein dan air hangat yang cukup untuk
-                  mendukung kelancaran ASI serta pemulihan tubuh.
+                  Mengenali perubahan emosi, penyebab kecemasan, dan menemukan
+                  cara sederhana agar Bunda lebih tenang selama masa nifas.
                 </p>
               </div>
 
@@ -438,12 +447,12 @@ export function LandingPage() {
                 onClick={() => enterWebApp('tips')}
                 className="flex flex-col items-center text-center rounded-[22px] border border-[#F5DCE4] bg-white p-5 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#F0B8C8] hover:shadow-[0_14px_32px_rgba(228,108,142,0.15)] active:scale-[0.98] cursor-pointer"
               >
-                <div className="relative h-20 w-20 shrink-0">
+                <div className="relative h-24 w-24 shrink-0">
                   <Image
                     src="/feature-stages.webp"
                     alt="Tahapan menyusui dan istirahat cukup"
                     fill
-                    sizes="80px"
+                    sizes="96px"
                     className="object-contain"
                   />
                 </div>
@@ -458,24 +467,25 @@ export function LandingPage() {
 
               {/* Kartu Tip Nifas 3 */}
               <div
-                onClick={() => enterWebApp('kontak')}
+                onClick={() => enterWebApp('beranda')}
                 className="flex flex-col items-center text-center rounded-[22px] border border-[#F5DCE4] bg-white p-5 shadow-[0_6px_24px_rgba(200,75,113,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#F0B8C8] hover:shadow-[0_14px_32px_rgba(228,108,142,0.15)] active:scale-[0.98] cursor-pointer"
               >
-                <div className="relative h-20 w-20 shrink-0">
+                <div className="relative h-24 w-24 shrink-0">
                   <Image
                     src="/feature-consult.webp"
-                    alt="Konsultasi perawatan masa nifas bersama bidan"
+                    alt="Belajar di BUNA CERIA!"
                     fill
-                    sizes="80px"
+                    sizes="96px"
                     className="object-contain"
                   />
                 </div>
                 <h3 className="mt-3.5 font-sans text-xs sm:text-[13.5px] font-bold text-[#2A2D22] leading-snug">
-                  Perawatan &amp; Tanya Bidan
+                  Belajar di BUNA CERIA!
                 </h3>
                 <p className="mt-1.5 text-[11.5px] leading-relaxed text-[#767A6E]">
-                  Jangan ragu berkonsultasi dengan bidan pendamping tanpa perlu
-                  bingung membedakan mitos atau fakta nifas.
+                  Temukan informasi, edukasi, dan aktivitas menarik untuk
+                  membantu Bunda lebih percaya diri menjalani masa nifas dan
+                  menyusui.
                 </p>
               </div>
             </div>
@@ -518,10 +528,10 @@ export function LandingPage() {
                 <BookOpen className="h-5 w-5" strokeWidth={1.8} />
               </span>
               <h3 className="mt-4 truncate font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
-                4 Tingkatan Belajar
+                3 Tingkatan Belajar
               </h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#767A6E]">
-                Materi berjenjang dari dasar hingga hasil belajar dengan elemen bulat &amp; garis penghubung.
+                Materi berjenjang dari dasar, refleksi diri &amp; tips, hingga Kebun Bunga Delima serta evaluasi tahap akhir.
               </p>
             </div>
 
@@ -550,10 +560,10 @@ export function LandingPage() {
                 <CheckCircle2 className="h-5 w-5" strokeWidth={1.8} />
               </span>
               <h3 className="mt-4 truncate font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#8E9B5E] transition-colors">
-                Kuis Pemahaman
+                Skrining PASS &amp; Kuis
               </h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#767A6E]">
-                Uji pengetahuanmu setelah belajar melalui soal interaktif ramah.
+                Pre-Test awal dan Post-Test Tahap Akhir (Hari ke-7) untuk mengukur ketenangan dan pemahaman Bunda.
               </p>
             </div>
 
@@ -563,20 +573,20 @@ export function LandingPage() {
               className="group flex flex-col items-center text-center sm:items-start sm:text-left rounded-[24px] border border-[#F5DCE4] bg-white p-6 shadow-[0_8px_26px_rgba(200,75,113,0.05)] hover:border-[#F0B8C8] hover:shadow-[0_14px_34px_rgba(228,108,142,0.16)] hover:-translate-y-1.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FCEBEF] text-[#E46C8E]">
-                <Heart className="h-5 w-5" strokeWidth={1.8} />
+                <Camera className="h-5 w-5" strokeWidth={1.8} />
               </span>
               <h3 className="mt-4 truncate font-sans text-sm sm:text-[15px] font-bold text-[#2A2D22] group-hover:text-[#E46C8E] transition-colors">
-                Dampingan Bidan &amp; Selfie
+                Dukungan Suami &amp; Selfie
               </h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#767A6E]">
-                Dukungan kesehatan fisik &amp; mental serta abadikan foto bersama pasangan.
+                Abadikan momen nifas bersama pasangan dengan bingkai estetik dan siluet ramah.
               </p>
             </div>
           </div>
         </motion.section>
 
         {/* =====================================================================
-            5. DAFTAR PUSTAKA
+            5. DAFTAR PUSTAKA (Poin 2: Proporsional, Berisi 3 Poin Ringkas & Tombol Utama Solid Pink)
            ===================================================================== */}
         <motion.section
           id="daftar-pustaka"
@@ -585,13 +595,13 @@ export function LandingPage() {
           className="scroll-mt-24"
         >
           <div className="rounded-[28px] border border-[#F5DCE4] bg-white p-6 sm:p-8 lg:p-10 shadow-[0_10px_36px_rgba(200,75,113,0.05)] transition-all duration-300 hover:shadow-[0_16px_42px_rgba(200,75,113,0.1)]">
-            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
-              {/* Left Column: USG Photo */}
+            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
+              {/* Left Column: Ilustrasi Ibu & Bayi Daftar Pustaka */}
               <div className="lg:col-span-5">
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[20px] bg-[#FAF6F5]">
+                <div className="relative aspect-square max-w-[380px] mx-auto w-full overflow-hidden rounded-[24px] bg-[#C94444] shadow-sm">
                   <Image
-                    src="/scan-1.jpg"
-                    alt="Pemeriksaan USG Kehamilan"
+                    src="/scan-1.webp"
+                    alt="Ibu Masa Nifas Memeluk Buah Hati — Daftar Pustaka Buna Ceria"
                     fill
                     sizes="(max-width: 1024px) 100vw, 42vw"
                     className="object-cover transition-transform duration-500 hover:scale-105"
@@ -599,32 +609,84 @@ export function LandingPage() {
                 </div>
               </div>
 
-              {/* Right Column: Title, Subtitle, Outlined Button "Lihat Daftar ->", & Collapsible Points */}
-              <div className="lg:col-span-7 space-y-4 flex flex-col items-center text-center sm:items-start sm:text-left">
+              {/* Right Column: Vertically Centered, Enlarged Typography, 3 Highlight Points, & Large Solid Pink CTA */}
+              <div className="lg:col-span-7 flex flex-col justify-center items-center text-center sm:items-start sm:text-left space-y-5">
+                {/* Badge Jumlah Referensi Ilmiah */}
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#FCEBEF] border border-[#F5DCE4] px-3.5 py-1 text-xs font-bold text-[#C84B71]">
+                  <BookOpen className="h-3.5 w-3.5" />
+                  <span>{references.length} Referensi Medis &amp; Jurnal Terverifikasi</span>
+                </span>
+
                 <div>
                   <h2
                     id="pustaka-heading"
-                    className="font-heading text-2xl sm:text-3xl font-bold text-[#2A2D22]"
+                    className="font-heading text-2xl sm:text-3xl lg:text-[2.15rem] font-bold text-[#2A2D22] leading-tight"
                   >
-                    Daftar Pustaka
+                    Daftar Pustaka &amp; Rujukan Medis
                   </h2>
-                  <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#767A6E] max-w-md">
-                    Sumber informasi yang kami gunakan dalam pengembangan WebApp ini.
+                  <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-[#6E6A6C] max-w-xl">
+                    Seluruh materi edukasi dan panduan di Buna Ceria disusun berdasarkan literatur kebidanan, pedoman kesehatan ibu dan anak, serta jurnal ilmiah yang kredibel.
                   </p>
                 </div>
 
-                <div>
+                {/* 3 Poin Ringkas dengan Ikon Pengisi Ruang agar Seimbang & Informatif */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full pt-1">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5 rounded-2xl border border-[#F5DCE4] bg-[#FFF8FA] p-3.5">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#FCEBEF] text-[#E46C8E]">
+                      <CheckCircle2 className="h-4 w-4" />
+                    </span>
+                    <div className="text-center sm:text-left">
+                      <p className="text-xs font-bold text-[#2A2D22]">
+                        Sumber Medis Terpercaya
+                      </p>
+                      <p className="mt-0.5 text-[11px] leading-snug text-[#767A6E]">
+                        Rujukan jurnal &amp; klinis kebidanan resmi
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5 rounded-2xl border border-[#E4EAC9] bg-[#F8FAF2] p-3.5">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#EAF0D5] text-[#56632A]">
+                      <ShieldCheck className="h-4 w-4" />
+                    </span>
+                    <div className="text-center sm:text-left">
+                      <p className="text-xs font-bold text-[#2A2D22]">
+                        Pedoman Kesehatan KIA
+                      </p>
+                      <p className="mt-0.5 text-[11px] leading-snug text-[#767A6E]">
+                        Selaras standar kesehatan ibu &amp; anak
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2.5 rounded-2xl border border-[#F5DCE4] bg-[#FFF8FA] p-3.5">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#FCEBEF] text-[#E46C8E]">
+                      <FileText className="h-4 w-4" />
+                    </span>
+                    <div className="text-center sm:text-left">
+                      <p className="text-xs font-bold text-[#2A2D22]">
+                        Diperbarui Berkala
+                      </p>
+                      <p className="mt-0.5 text-[11px] leading-snug text-[#767A6E]">
+                        Kurasi materi mudah dipahami Bunda
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tombol Utama "Lihat Daftar" Berukuran Lebih Besar & Solid Pink */}
+                <div className="pt-1">
                   <button
                     type="button"
                     onClick={() => setShowReferences((prev) => !prev)}
                     aria-expanded={showReferences}
-                    className="inline-flex min-h-[38px] items-center justify-center gap-2 rounded-full border border-[#F0B8C8] bg-white px-5 py-1.5 text-xs font-semibold text-[#E46C8E] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FCEBEF]/50 hover:shadow-[0_8px_20px_rgba(228,108,142,0.15)] active:scale-95 cursor-pointer"
+                    className="inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#E46C8E] to-[#F08BA8] px-7 py-3 text-sm sm:text-[15px] font-bold text-white shadow-[0_8px_22px_rgba(228,108,142,0.32)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(228,108,142,0.42)] active:scale-95 cursor-pointer"
                   >
-                    <span>{showReferences ? 'Sembunyikan Daftar' : 'Lihat Daftar'}</span>
+                    <span>{showReferences ? 'Sembunyikan Daftar Pustaka' : 'Lihat Daftar Pustaka'}</span>
                     {showReferences ? (
-                      <ChevronUp className="h-3.5 w-3.5" />
+                      <ChevronUp className="h-4 w-4 stroke-[2.4]" />
                     ) : (
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <ArrowRight className="h-4 w-4 stroke-[2.4]" />
                     )}
                   </button>
                 </div>
