@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
@@ -28,6 +28,7 @@ export function LoginDialog() {
     setActiveSection,
   } = useApp();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const authTimerRef = useRef<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
   const [mode, setMode] = useState<'login' | 'register' | 'admin'>('login');
@@ -48,8 +49,17 @@ export function LoginDialog() {
 
   useFocusTrap(dialogRef, isLoginDialogOpen, closeLoginDialog);
 
+  useEffect(() => {
+    return () => {
+      if (authTimerRef.current !== null) {
+        window.clearTimeout(authTimerRef.current);
+      }
+    };
+  }, []);
+
   const onSubmitLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
     setErrorMsg(null);
 
     const normalized = identifier.trim().toLowerCase();
@@ -68,7 +78,11 @@ export function LoginDialog() {
 
     setIsLoading(true);
 
-    window.setTimeout(() => {
+    if (authTimerRef.current !== null) {
+      window.clearTimeout(authTimerRef.current);
+    }
+    authTimerRef.current = window.setTimeout(() => {
+      authTimerRef.current = null;
       const result = handleLogin(identifier, password);
       setIsLoading(false);
       if (!result.success) {
@@ -87,6 +101,7 @@ export function LoginDialog() {
 
   const onSubmitRegister = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
     setErrorMsg(null);
 
     const nameTrimmed = regName.trim();
@@ -118,7 +133,11 @@ export function LoginDialog() {
 
     setIsLoading(true);
 
-    window.setTimeout(() => {
+    if (authTimerRef.current !== null) {
+      window.clearTimeout(authTimerRef.current);
+    }
+    authTimerRef.current = window.setTimeout(() => {
+      authTimerRef.current = null;
       const result = handleRegister({
         name: nameTrimmed,
         email: emailTrimmed,
@@ -140,9 +159,14 @@ export function LoginDialog() {
   };
 
   const handleGoogleSignIn = () => {
+    if (isLoading) return;
     setErrorMsg(null);
     setIsLoading(true);
-    window.setTimeout(() => {
+    if (authTimerRef.current !== null) {
+      window.clearTimeout(authTimerRef.current);
+    }
+    authTimerRef.current = window.setTimeout(() => {
+      authTimerRef.current = null;
       const firstUser =
         demoAccounts.find((a) => a.role !== 'admin') ?? demoAccounts[0];
       if (firstUser) {
@@ -531,7 +555,8 @@ export function LoginDialog() {
 
                 <button
                   type="submit"
-                  className={`flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-md cursor-pointer ${
+                  disabled={isLoading}
+                  className={`flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-md cursor-pointer disabled:opacity-60 ${
                     mode === 'admin'
                       ? 'bg-[#56632A] hover:bg-[#434e20]'
                       : 'bg-[#C84B71] hover:bg-[#b23b60]'
@@ -552,8 +577,9 @@ export function LoginDialog() {
                 {mode === 'login' && (
                   <button
                     type="button"
+                    disabled={isLoading}
                     onClick={handleGoogleSignIn}
-                    className="flex min-h-[42px] w-full items-center justify-center gap-2 rounded-full border border-[#ECE7F2] bg-white px-5 py-2 text-xs font-bold text-[#2A2D22] hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="flex min-h-[42px] w-full items-center justify-center gap-2 rounded-full border border-[#ECE7F2] bg-white px-5 py-2 text-xs font-bold text-[#2A2D22] hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-60"
                   >
                     <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FDF2F5] text-[10px] font-black text-[#C84B71]">
                       G

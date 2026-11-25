@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -21,7 +21,6 @@ import {
   anxietyInstructions,
   anxietyIntroDescription,
   anxietyIntroSubtitle,
-  anxietyIntroTitle,
   evaluatePassScore,
   passCutOffValue,
   passImportantNote,
@@ -66,11 +65,14 @@ export function AnxietyDialog() {
       ? progress?.posttestQuiz
       : progress?.initialPretestQuiz;
 
-  // Sub-tahap aktif di dalam dialog:
+  // Sub-tahap aktif dihitung secara deterministik dari status penyelesaian (tanpa cascading setState di useEffect):
   // 'pass' (31 pertanyaan kecemasan PASS) -> 'quiz' (20 pertanyaan pemahaman) -> 'summary' (hasil akhir 1x pengerjaan)
-  const [activeSubStage, setActiveSubStage] = useState<
-    'pass' | 'quiz' | 'summary'
-  >('pass');
+  const activeSubStage: 'pass' | 'quiz' | 'summary' =
+    existingPassRecord && existingQuizRecord
+      ? 'summary'
+      : existingPassRecord && !existingQuizRecord
+      ? 'quiz'
+      : 'pass';
 
   // State pengerjaan PASS (31 pernyataan)
   const [passStep, setPassStep] = useState(0);
@@ -84,26 +86,6 @@ export function AnxietyDialog() {
   const [quizStep, setQuizStep] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [showPosttestReminder, setShowPosttestReminder] = useState(true);
-
-  // Sinkronkan sub-stage saat dialog dibuka
-  useEffect(() => {
-    if (!isAnxietyDialogOpen) return;
-    if (existingPassRecord && existingQuizRecord) {
-      setActiveSubStage('summary');
-    } else if (existingPassRecord && !existingQuizRecord) {
-      setActiveSubStage('quiz');
-    } else {
-      setActiveSubStage('pass');
-    }
-    setPassStep(0);
-    setQuizStep(0);
-    setShowPosttestReminder(anxietyDialogPhase === 'posttest');
-  }, [
-    isAnxietyDialogOpen,
-    anxietyDialogPhase,
-    existingPassRecord,
-    existingQuizRecord,
-  ]);
 
   useFocusTrap(dialogRef, isAnxietyDialogOpen, closeAnxietyDialog);
 
@@ -133,7 +115,7 @@ export function AnxietyDialog() {
     if (viewMode === 'list') {
       if (!allPassAnswered) return;
       handleSubmitAnxiety(passAnswers, anxietyDialogPhase);
-      setActiveSubStage('quiz');
+      setQuizStep(0);
       scrollBodyToTop();
       return;
     }
@@ -144,7 +126,7 @@ export function AnxietyDialog() {
       setPassStep((prev) => prev + 1);
     } else {
       handleSubmitAnxiety(passAnswers, anxietyDialogPhase);
-      setActiveSubStage('quiz');
+      setQuizStep(0);
       scrollBodyToTop();
     }
   };
@@ -184,7 +166,6 @@ export function AnxietyDialog() {
       totalQuizQuestions,
       anxietyDialogPhase === 'pretest'
     );
-    setActiveSubStage('summary');
     scrollBodyToTop();
   };
 
@@ -212,6 +193,8 @@ export function AnxietyDialog() {
   };
 
   const handleFinishAndClose = (scrollToSection?: string) => {
+    setPassStep(0);
+    setQuizStep(0);
     closeAnxietyDialog();
     if (scrollToSection) {
       enterWebApp(scrollToSection);

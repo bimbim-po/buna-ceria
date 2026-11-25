@@ -7,7 +7,6 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
   Award,
-  Bookmark,
   BookOpen,
   Camera,
   Check,
@@ -17,22 +16,16 @@ import {
   Home,
   LogOut,
   Mail,
-  MessageCircle,
   Phone,
   RefreshCw,
   Save,
-  Settings,
   ShieldCheck,
   Sparkles,
-  Sun,
-  UserCheck,
   X,
 } from 'lucide-react';
 import {
-  getExperts,
   getFooterContact,
   getModules,
-  getTips,
   getUserDayInfo,
 } from '@/lib/api';
 import { AppMode, useApp } from '@/context/AppContext';
@@ -40,11 +33,18 @@ import { LandingPage } from '@/components/LandingPage';
 import { Header } from '@/components/Header';
 import { SidebarNav } from '@/components/SidebarNav';
 import { StageTracker } from '@/components/StageTracker';
-import { StagePanel } from '@/components/StagePanel';
-import { ModuleReader } from '@/components/ModuleReader';
 import { FeelingSelector } from '@/components/FeelingSelector';
-import { TipCard } from '@/components/TipCard';
 import { EditorialHeroBanner } from '@/components/EditorialHeroBanner';
+
+const StagePanel = dynamic(
+  () => import('@/components/StagePanel').then((mod) => mod.StagePanel),
+  { ssr: false }
+);
+
+const ModuleReader = dynamic(
+  () => import('@/components/ModuleReader').then((mod) => mod.ModuleReader),
+  { ssr: false }
+);
 
 const LoginDialog = dynamic(
   () => import('@/components/LoginDialog').then((mod) => mod.LoginDialog),
@@ -53,11 +53,6 @@ const LoginDialog = dynamic(
 
 const AnxietyDialog = dynamic(
   () => import('@/components/AnxietyDialog').then((mod) => mod.AnxietyDialog),
-  { ssr: false }
-);
-
-const QuizRunner = dynamic(
-  () => import('@/components/QuizRunner').then((mod) => mod.QuizRunner),
   { ssr: false }
 );
 
@@ -274,7 +269,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
     enterLandingPage,
     session,
     progress,
-    anxietySubmission,
     moduleStatuses,
     activeModuleId,
     openLoginDialog,
@@ -290,42 +284,48 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
   const prefersReducedMotion = useReducedMotion();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const profileSavedTimerRef = useRef<number | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [savedTipIds, setSavedTipIds] = useState<string[]>([]);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [selectedInfoCard, setSelectedInfoCard] = useState<UnifiedCard | null>(null);
-  const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
-  const [isReflectionModalOpen, setIsReflectionModalOpen] = useState(false);
 
-  // State Form Edit Profil di halaman Pengaturan (Item 20)
-  const [profileName, setProfileName] = useState(session?.name ?? '');
-  const [profileEmail, setProfileEmail] = useState(session?.email ?? '');
-  const [profilePhone, setProfilePhone] = useState(session?.phone ?? '');
-  const [profileTrimester, setProfileTrimester] = useState(
-    session?.trimesterLabel ?? 'Nifas Hari ke 1-2 Hari'
-  );
+  // State Form Edit Profil di halaman Pengaturan (tanpa cascading setState di useEffect)
+  const [profileNameDraft, setProfileNameDraft] = useState<string | null>(null);
+  const [profileEmailDraft, setProfileEmailDraft] = useState<string | null>(null);
+  const [profilePhoneDraft, setProfilePhoneDraft] = useState<string | null>(null);
+  const [profileTrimesterDraft, setProfileTrimesterDraft] = useState<string | null>(null);
   const [profilePassword, setProfilePassword] = useState('');
   const [profileSavedNotice, setProfileSavedNotice] = useState<string | null>(null);
 
+  const profileName = profileNameDraft ?? session?.name ?? '';
+  const profileEmail = profileEmailDraft ?? session?.email ?? '';
+  const profilePhone = profilePhoneDraft ?? session?.phone ?? '';
+  const profileTrimester =
+    profileTrimesterDraft ?? session?.trimesterLabel ?? 'Nifas Hari ke 1-2 Hari';
+
+  const setProfileName = (v: string) => setProfileNameDraft(v);
+  const setProfileEmail = (v: string) => setProfileEmailDraft(v);
+  const setProfilePhone = (v: string) => setProfilePhoneDraft(v);
+  const setProfileTrimester = (v: string) => setProfileTrimesterDraft(v);
+
   useEffect(() => {
-    if (session) {
-      setProfileName(session.name);
-      setProfileEmail(session.email);
-      setProfilePhone(session.phone);
-      setProfileTrimester(session.trimesterLabel ?? 'Nifas Hari ke 1-2 Hari');
-    }
-  }, [session]);
+    return () => {
+      if (profileSavedTimerRef.current !== null) {
+        window.clearTimeout(profileSavedTimerRef.current);
+      }
+    };
+  }, []);
 
   // Re-fetch dynamic data when dataVersion changes (e.g., Admin edits modules)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const modules = React.useMemo(() => getModules(), [dataVersion]);
-  const tips = getTips();
-  const experts = getExperts();
   const footerContact = getFooterContact();
 
   const dayInfo = React.useMemo(() => {
     return getUserDayInfo(session?.id ?? 'guest');
-  }, [session?.id, progress?.simulatedDayOffset, progress?.firstLoginAt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.id, progress]);
 
   const isPretestCompleted = Boolean(
     progress?.initialPretestAnxiety && progress?.initialPretestQuiz
@@ -378,14 +378,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
     }
   };
 
-  const toggleSaveTip = (tipId: string) => {
-    setSavedTipIds((prev) =>
-      prev.includes(tipId)
-        ? prev.filter((id) => id !== tipId)
-        : [...prev, tipId]
-    );
-  };
-
   const handleProfileSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (!session) {
@@ -401,18 +393,17 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
     });
     setProfilePassword('');
     setProfileSavedNotice('Profil Ibu berhasil diperbarui dan disimpan!');
-    setTimeout(() => setProfileSavedNotice(null), 3500);
+    if (profileSavedTimerRef.current !== null) {
+      window.clearTimeout(profileSavedTimerRef.current);
+    }
+    profileSavedTimerRef.current = window.setTimeout(() => {
+      setProfileSavedNotice(null);
+      profileSavedTimerRef.current = null;
+    }, 3500);
   };
 
   const completedModules = progress?.completedModuleIds.length ?? 0;
   const completedStages = progress?.completedStageIds.length ?? 0;
-
-  // Filter pencarian sederhana untuk tips
-  const filteredTips = tips.filter(
-    (t) =>
-      t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const viewTransitionProps = {
     initial: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 },
@@ -1448,58 +1439,6 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal Quiz Interaktif */}
-      {isQuizModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 sm:p-6 overflow-y-auto">
-          <div className="relative w-full max-w-3xl rounded-[28px] bg-white p-4 sm:p-6 shadow-2xl border border-gray-100 my-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
-                  <Award className="h-4 w-4" />
-                </span>
-                <h3 className="font-heading text-lg font-bold text-[#2A2D22]">
-                  Level 4 • Quiz (Post Test) 20 Soal
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsQuizModalOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-800 transition-colors cursor-pointer"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            <QuizRunner />
-          </div>
-        </div>
-      )}
-
-      {/* Modal Refleksi & Hasil Belajar */}
-      {isReflectionModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 sm:p-6 overflow-y-auto">
-          <div className="relative w-full max-w-3xl rounded-[28px] bg-white p-4 sm:p-6 shadow-2xl border border-gray-100 my-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-100 text-purple-700">
-                  <CheckCircle className="h-4 w-4" />
-                </span>
-                <h3 className="font-heading text-lg font-bold text-[#2A2D22]">
-                  Level 3 • Rangkuman Hasil Belajar
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsReflectionModalOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-800 transition-colors cursor-pointer"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            <ResultSummary />
           </div>
         </div>
       )}

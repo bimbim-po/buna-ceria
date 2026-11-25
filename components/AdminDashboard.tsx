@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   BookOpen,
   Check,
@@ -42,6 +42,7 @@ export function AdminDashboard() {
   const [users, setUsers] = useState<MockUser[]>(() => getAllUsers());
   const [modules, setModules] = useState<ModuleItem[]>(() => getModules());
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const statusTimerRef = useRef<number | null>(null);
   const [supabaseUrlInput, setSupabaseUrlInput] = useState<string>(() =>
     getSupabaseUrl()
   );
@@ -64,6 +65,14 @@ export function AdminDashboard() {
     summary: string;
     bodyText: string;
   } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (statusTimerRef.current !== null) {
+        window.clearTimeout(statusTimerRef.current);
+      }
+    };
+  }, []);
 
   if (session?.role !== 'admin') {
     return (
@@ -90,7 +99,13 @@ export function AdminDashboard() {
 
   const notify = (msg: string) => {
     setStatusMessage(msg);
-    window.setTimeout(() => setStatusMessage(null), 3200);
+    if (statusTimerRef.current !== null) {
+      window.clearTimeout(statusTimerRef.current);
+    }
+    statusTimerRef.current = window.setTimeout(() => {
+      setStatusMessage(null);
+      statusTimerRef.current = null;
+    }, 3200);
   };
 
   const handleSaveUserForm = (e: React.FormEvent) => {

@@ -76,6 +76,8 @@ export function StagePanel() {
   const modules = getModules();
 
   const dayInfo = useMemo(() => {
+    void progress?.simulatedDayOffset;
+    void progress?.firstLoginAt;
     return getUserDayInfo(session?.id ?? 'guest');
   }, [session?.id, progress?.simulatedDayOffset, progress?.firstLoginAt]);
 

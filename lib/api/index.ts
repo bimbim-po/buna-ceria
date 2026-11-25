@@ -28,7 +28,6 @@ import {
   AnxietyQuestion,
   AnxietySubmission,
   CompletionStatus,
-  DailyMoodEntry,
   DailyMoodType,
   ExpertContact,
   FeelingTopic,

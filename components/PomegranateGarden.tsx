@@ -6,11 +6,8 @@ import {
   Award,
   CheckCircle,
   Clock,
-  ExternalLink,
-  Flame,
   Gamepad2,
   Headphones,
-  HelpCircle,
   Lock,
   MessageCircle,
   Pause,
@@ -129,6 +126,8 @@ export function PomegranateGarden() {
   } = useApp();
 
   const dayInfo = useMemo(() => {
+    void progress?.simulatedDayOffset;
+    void progress?.firstLoginAt;
     return getUserDayInfo(session?.id ?? 'guest');
   }, [session?.id, progress?.simulatedDayOffset, progress?.firstLoginAt]);
 

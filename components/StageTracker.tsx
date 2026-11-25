@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Check, Lock, Sparkles } from 'lucide-react';
+import { Check, Lock } from 'lucide-react';
 import { getStages } from '@/lib/api';
 import { uiContent } from '@/data/uiContent';
 import { useApp } from '@/context/AppContext';

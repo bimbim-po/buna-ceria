@@ -151,6 +151,8 @@ export function SelfieStudio() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const toolbarRef = useRef<HTMLDivElement | null>(null);
+  const countdownIntervalRef = useRef<number | null>(null);
+  const downloadTimerRef = useRef<number | null>(null);
 
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
@@ -162,18 +164,12 @@ export function SelfieStudio() {
     null
   );
 
-  const [frameOrientation, setFrameOrientation] =
-    useState<FrameOrientation>('landscape');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth < 768) {
-        setFrameOrientation('portrait');
-      } else {
-        setFrameOrientation('landscape');
-      }
-    }
-  }, []);
+  const [frameOrientation, setFrameOrientation] = useState<FrameOrientation>(
+    () =>
+      typeof window !== 'undefined' && window.innerWidth < 768
+        ? 'portrait'
+        : 'landscape'
+  );
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -192,14 +188,12 @@ export function SelfieStudio() {
   const [selectedPose, setSelectedPose] = useState<PoseGuide>(POSE_GUIDES[0]);
   const [includeGuideInDownload, setIncludeGuideInDownload] = useState(false);
 
-  const [customUserName, setCustomUserName] = useState<string>(
-    session?.name ? `${session.name} & Pasangan` : 'Bunda & Ayah'
-  );
-  const [customCaption, setCustomCaption] = useState<string>(
-    session?.trimesterLabel
-      ? `Momen Bahagia Lahirnya Si Buah Hati • ${session.trimesterLabel}`
-      : 'Momen Bahagia Lahirnya Si Buah Hati'
-  );
+  const [userEditedName, setUserEditedName] = useState<string | null>(null);
+  const customUserName =
+    userEditedName ??
+    (session?.name ? `${session.name} & Pasangan` : 'Bunda & Ayah');
+  const setCustomUserName = (val: string) => setUserEditedName(val);
+
   const [customDate, setCustomDate] = useState<string>(() =>
     new Date().toLocaleDateString('id-ID', {
       day: 'numeric',
@@ -210,18 +204,12 @@ export function SelfieStudio() {
   const [showCustomFooterText, setShowCustomFooterText] = useState<boolean>(true);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
-  useEffect(() => {
-    if (session?.name) {
-      setCustomUserName(`${session.name} & Pasangan`);
-    }
-    if (session?.trimesterLabel) {
-      setCustomCaption(
-        `Momen Bahagia Lahirnya Si Buah Hati • ${session.trimesterLabel}`
-      );
-    }
-  }, [session?.name, session?.trimesterLabel]);
-
   const stopCamera = useCallback(() => {
+    if (countdownIntervalRef.current !== null) {
+      window.clearInterval(countdownIntervalRef.current);
+      countdownIntervalRef.current = null;
+    }
+    setCountdown(null);
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
@@ -232,6 +220,9 @@ export function SelfieStudio() {
   useEffect(() => {
     return () => {
       stopCamera();
+      if (downloadTimerRef.current !== null) {
+        window.clearTimeout(downloadTimerRef.current);
+      }
     };
   }, [stopCamera]);
 
@@ -329,12 +320,18 @@ export function SelfieStudio() {
 
   const triggerCountdownCapture = () => {
     if (!isCameraActive) return;
+    if (countdownIntervalRef.current !== null) {
+      window.clearInterval(countdownIntervalRef.current);
+    }
     setCountdown(3);
     let current = 3;
-    const interval = window.setInterval(() => {
+    countdownIntervalRef.current = window.setInterval(() => {
       current -= 1;
       if (current <= 0) {
-        window.clearInterval(interval);
+        if (countdownIntervalRef.current !== null) {
+          window.clearInterval(countdownIntervalRef.current);
+          countdownIntervalRef.current = null;
+        }
         setCountdown(null);
         captureFromVideo();
       } else {
@@ -362,7 +359,7 @@ export function SelfieStudio() {
     const geom = FRAME_GEOMETRY[frameOrientation];
     const W = geom.canvasW;
     const H = geom.canvasH;
-    const { photoX, photoY, photoW, photoH, frameSrc } = geom;
+    const { photoX, photoY, photoW, photoH, frameWebp } = geom;
 
     const canvas = document.createElement('canvas');
     canvas.width = W;
@@ -456,13 +453,13 @@ export function SelfieStudio() {
     }
     ctx.restore();
 
-    // 3. Gambar Overlay Bingkai Bunga & Renda Resmi di Atas Foto
+    // 3. Gambar Overlay Bingkai Bunga & Renda Resmi di Atas Foto (menggunakan WebP yang sudah di-cache)
     const frameImg = new window.Image();
     frameImg.crossOrigin = 'anonymous';
     await new Promise<void>((resolve) => {
       frameImg.onload = () => resolve();
       frameImg.onerror = () => resolve();
-      frameImg.src = frameSrc;
+      frameImg.src = frameWebp;
     });
     if (frameImg.width > 0) {
       ctx.drawImage(frameImg, 0, 0, W, H);
@@ -512,7 +509,13 @@ export function SelfieStudio() {
     document.body.removeChild(link);
 
     setDownloadSuccess(true);
-    window.setTimeout(() => setDownloadSuccess(false), 3500);
+    if (downloadTimerRef.current !== null) {
+      window.clearTimeout(downloadTimerRef.current);
+    }
+    downloadTimerRef.current = window.setTimeout(() => {
+      setDownloadSuccess(false);
+      downloadTimerRef.current = null;
+    }, 3500);
   };
 
   const activePoseInstruction =

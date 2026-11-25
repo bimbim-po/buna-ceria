@@ -1,29 +1,23 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
   ArrowLeft,
-  ArrowRight,
-  BookOpen,
   Check,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
-  CircleDot,
   Clock,
   Flower2,
   ListTree,
   Lock,
-  Maximize2,
-  Minimize2,
   Palette,
   ShieldCheck,
   Type,
   X,
 } from 'lucide-react';
 import { getModules } from '@/lib/api';
-import { uiContent } from '@/data/uiContent';
 import { useApp } from '@/context/AppContext';
 import { ModuleItem } from '@/types';
 

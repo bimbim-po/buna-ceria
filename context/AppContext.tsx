@@ -6,6 +6,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import {
@@ -17,7 +18,6 @@ import {
   getModules,
   getSession,
   getStageStatuses,
-  getUserDayInfo,
   getUserProgress,
   login as apiLogin,
   logout as apiLogout,
@@ -159,6 +159,19 @@ export function AppProvider({
   );
   const [lockedNotice, setLockedNotice] = useState<string | null>(null);
   const [dataVersion, setDataVersion] = useState(0);
+  const lockedTimerRef = useRef<number | null>(null);
+  const anxietyPopupTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (lockedTimerRef.current !== null) {
+        window.clearTimeout(lockedTimerRef.current);
+      }
+      if (anxietyPopupTimerRef.current !== null) {
+        window.clearTimeout(anxietyPopupTimerRef.current);
+      }
+    };
+  }, []);
 
   const refreshData = useCallback(() => {
     setDataVersion((v) => v + 1);
@@ -227,13 +240,13 @@ export function AppProvider({
 
   const triggerLockedNotice = useCallback((message: string) => {
     setLockedNotice(message);
-    window.clearTimeout(
-      (window as unknown as { __lockedTimer?: number }).__lockedTimer
-    );
-    (window as unknown as { __lockedTimer?: number }).__lockedTimer =
-      window.setTimeout(() => {
-        setLockedNotice(null);
-      }, 3200);
+    if (lockedTimerRef.current !== null) {
+      window.clearTimeout(lockedTimerRef.current);
+    }
+    lockedTimerRef.current = window.setTimeout(() => {
+      setLockedNotice(null);
+      lockedTimerRef.current = null;
+    }, 3200);
   }, []);
 
   const openLoginDialog = useCallback(() => {
@@ -289,10 +302,14 @@ export function AppProvider({
       const isInitialPretestComplete = Boolean(
         userProgress.initialPretestAnxiety && userProgress.initialPretestQuiz
       );
+      if (anxietyPopupTimerRef.current !== null) {
+        window.clearTimeout(anxietyPopupTimerRef.current);
+      }
       if (newSession.role !== 'admin' && !isInitialPretestComplete) {
-        window.setTimeout(() => {
+        anxietyPopupTimerRef.current = window.setTimeout(() => {
           setAnxietyDialogPhase('pretest');
           setIsAnxietyDialogOpen(true);
+          anxietyPopupTimerRef.current = null;
         }, 850);
       }
 
@@ -352,6 +369,10 @@ export function AppProvider({
   );
 
   const handleLogout = useCallback(() => {
+    if (anxietyPopupTimerRef.current !== null) {
+      window.clearTimeout(anxietyPopupTimerRef.current);
+      anxietyPopupTimerRef.current = null;
+    }
     apiLogout();
     setSession(null);
     setProgress(null);

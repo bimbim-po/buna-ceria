@@ -38,7 +38,6 @@ export function Header({
   const {
     session,
     openLoginDialog,
-    openAnxietyDialog,
     handleLogout,
     enterLandingPage,
   } = useApp();
@@ -189,9 +188,10 @@ export function Header({
                 >
                   <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full border border-pink-200 bg-pink-50">
                     <Image
-                      src="/ibu-hamil.jpg"
+                      src="/ibu-hamil.webp"
                       alt={session.name}
                       fill
+                      sizes="28px"
                       className="object-cover object-top"
                     />
                   </div>

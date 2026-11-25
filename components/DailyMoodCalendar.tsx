@@ -1,17 +1,14 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
-  Heart,
-  Smile,
-  Sparkles,
   Calendar as CalendarIcon,
   CheckCircle,
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
-import { DailyMoodEntry, DailyMoodType } from '@/types';
+import { DailyMoodType } from '@/types';
 
 export const MOOD_DEFINITIONS: {
   type: DailyMoodType;
@@ -134,12 +131,24 @@ export function DailyMoodCalendar() {
   const [selectedDateKey, setSelectedDateKey] = useState<string>(todayKey);
   const [noteInput, setNoteInput] = useState<string>('');
   const [savedSuccessNotice, setSavedSuccessNotice] = useState<boolean>(false);
+  const noticeTimerRef = useRef<number | null>(null);
 
-  const dailyMoods = progress?.dailyMoods || {};
+  useEffect(() => {
+    return () => {
+      if (noticeTimerRef.current !== null) {
+        window.clearTimeout(noticeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const dailyMoods = useMemo(
+    () => progress?.dailyMoods ?? {},
+    [progress?.dailyMoods]
+  );
   const currentSelectedMood = dailyMoods[selectedDateKey];
 
   // Hitung kalender bulan aktif
-  const { calendarDays, prevMonthDaysCount } = useMemo(() => {
+  const { calendarDays } = useMemo(() => {
     const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
@@ -188,7 +197,7 @@ export function DailyMoodCalendar() {
       });
     }
 
-    return { calendarDays: days, prevMonthDaysCount: firstDayIndex };
+    return { calendarDays: days };
   }, [currentYear, currentMonth, todayKey]);
 
   const handlePrevMonth = () => {
@@ -222,7 +231,13 @@ export function DailyMoodCalendar() {
       note: noteInput.trim() || currentSelectedMood?.note,
     });
     setSavedSuccessNotice(true);
-    setTimeout(() => setSavedSuccessNotice(false), 2400);
+    if (noticeTimerRef.current !== null) {
+      window.clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setSavedSuccessNotice(false);
+      noticeTimerRef.current = null;
+    }, 2400);
   };
 
   const formattedSelectedDate = useMemo(() => {

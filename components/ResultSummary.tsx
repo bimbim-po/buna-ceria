@@ -40,6 +40,8 @@ export function ResultSummary() {
   );
 
   const dayInfo = useMemo(() => {
+    void progress?.simulatedDayOffset;
+    void progress?.firstLoginAt;
     return getUserDayInfo(session?.id ?? 'guest');
   }, [session?.id, progress?.simulatedDayOffset, progress?.firstLoginAt]);
 
