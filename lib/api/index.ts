@@ -253,6 +253,13 @@ export function registerUser(input: {
   saveAllUsers(updatedUsers);
   void syncUserToSupabase(newUser);
 
+  // Inisialisasi progres akun yang baru dibuat dengan flag bubble petunjuk login pertama kali
+  const initialProgress: UserProgress = {
+    ...createDefaultProgress(newUser.id),
+    showOnboardingTour: true,
+  };
+  saveUserProgress(initialProgress);
+
   const session: UserSession = {
     id: newUser.id,
     name: newUser.name,
@@ -346,7 +353,25 @@ export function adminDeleteUser(userId: string): MockUser[] {
 }
 
 export function logout(): void {
+  const current = getSession();
+  if (current) {
+    const prog = getUserProgress(current.id);
+    if (prog.showOnboardingTour) {
+      saveUserProgress({
+        ...prog,
+        showOnboardingTour: false,
+      });
+    }
+  }
   storage.removeItem(STORAGE_KEYS.SESSION);
+}
+
+export function completeOnboardingTour(userId: string): UserProgress {
+  const current = getUserProgress(userId);
+  return saveUserProgress({
+    ...current,
+    showOnboardingTour: false,
+  });
 }
 
 // ============================================================================

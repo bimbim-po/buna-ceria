@@ -285,5 +285,6 @@ export interface UserProgress {
   reflectionSelectedItems?: string[];
   evaluationCheckedItems?: string[];
   reflectionStartTimeChoice?: string;
+  showOnboardingTour?: boolean;
   updatedAt: string;
 }

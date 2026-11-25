@@ -3,23 +3,17 @@
 import React from 'react';
 import Image from 'next/image';
 import {
-  Award,
-  BookOpen,
-  Camera,
   ChevronLeft,
   ChevronRight,
   ClipboardCheck,
   Globe,
-  Home,
   LogIn,
   Power,
   RefreshCw,
-  Settings,
-  ShieldCheck,
-  Sparkles,
   X,
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { Menu3DIcon, Menu3DIconName } from '@/components/Menu3DIcon';
 
 interface SidebarNavProps {
   activeSection: string;
@@ -46,15 +40,19 @@ export function SidebarNav({
     enterLandingPage,
   } = useApp();
 
-  const menuItems = [
-    { id: 'beranda', label: 'Beranda', icon: Home },
-    { id: 'materi', label: 'Tahapan & Materi', icon: BookOpen },
-    { id: 'tips', label: 'Kebun Buah Delima', icon: Sparkles },
-    { id: 'hasil', label: 'Hasil Saya', icon: Award },
-    { id: 'selfie', label: 'Take Selfie', icon: Camera, badge: 'Foto' },
-    { id: 'pengaturan', label: 'Pengaturan', icon: Settings },
+  const menuItems: {
+    id: Menu3DIconName;
+    label: string;
+    badge?: string;
+  }[] = [
+    { id: 'beranda', label: 'Beranda' },
+    { id: 'materi', label: 'Tahapan & Materi' },
+    { id: 'tips', label: 'Kebun Buah Delima' },
+    { id: 'hasil', label: 'Hasil Saya' },
+    { id: 'selfie', label: 'Take Selfie', badge: 'Foto' },
+    { id: 'pengaturan', label: 'Pengaturan' },
     ...(session?.role === 'admin'
-      ? [{ id: 'admin', label: 'Panel Admin', icon: ShieldCheck, badge: 'Admin' }]
+      ? [{ id: 'admin' as Menu3DIconName, label: 'Panel Admin', badge: 'Admin' }]
       : []),
   ];
 
@@ -149,16 +147,15 @@ export function SidebarNav({
         </div>
 
         {/* ===================================================================
-            2. MENU NAVIGASI UTAMA (Item 21: Navbar untuk beralih ke halaman fitur)
+            2. MENU NAVIGASI UTAMA DENGAN IKON 3D REALISTIS
            =================================================================== */}
         <nav
           aria-label="Menu WebApp"
-          className={`space-y-1 pt-1 ${
+          className={`space-y-1.5 pt-1 ${
             isCollapsed ? 'flex flex-col items-center' : ''
           }`}
         >
           {menuItems.map((item) => {
-            const Icon = item.icon;
             const isActive = activeSection === item.id;
 
             if (isCollapsed) {
@@ -166,17 +163,18 @@ export function SidebarNav({
                 <button
                   key={item.id}
                   type="button"
+                  data-tour-id={`nav-${item.id}`}
                   onClick={() => handleNavClick(item.id)}
                   title={item.label}
                   aria-label={item.label}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`group relative flex h-10 w-10 items-center justify-center rounded-xl transition-all cursor-pointer ${
+                  className={`group relative flex h-11 w-11 items-center justify-center rounded-full transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#C84B71] text-white shadow-xs scale-105 font-bold'
-                      : 'text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22]'
+                      ? 'bg-gradient-to-r from-[#F06292] to-[#E55381] text-white shadow-[0_6px_16px_rgba(229,83,129,0.35)] scale-105 font-bold'
+                      : 'text-[#5E5A5C] hover:bg-[#FDF2F5]/75 hover:text-[#2A2D22]'
                   }`}
                 >
-                  <Icon className="h-5 w-5 shrink-0" strokeWidth={isActive ? 2.2 : 1.75} />
+                  <Menu3DIcon name={item.id} className="h-6 w-6 shrink-0" />
                 </button>
               );
             }
@@ -185,31 +183,30 @@ export function SidebarNav({
               <button
                 key={item.id}
                 type="button"
+                data-tour-id={`nav-${item.id}`}
                 onClick={() => handleNavClick(item.id)}
                 aria-current={isActive ? 'page' : undefined}
-                className={`group relative flex min-h-[40px] w-full items-center justify-between gap-2 rounded-xl px-3.5 py-2 text-left text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
+                className={`group relative flex min-h-[44px] w-full items-center justify-between gap-2 rounded-full px-3.5 py-2 text-left text-[13px] sm:text-[13.5px] transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-[#C84B71] text-white font-bold shadow-xs'
-                    : 'text-[#6E6A6C] hover:bg-[#FAF8FC] hover:text-[#2A2D22]'
+                    ? 'bg-gradient-to-r from-[#F06292] to-[#E55381] text-white font-bold shadow-[0_6px_16px_rgba(229,83,129,0.32)]'
+                    : 'text-[#5E5A5C] font-medium hover:bg-[#FDF2F5]/75 hover:text-[#2A2D22]'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <Icon
-                    className={`h-[18px] w-[18px] shrink-0 transition-colors ${
-                      isActive ? 'text-white' : 'text-[#8C8896] group-hover:text-[#2A2D22]'
-                    }`}
-                    strokeWidth={isActive ? 2.2 : 1.75}
+                  <Menu3DIcon
+                    name={item.id}
+                    className="h-7 w-7 shrink-0 transition-transform duration-200 group-hover:scale-105"
                   />
                   <span className="truncate">{item.label}</span>
                 </div>
                 {item.badge && (
                   <span
-                    className={`rounded-full px-2 py-0.5 text-[10px] font-bold shrink-0 ${
+                    className={`rounded-full px-2.5 py-0.5 text-[10.5px] font-bold shrink-0 ${
                       isActive
-                        ? 'bg-white/20 text-white'
+                        ? 'bg-white/25 text-white'
                         : item.id === 'admin'
                         ? 'bg-[#F5F8EB] text-[#56632A]'
-                        : 'bg-[#FDF2F5] text-[#C84B71]'
+                        : 'bg-[#FDEBF1] text-[#D84B78]'
                     }`}
                   >
                     {item.badge}

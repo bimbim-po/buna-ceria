@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   AlertTriangle,
   ArrowRight,
@@ -11,12 +11,9 @@ import {
   CheckCircle2,
   CircleDot,
   Heart,
-  Headphones,
   Lock,
   Maximize2,
   Minimize2,
-  Pause,
-  Play,
   Sparkles,
   Users,
   Wind,
@@ -26,6 +23,7 @@ import { getModules, getStages, getUserDayInfo } from '@/lib/api';
 import { uiContent } from '@/data/uiContent';
 import { useApp } from '@/context/AppContext';
 import { StageId } from '@/types';
+import { Menu3DIcon } from '@/components/Menu3DIcon';
 
 const START_TIME_OPTIONS = [
   'Hari ini',
@@ -49,14 +47,6 @@ const POSITIVE_AFFIRMATIONS = [
   'Aku boleh beristirahat ketika merasa lelah.',
   'Aku berhak mendapatkan bantuan dan dukungan.',
   'Aku dan bayiku sedang belajar untuk saling beradaptasi. Aku adalah ibu yang hebat dan terus belajar.',
-];
-
-const AUDIO_GUIDE_STEPS = [
-  'Pilih tempat yang nyaman dan tidak terlalu bising.',
-  'Atur posisi tubuh agar Bunda merasa rileks.',
-  'Gunakan volume yang nyaman.',
-  'Fokuskan perhatian pada suara yang didengarkan.',
-  'Berikan waktu kepada diri sendiri tanpa terburu-buru.',
 ];
 
 export function StagePanel() {
@@ -102,32 +92,6 @@ export function StagePanel() {
     progress?.reflectionStartTimeChoice ?? 'Hari ini'
   );
   const [isFullscreenStage, setIsFullscreenStage] = useState(false);
-
-  // Interactive Audio Relaksasi Kecemasan di Level 2
-  const [isRelaxAudioPlaying, setIsRelaxAudioPlaying] = useState(false);
-  const [relaxAudioSeconds, setRelaxAudioSeconds] = useState(0);
-  const RELAX_AUDIO_DURATION = 60;
-  const relaxTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    if (isRelaxAudioPlaying) {
-      relaxTimerRef.current = setInterval(() => {
-        setRelaxAudioSeconds((prev) => {
-          if (prev + 1 >= RELAX_AUDIO_DURATION) {
-            clearInterval(relaxTimerRef.current as NodeJS.Timeout);
-            setIsRelaxAudioPlaying(false);
-            return RELAX_AUDIO_DURATION;
-          }
-          return prev + 1;
-        });
-      }, 1000);
-    } else if (relaxTimerRef.current) {
-      clearInterval(relaxTimerRef.current);
-    }
-    return () => {
-      if (relaxTimerRef.current) clearInterval(relaxTimerRef.current);
-    };
-  }, [isRelaxAudioPlaying]);
 
   const toggleItem = (
     list: string[],
@@ -576,77 +540,34 @@ export function StagePanel() {
               </div>
             </div>
 
-            {/* 3. Audio Relaksasi Kecemasan */}
-            <div className="rounded-[24px] border border-amber-200/90 bg-gradient-to-br from-[#FFFDF7] via-[#FFF9EB] to-[#FEF3C7]/60 p-5 sm:p-6 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-[#B45309]">
-                    <Headphones className="h-5 w-5" />
+            {/* 3. Tombol Pintasan Langsung ke Kebun Bunga Delima */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsFullscreenStage(false);
+                enterWebApp('tips');
+              }}
+              className="group flex w-full flex-col sm:flex-row items-center justify-between gap-4 rounded-[24px] border-2 border-[#F5B8CB] bg-gradient-to-r from-[#FFF0F5] via-[#FFF6F9] to-[#FEF3C7]/60 p-5 sm:p-6 text-left shadow-[0_8px_24px_rgba(200,75,113,0.12)] hover:border-[#E55381] hover:shadow-[0_12px_28px_rgba(200,75,113,0.2)] transition-all duration-200 active:scale-[0.99] cursor-pointer"
+            >
+              <div className="flex items-center gap-3.5">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F06292] to-[#E55381] text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
+                  <Menu3DIcon name="tips" className="h-7 w-7" />
+                </span>
+                <div>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/90 border border-pink-200 px-3 py-0.5 text-[11px] font-bold text-[#C84B71] mb-1">
+                    🌺 Kebun Bunga Delima
                   </span>
-                  <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#B45309]">
-                      Teknik Relaksasi 3 • Audio Relaksasi
-                    </span>
-                    <h5 className="font-heading text-base sm:text-lg font-bold text-[#2A2D22]">
-                      Audio Relaksasi Kecemasan
-                    </h5>
-                    <p className="text-xs font-medium text-[#92400E]">
-                      Dengarkan, tenangkan pikiran, dan berikan waktu untuk diri sendiri
-                    </p>
-                  </div>
+                  <p className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug">
+                    selain itu, bunda juga bisa belajar di kebun delima, pencet di sini yaa🥰
+                  </p>
                 </div>
-
-                {/* Tombol Putar Audio Relaksasi */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (relaxAudioSeconds >= RELAX_AUDIO_DURATION) {
-                      setRelaxAudioSeconds(0);
-                      setIsRelaxAudioPlaying(true);
-                    } else {
-                      setIsRelaxAudioPlaying((p) => !p);
-                    }
-                  }}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#B45309] hover:bg-[#92400E] px-5 py-2.5 text-xs font-bold text-white shadow-xs transition-all cursor-pointer self-start sm:self-auto"
-                >
-                  {isRelaxAudioPlaying ? (
-                    <>
-                      <Pause className="h-4 w-4" />
-                      <span>Jeda Audio ({relaxAudioSeconds}s / {RELAX_AUDIO_DURATION}s)</span>
-                    </>
-                  ) : (
-                    <>
-                      <Play className="h-4 w-4 ml-0.5" />
-                      <span>
-                        {relaxAudioSeconds > 0
-                          ? `Lanjutkan Audio (${relaxAudioSeconds}s)`
-                          : 'Putar Audio Relaksasi'}
-                      </span>
-                    </>
-                  )}
-                </button>
               </div>
 
-              <p className="text-xs sm:text-[13px] text-[#5F5B5D] leading-relaxed">
-                Terkadang, Bunda hanya membutuhkan waktu sejenak untuk beristirahat dari berbagai pikiran dan aktivitas. Bunda dapat mendengarkan audio ketika bayi sedang tidur, saat beristirahat, atau ketika mulai merasa khawatir.
-              </p>
-
-              <div className="rounded-2xl bg-white/90 border border-amber-200/80 p-4 space-y-2">
-                <p className="text-xs font-bold text-[#78350F]">
-                  Panduan singkat sebelum mendengarkan audio:
-                </p>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#4A4748]">
-                  {AUDIO_GUIDE_STEPS.map((guide, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-amber-100 text-[10px] font-bold text-[#B45309] mt-0.5">
-                        {i + 1}
-                      </span>
-                      <span>{guide}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+              <span className="inline-flex min-h-[42px] w-full sm:w-auto shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#F06292] to-[#E55381] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm group-hover:from-[#E55381] group-hover:to-[#C84B71] transition-all">
+                <span>Ke Kebun Bunga Delima</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </span>
+            </button>
 
             {/* 4. Dukungan Suami (Dilengkapi Take Selfie) & 5. Kapan Bunda Perlu Meminta Bantuan? */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">

@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
-  Camera,
   ChevronDown,
   Globe,
   LogIn,
@@ -14,11 +13,10 @@ import {
   Minimize2,
   RefreshCw,
   Search,
-  Settings,
-  ShieldCheck,
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { SidebarNav } from '@/components/SidebarNav';
+import { Menu3DIcon } from '@/components/Menu3DIcon';
 
 const CUSTOM_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -141,11 +139,11 @@ export function Header({
               title="Buka Studio Take Selfie Pasangan"
               className={`hidden sm:inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-bold transition-colors cursor-pointer ${
                 activeSection === 'selfie'
-                  ? 'border-[#C84B71] bg-[#C84B71] text-white'
+                  ? 'border-[#E55381] bg-gradient-to-r from-[#F06292] to-[#E55381] text-white'
                   : 'border-pink-200 bg-[#FDF2F5] text-[#C84B71] hover:bg-[#FCE8EE]'
               }`}
             >
-              <Camera className="h-3.5 w-3.5" />
+              <Menu3DIcon name="selfie" className="h-4 w-4" />
               <span>Take Selfie</span>
             </button>
 
@@ -253,7 +251,7 @@ export function Header({
                           }}
                           className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-xs font-semibold text-[#2A2D22] hover:bg-gray-50 cursor-pointer"
                         >
-                          <Settings className="h-4 w-4 text-[#8C8896]" />
+                          <Menu3DIcon name="pengaturan" className="h-5 w-5 shrink-0" />
                           <span>Pengaturan &amp; Ubah Profil</span>
                         </button>
 
@@ -267,7 +265,7 @@ export function Header({
                             }}
                             className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-xs font-semibold text-[#56632A] hover:bg-[#F5F8EB] cursor-pointer"
                           >
-                            <ShieldCheck className="h-4 w-4" />
+                            <Menu3DIcon name="admin" className="h-5 w-5 shrink-0" />
                             <span>Panel Admin</span>
                           </button>
                         )}

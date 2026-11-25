@@ -8,12 +8,10 @@ import {
   ArrowRight,
   Award,
   BookOpen,
-  Camera,
   Check,
   CheckCircle,
   Clock,
   Globe,
-  Home,
   LogOut,
   Mail,
   Phone,
@@ -35,6 +33,15 @@ import { SidebarNav } from '@/components/SidebarNav';
 import { StageTracker } from '@/components/StageTracker';
 import { FeelingSelector } from '@/components/FeelingSelector';
 import { EditorialHeroBanner } from '@/components/EditorialHeroBanner';
+import { Menu3DIcon, Menu3DIconName } from '@/components/Menu3DIcon';
+
+const OnboardingTourBubbles = dynamic(
+  () =>
+    import('@/components/OnboardingTourBubbles').then(
+      (mod) => mod.OnboardingTourBubbles
+    ),
+  { ssr: false }
+);
 
 const StagePanel = dynamic(
   () => import('@/components/StagePanel').then((mod) => mod.StagePanel),
@@ -512,10 +519,15 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
                       {/* A. PERTANYAAN PERASAAN USER BESERTA TIPSNYA & STATUS PRE-TEST AWAL */}
                       <section aria-labelledby="perasaan-heading" className="space-y-4">
-                        <FeelingSelector />
+                        <div data-tour-id="tour-feeling-selector">
+                          <FeelingSelector />
+                        </div>
 
                         {/* Status Pre-Test Awal (PASS 31 Pertanyaan & Pemahaman 20 Pertanyaan — 1x Pengerjaan) */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[20px] border border-[#F5DCE4] bg-white px-4 py-4 sm:px-5">
+                        <div
+                          data-tour-id="tour-pretest-card"
+                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[20px] border border-[#F5DCE4] bg-white px-4 py-4 sm:px-5"
+                        >
                           <div className="flex items-start gap-3">
                             <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FBEDF1] text-[#C84B71]">
                               <CheckCircle className="h-4 w-4" />
@@ -554,10 +566,16 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                       </section>
 
                       {/* B. KALENDER EMOTIKON HARIAN (Item 8 Client Brief: 🥰 🙂 😞 😖 😤 🤯) */}
-                      <DailyMoodCalendar />
+                      <div data-tour-id="tour-mood-calendar">
+                        <DailyMoodCalendar />
+                      </div>
 
                       {/* C. 3 BULATAN TINGKATAN PEMBELAJARAN BERTAHAP */}
-                      <section aria-labelledby="tahapan-beranda-heading" className="space-y-3">
+                      <section
+                        data-tour-id="tour-stage-tracker"
+                        aria-labelledby="tahapan-beranda-heading"
+                        className="space-y-3"
+                      >
                         <div className="flex items-end justify-between gap-3">
                           <div>
                             <h2
@@ -638,6 +656,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                             <button
                               key={tile.id}
                               type="button"
+                              data-tour-id={`tour-shortcut-${tile.id}`}
                               onClick={() => handleSelectSection(tile.id)}
                               className={`group relative flex min-h-[176px] sm:min-h-[188px] flex-col overflow-hidden rounded-[20px] ${tile.tint} p-4 sm:p-5 text-left ring-1 ring-black/4 ${tile.ring} transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(60,40,50,0.08)] active:translate-y-0 cursor-pointer`}
                             >
@@ -1285,14 +1304,15 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
               className="lg:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-[#F5DCE4] bg-white/95 backdrop-blur-md px-2 py-2 shadow-[0_-6px_26px_rgba(200,75,113,0.12)]"
             >
               <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
-                {[
-                  { id: 'beranda', label: 'Beranda', icon: Home },
-                  { id: 'materi', label: 'Materi', icon: BookOpen },
-                  { id: 'tips', label: 'Delima', icon: Sparkles },
-                  { id: 'hasil', label: 'Hasil Saya', icon: Award },
-                  { id: 'selfie', label: 'Selfie', icon: Camera },
-                ].map((item) => {
-                  const Icon = item.icon;
+                {(
+                  [
+                    { id: 'beranda', label: 'Beranda' },
+                    { id: 'materi', label: 'Materi' },
+                    { id: 'tips', label: 'Delima' },
+                    { id: 'hasil', label: 'Hasil Saya' },
+                    { id: 'selfie', label: 'Selfie' },
+                  ] as { id: Menu3DIconName; label: string }[]
+                ).map((item) => {
                   const active = activeSection === item.id;
                   return (
                     <button
@@ -1305,7 +1325,7 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
                           : 'text-[#767A6E] hover:text-[#2A2D22] font-medium'
                       }`}
                     >
-                      <Icon className="h-4 w-4" strokeWidth={active ? 2.2 : 1.8} />
+                      <Menu3DIcon name={item.id} className="h-5 w-5" />
                       <span className="mt-0.5 text-[10px] leading-tight truncate">
                         {item.label}
                       </span>
@@ -1448,6 +1468,9 @@ export function HomeContent({ initialMode }: { initialMode?: AppMode }) {
 
       {/* Dialog Kuesioner Kecemasan / Sapa Perasaan */}
       <AnxietyDialog />
+
+      {/* Bubble Petunjuk Alur WebApp (Khusus Akun Baru pada Login Pertama Kali) */}
+      <OnboardingTourBubbles />
     </>
   );
 }

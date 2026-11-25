@@ -12,6 +12,7 @@ import React, {
 import {
   completeGardenActivity as apiCompleteGardenActivity,
   completeModule as apiCompleteModule,
+  completeOnboardingTour as apiCompleteOnboardingTour,
   completeStage as apiCompleteStage,
   getAnxietySubmission,
   getModuleStatuses,
@@ -51,11 +52,13 @@ interface AppContextValue {
   stageStatuses: Record<StageId, CompletionStatus>;
   isLoginDialogOpen: boolean;
   isAnxietyDialogOpen: boolean;
+  isOnboardingTourOpen: boolean;
   anxietyDialogPhase: 'pretest' | 'posttest';
   activeModuleId: string | null;
   lockedNotice: string | null;
   dataVersion: number;
   refreshData: () => void;
+  completeOnboardingTour: (openPretestAfter?: boolean) => void;
   setAppMode: (mode: AppMode) => void;
   setActiveSection: (section: string) => void;
   enterWebApp: (targetSection?: string) => void;
@@ -298,14 +301,19 @@ export function AppProvider({
       }
 
       // Sesuai User Flow:
-      // Sistem menampilkan Pre-Test di awal saat login pengguna jika Pre-Test (PASS 31 + Pemahaman 20) belum selesai
+      // Untuk akun yang baru dibuat pada login pertama kali (userProgress.showOnboardingTour === true),
+      // tampilkan bubble petunjuk alur webapp terlebih dahulu sebelum popup Pre-Test.
       const isInitialPretestComplete = Boolean(
         userProgress.initialPretestAnxiety && userProgress.initialPretestQuiz
       );
       if (anxietyPopupTimerRef.current !== null) {
         window.clearTimeout(anxietyPopupTimerRef.current);
       }
-      if (newSession.role !== 'admin' && !isInitialPretestComplete) {
+      if (
+        newSession.role !== 'admin' &&
+        !isInitialPretestComplete &&
+        !userProgress.showOnboardingTour
+      ) {
         anxietyPopupTimerRef.current = window.setTimeout(() => {
           setAnxietyDialogPhase('pretest');
           setIsAnxietyDialogOpen(true);
@@ -548,6 +556,31 @@ export function AppProvider({
     [session]
   );
 
+  const isOnboardingTourOpen = Boolean(
+    session &&
+      session.role !== 'admin' &&
+      appMode === 'webapp' &&
+      progress?.showOnboardingTour
+  );
+
+  const completeOnboardingTour = useCallback(
+    (openPretestAfter: boolean = false) => {
+      if (!session) return;
+      const updated = apiCompleteOnboardingTour(session.id);
+      setProgress(updated);
+      if (openPretestAfter) {
+        const isInitialPretestComplete = Boolean(
+          updated.initialPretestAnxiety && updated.initialPretestQuiz
+        );
+        if (!isInitialPretestComplete) {
+          setAnxietyDialogPhase('pretest');
+          setIsAnxietyDialogOpen(true);
+        }
+      }
+    },
+    [session]
+  );
+
   const value = useMemo<AppContextValue>(
     () => ({
       isHydrated,
@@ -560,11 +593,13 @@ export function AppProvider({
       stageStatuses,
       isLoginDialogOpen,
       isAnxietyDialogOpen,
+      isOnboardingTourOpen,
       anxietyDialogPhase,
       activeModuleId,
       lockedNotice,
       dataVersion,
       refreshData,
+      completeOnboardingTour,
       setAppMode,
       setActiveSection,
       enterWebApp,
@@ -600,11 +635,13 @@ export function AppProvider({
       stageStatuses,
       isLoginDialogOpen,
       isAnxietyDialogOpen,
+      isOnboardingTourOpen,
       anxietyDialogPhase,
       activeModuleId,
       lockedNotice,
       dataVersion,
       refreshData,
+      completeOnboardingTour,
       enterWebApp,
       enterLandingPage,
       openLoginDialog,
