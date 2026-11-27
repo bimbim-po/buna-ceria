@@ -1110,22 +1110,14 @@ export function AnxietyDialog() {
                   </div>
                 )
               ) : (
-                <div className="flex flex-col sm:flex-row items-center gap-2.5">
+                <div className="flex items-center">
                   <button
                     type="button"
                     onClick={() => handleFinishAndClose('hasil')}
-                    className="btn-pill flex min-h-[44px] w-full sm:flex-1 items-center justify-center gap-2 border border-pink-200 bg-[#FFF7F9] px-5 py-2.5 text-sm font-bold text-[#C84B71] cursor-pointer"
+                    className="btn-pill flex min-h-[44px] w-full items-center justify-center gap-2 border border-pink-200 bg-[#FFF7F9] px-5 py-2.5 text-sm font-bold text-[#C84B71] cursor-pointer"
                   >
                     <Award className="h-4 w-4" />
                     <span>Buka Halaman Hasil Saya</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleFinishAndClose('materi')}
-                    className="btn-pill flex min-h-[44px] w-full sm:flex-1 items-center justify-center gap-2 bg-green-500 px-6 py-2.5 text-sm font-bold text-ink shadow-2xs cursor-pointer"
-                  >
-                    <span>Lanjut ke Materi Pembelajaran</span>
-                    <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
                   </button>
                 </div>
               )}

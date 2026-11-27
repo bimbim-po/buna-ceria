@@ -23,7 +23,6 @@ import { getModules, getStages, getUserDayInfo } from '@/lib/api';
 import { uiContent } from '@/data/uiContent';
 import { useApp } from '@/context/AppContext';
 import { StageId } from '@/types';
-import { Menu3DIcon } from '@/components/Menu3DIcon';
 
 const START_TIME_OPTIONS = [
   'Hari ini',
@@ -540,36 +539,7 @@ export function StagePanel() {
               </div>
             </div>
 
-            {/* 3. Tombol Pintasan Langsung ke Kebun Bunga Delima */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsFullscreenStage(false);
-                enterWebApp('tips');
-              }}
-              className="group flex w-full flex-col sm:flex-row items-center justify-between gap-4 rounded-[24px] border-2 border-[#F5B8CB] bg-gradient-to-r from-[#FFF0F5] via-[#FFF6F9] to-[#FEF3C7]/60 p-5 sm:p-6 text-left shadow-[0_8px_24px_rgba(200,75,113,0.12)] hover:border-[#E55381] hover:shadow-[0_12px_28px_rgba(200,75,113,0.2)] transition-all duration-200 active:scale-[0.99] cursor-pointer"
-            >
-              <div className="flex items-center gap-3.5">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F06292] to-[#E55381] text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
-                  <Menu3DIcon name="tips" className="h-7 w-7" />
-                </span>
-                <div>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-white/90 border border-pink-200 px-3 py-0.5 text-[11px] font-bold text-[#C84B71] mb-1">
-                    🌺 Kebun Bunga Delima
-                  </span>
-                  <p className="font-heading text-base sm:text-lg font-bold text-[#2A2D22] leading-snug">
-                    selain itu, bunda juga bisa belajar di kebun delima, pencet di sini yaa🥰
-                  </p>
-                </div>
-              </div>
-
-              <span className="inline-flex min-h-[42px] w-full sm:w-auto shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#F06292] to-[#E55381] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm group-hover:from-[#E55381] group-hover:to-[#C84B71] transition-all">
-                <span>Ke Kebun Bunga Delima</span>
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </span>
-            </button>
-
-            {/* 4. Dukungan Suami (Dilengkapi Take Selfie) & 5. Kapan Bunda Perlu Meminta Bantuan? */}
+            {/* 3. Dukungan Suami (Dilengkapi Take Selfie) & 4. Kapan Bunda Perlu Meminta Bantuan? */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {/* Dukungan Suami + Take Selfie ("Abadikan Momen Nifas Bersama Pasangan") */}
               <div className="rounded-[24px] border border-[#ECE7F2] bg-[#FAF8FC] p-5 flex flex-col justify-between space-y-4">
